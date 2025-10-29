@@ -32,7 +32,7 @@ project:
 	mkdir --parents $(PROJECT_DIRS)
 
 $(PROJECT): $(OBJ_FILES)
-	g++ $(OPT) $(INCLUDES) $(OPT_THREAD) $^ -o $(LIB)$@
+	g++ $(OPT) $(INCLUDES) $(OPT_THREAD) $^ -o $(LIB)$@ $(LIBS)
 
 o/%.o: src/%.cpp
 	@mkdir -p "$(@D)"
