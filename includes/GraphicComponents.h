@@ -86,8 +86,8 @@ namespace GraphicComponents {
   class Leaf : public GraphicComponent {
     public:
       Leaf(const int window, const int x, const int y, const string name = "default leaf");
-      virtual void select();
-      virtual void select(const int idComponent);
+      virtual void select ();
+      virtual void select (const int idComponent);
   };
 
   class Composite : public GraphicComponent {
@@ -99,10 +99,10 @@ namespace GraphicComponents {
       void add (list<GraphicComponent *> lst);
       void addBeginning (GraphicComponent * gc);
       void removeBeginning ();
-      void replace(unsigned int index, unsigned int size, list<GraphicComponent *> lst);
-      list<GraphicComponent *> components();
-      void select(const int index);
-      void resize(const int height, const int width);
+      void replace (unsigned int index, unsigned int size, list<GraphicComponent *> lst);
+      list<GraphicComponent *> components ();
+      void select (const int index);
+      void resize (const int height, const int width);
   };
 
   class Screen : public Composite {
@@ -116,7 +116,7 @@ namespace GraphicComponents {
       Screen (const int window, const int x, const int y, const string label, const string name = "default screen");
       void select (const int index);
       void selectNext ();
-      string label();
+      string label ();
   };
 
   class Text : public Leaf {
@@ -124,7 +124,7 @@ namespace GraphicComponents {
       string _label;
     public:
       Text (const int window, const int x, const int y, const string label, const string name = "default text");
-      const string label();
+      const string label ();
   };
 
   class Input : public Text {
@@ -170,10 +170,10 @@ namespace GraphicComponents {
     public:
       Menu (const int window, const int x, const int y, list<string> items, const string name = "default menu");
       Menu (const int window, const int x, const int y, list<Text *> items, const string name = "default menu");
-      list<string> items();
-      void select(const int index);
-      map<char, int> shortcuts();
-      Text * validation(int cursor = 0);
+      list<string> items ();
+      void select (const int index);
+      map<char, int> shortcuts ();
+      Text * validation (int cursor = 0);
       Text * itemSelected ();
   };
 
@@ -209,11 +209,11 @@ namespace GraphicComponents {
       bool _select = false;
     public:
       Cell (const int window, const int x, const int y, const string value, const string name = "default cell");
-      void setWidth(const unsigned int w);
-      void setHeight(const unsigned int h);
-      const string value();
-      void setValue(const string value);
-      void select();
+      void setWidth (const unsigned int w);
+      void setHeight (const unsigned int h);
+      const string value ();
+      void setValue (const string value);
+      void select ();
       bool isSelected();
   };
 
@@ -226,12 +226,12 @@ namespace GraphicComponents {
       list<Cell*> getCells ();
       list<Cell*> getRow (unsigned int n);
       Cell getCell (const unsigned int pos);
-      Cell * getCell(unsigned int row, unsigned int col);
-      const tab getTab();
-      void setValue(unsigned int row, unsigned int col, string value);
-      void setValue(unsigned int row, unsigned int col, const char * value);
+      Cell * getCell (unsigned int row, unsigned int col);
+      const tab getTab ();
+      void setValue (unsigned int row, unsigned int col, string value);
+      void setValue (unsigned int row, unsigned int col, const char * value);
       void updateLengths ();
-      void select(unsigned int row, unsigned int col);
+      void select (unsigned int row, unsigned int col);
       void setCursor(unsigned int row, unsigned int col);
       Cell * getCursor ();
   };
