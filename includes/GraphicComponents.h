@@ -249,6 +249,7 @@ namespace GraphicComponents {
       ScrollBar(const int window, const int x, const int y, const string name = "default scrollbar");
       void down();
       void up();
+      void update(const unsigned int n = 0);
       ScrollBarData getScrollBar();
       void resize(const int height, const int width);
       void resize(const int height, const int width, const unsigned int count);

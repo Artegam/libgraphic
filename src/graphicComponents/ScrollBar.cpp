@@ -25,6 +25,13 @@ void ScrollBar::up() {
   }
 }
 
+void ScrollBar::update(const unsigned int n) {
+  if(data.cursor>1 && (data.unit*n) > data.max)
+    data.cursor=data.max;
+  else
+    data.cursor=(data.unit*n);
+}
+
 ScrollBarData ScrollBar::getScrollBar() {
   return data;
 }
