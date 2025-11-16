@@ -1,21 +1,17 @@
 CXX := g++
-PROJECT := libgraphic.so
-TESTS = tests/
+PROJECT := lib_tests
 INC = includes/
 SRC = src/
 OUT = o/
 BIN = bin/
-LIB = lib/
-INSTALL_DIR = /lib/x86_64-linux-gnu/
-HEADERS_DIR = /usr/include/
-TEST_DIR = $(TESTS)$(SRC)
+INSTALL_DIR = /usr/bin/
 
-PROJECT_DIRS = $(SRC) $(INC) $(LIB) $(OUT) $(BIN) $(TEST_DIR)
+PROJECT_DIRS = $(SRC) $(INC) $(OUT) $(BIN)
 
 INCLUDES = -I $(INC) # -I $(INC_RENDER) -I $(TESTS)
 
-LIBS = -lncurses
-OPT = -Wall -Og -shared -fPIC 
+LIBS = -liobyte -lgraphic
+OPT = -Wall -g
 OPT_THREAD = -std=c++0x -pthread
 
 
@@ -23,7 +19,7 @@ SRC_FILES = $(shell if [ -d src/ ]; then find src/ -type f -name '*.cpp'; fi)
 OBJ_FILES = $(patsubst src/%.cpp, o/%.o, $(SRC_FILES))
 
 ## Pour declarer des targets qui ne sont pas des fichiers
-.PHONY: project clean install uninstall install-tools uninstall-tools tests
+.PHONY: project clean install uninstall install-tools uninstall-tools
 .SILENT: install uninstall
 
 all: $(PROJECT)
@@ -31,11 +27,8 @@ all: $(PROJECT)
 project:
 	mkdir --parents $(PROJECT_DIRS)
 
-tests:
-	./tests/bin/lib_tests
-
 $(PROJECT): $(OBJ_FILES)
-	g++ $(OPT) $(INCLUDES) $(OPT_THREAD) $^ -o $(LIB)$@ $(LIBS)
+	g++ $(OPT) $(INCLUDES) -L$(LIB) $(OPT_THREAD) $^ -o $(BIN)$@ $(LIBS)
 
 o/%.o: src/%.cpp
 	@mkdir -p "$(@D)"
@@ -45,8 +38,10 @@ clean:
 	rm -r o/;find . -name "*~" | xargs rm -f
 
 install:
-	sudo cp $(LIB)$(PROJECT) $(INSTALL_DIR)
-	sudo cp $(INC)*.h $(HEADERS_DIR)
+	sudo cp $(BIN)$(PROJECT) $(INSTALL_DIR)
+	if [ ! -d ~/.$(PROJECT)/ ]; then mkdir ~/.$(PROJECT)/; fi
+	chmod 755 ~/.$(PROJECT)/
+	if [ ! -d /var/log/$(PROJECT)/ ]; then sudo mkdir /var/log/$(PROJECT)/; fi
 	echo "$(PROJECT) installed successfully !"
 
 install-tools:

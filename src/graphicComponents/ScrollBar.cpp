@@ -8,47 +8,49 @@ ScrollBar::ScrollBar(const int window, const int x, const int y, const string na
 }
 
 void ScrollBar::down() {
-  if(data.cursor<=data.max) {
-   if(data.cursor+data.unit > data.max)
-     data.cursor=data.max;
-   else
-     data.cursor+=data.unit;
-  }
+  if(_cursor+_unit <= _max)
+    _cursor += _unit;
+  else
+    _cursor = _max;
 }
 
 void ScrollBar::up() {
-  if(data.cursor>1) {
-    if(data.cursor-data.unit <= 0)
-      data.cursor = 1;
-    else
-      data.cursor-=data.unit;
-  }
+  if(_cursor-_unit > 1)
+    _cursor -= _unit;
+  else
+    _cursor = 0;
 }
 
 void ScrollBar::update(const unsigned int n) {
-  if(data.cursor>1 && (data.unit*n) > data.max)
-    data.cursor=data.max;
+  if(n < 0)
+    _cursor = 0;
+  else if (n*_unit > _max)
+    _cursor = _max;
   else
-    data.cursor=(data.unit*n);
+    _cursor=(_unit*n);
 }
 
 ScrollBarData ScrollBar::getScrollBar() {
+  ScrollBarData data;
+  data.unit = _unit;
+  data.cursor = _cursor;
+  data.max = _max; 
   return data;
 }
 
 void ScrollBar::resize(const int height, const int width) {
   GraphicComponent::resize(height, width);
-  data.max = height-2;
-  data.unit = 1;
+  _max = height-2;
+  _unit = 1.0;
 }
 
 void ScrollBar::resize(const int height, const int width, const unsigned int count) {
   resize(height, width);
   if(count == 0) //[ASC] protection
-    data.unit = data.max;
+    _unit = (double)_max;
   else {
-    data.unit = data.max / count;
-    if((float)(data.max % count)/count > 0.5)
-      data.unit++;
+    _unit = ((double)1/_max);
+    //if((float)(_max % count)/count > 0.5)
+    //  _unit++;
   }
 }

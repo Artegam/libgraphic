@@ -236,15 +236,18 @@ namespace GraphicComponents {
       Cell * getCursor ();
   };
 
-  struct ScrollBarData {
-    unsigned int unit = 1;
-    unsigned int cursor = 1;
-    unsigned int max = 10;
+  class ScrollBarData {
+    public:
+      double unit = 1.0;
+      unsigned int cursor = 1;
+      unsigned int max = 10;
   };
 
   class ScrollBar : public Leaf {
     private:
-      ScrollBarData data;
+      double _unit = 1.0;
+      unsigned int _cursor = 1;
+      unsigned int _max = 10;
     public:
       ScrollBar(const int window, const int x, const int y, const string name = "default scrollbar");
       void down();
