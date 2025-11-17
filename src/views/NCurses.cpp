@@ -412,7 +412,7 @@ void Views::NCurses::display (ScrollBar bar) {
   ScrollBarData data = bar.getScrollBar();
   
   mvwprintw(stack[bar.window()], bar.y(), bar.x(), "-");
-  mvwprintw(stack[bar.window()], bar.y()+data.cursor, bar.x(), "*");
+  mvwprintw(stack[bar.window()], bar.y()+data.cursor+1, bar.x(), "*");
   mvwprintw(stack[bar.window()], bar.y()+bar.height()-1, bar.x(), "+");
 }
 

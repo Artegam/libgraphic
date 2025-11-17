@@ -241,6 +241,8 @@ namespace GraphicComponents {
       double unit = 1.0;
       unsigned int cursor = 1;
       unsigned int max = 10;
+      unsigned int cpt_max = 100;
+      unsigned int cpt = 0;
   };
 
   class ScrollBar : public Leaf {
@@ -248,6 +250,8 @@ namespace GraphicComponents {
       double _unit = 1.0;
       unsigned int _cursor = 1;
       unsigned int _max = 10;
+      unsigned int _cpt_max = 100;
+      unsigned int _cpt = 0;
     public:
       ScrollBar(const int window, const int x, const int y, const string name = "default scrollbar");
       void down();

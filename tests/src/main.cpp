@@ -62,6 +62,10 @@ void argumentCheck(int argc, char** argv) {
 */
 
 void assert (bool test, string message) {
+  if(message.size() > 40) {
+    message = message.substr(0, 40); //[ASC] Ajouter '...' quand c est tronque ???
+    message += "...";
+  }
   string result = failed;
   if(test) {
     result = passed;
@@ -78,15 +82,19 @@ void assert (bool test, string message) {
   cpt++;
 }
 
-void report () {
+int report () {
+  double rate = ((double)cptSuccess/cpt*100);
   printf("**************************************************\n");
   printf("       TESTS REPORT\n\n");
   printf("  %s %d/%d\n", failed.c_str(), cptFailures, cpt);
   printf("  %s %d/%d\n", passed.c_str(), cptSuccess, cpt);
   printf("  Undefined %d/%d\n", cptUndef, cpt);
   printf("\n");
-  printf("  TOTAL: %.2f%c\n", ((double)cptSuccess/cpt*100), '%');
+  printf("  TOTAL: %.2f%c\n", rate, '%');
   printf("**************************************************\n");
+  if(rate == 100.0)
+    return 0; //Success
+  return 1;
 }
 
 int main(int argc, char** argv) {
@@ -95,11 +103,24 @@ int main(int argc, char** argv) {
   assert(data.unit == 1.0, "Valeur par defaut de unit");
   assert(data.cursor == 1, "Valeur par defaut de cursor");
   assert(data.max == 10, "Valeur par defaut de max");
-  b.resize(16, 1, 1760); // hauteur, largeur, nombre de blocks
+  b.resize(12, 1, 100); // hauteur, largeur, nombre de blocks
   b.update(5); // aller au block numero 5
   data = b.getScrollBar(); // recupere les donnees
-  assert(data.max == 14, "Calcul de la valeur max");
-  assert(data.unit == (double)1/1760, "Calcul de la valeur d'une unite");
-  report();
-  return 0;
+  assert(data.max == 10, "Calcul de la valeur max");
+  assert(data.unit == ((double)100/10.0), "Calcul de la valeur d'une unite pour 100 blocks");
+  b.resize(16, 1, 1760); // hauteur, largeur, nombre de blocks
+  data = b.getScrollBar(); // recupere les donnees
+  assert(data.unit == ((double)1760/14.0), "Calcul de la valeur d'une unite pour 1760 blocks");
+  b.update(10);
+  data = b.getScrollBar(); // recupere les donnees
+  assert(data.cpt == 10, "Verifie le cpt apres mise a jour");
+  assert(data.cursor == (unsigned int)(10/data.unit), "Verifie le cuseur apres mise a jour");
+  b.update(1512);
+  data = b.getScrollBar(); // recupere les donnees
+  assert(data.cursor == (unsigned int)(1512/data.unit), "Verifie le cuseur apres mise a jour 2");
+  assert(b.x() == 8, "Verifie la position x");
+  assert(b.y() == 5, "Verifie la position y");
+  assert(b.y()+data.cursor == 17, "Verifie la position du curseur de la barre");
+
+  return report();
 }

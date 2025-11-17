@@ -32,7 +32,7 @@ project:
 	mkdir --parents $(PROJECT_DIRS)
 
 tests:
-	./tests/bin/lib_tests
+	./tests/bin/lib_tests || (echo " Some tests have failed. Compilation exiting. $$?"; exit 1)
 
 $(PROJECT): $(OBJ_FILES)
 	g++ $(OPT) $(INCLUDES) $(OPT_THREAD) $^ -o $(LIB)$@ $(LIBS)
