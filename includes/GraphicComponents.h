@@ -124,6 +124,7 @@ namespace GraphicComponents {
       string _label;
     public:
       Text (const int window, const int x, const int y, const string label, const string name = "default text");
+      void setLabel (const string label);
       const string label ();
   };
 

@@ -7,6 +7,10 @@ Text::Text (const int window, const int x, const int y, const string label, cons
   _label = label;
 }
 
+void Text::setLabel (const string label) {
+  _label=label;
+}
+
 const string Text::label() {
   return _label;
 }

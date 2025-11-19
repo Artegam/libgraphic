@@ -176,7 +176,6 @@ void Views::NCurses::display () {
   }
 
   mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx);
-  mvwprintw(stack[0], 2, 70, "page: %d / %d", _page, _maxPage);
 
   for(map<int, GraphicComponent *>::iterator it = lst.begin(); it != lst.cend(); it++) {
     if (DialogBox * box = dynamic_cast<DialogBox*>(it->second); box != nullptr)
