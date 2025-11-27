@@ -27,6 +27,5 @@ void ScrollbarTests::execute () {
 }
 
 int ScrollbarTests::report () {
-  return TestUnit::report();
+  return TestManager::report();
 }
-

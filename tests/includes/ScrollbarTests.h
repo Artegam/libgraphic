@@ -5,7 +5,7 @@
 #include "GraphicComponents.h"
 
 
-class ScrollbarTests : testunit::TestUnit {
+class ScrollbarTests : testunit::TestManager {
   public:
     void execute ();
     int report ();
