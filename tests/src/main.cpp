@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include "ScrollbarTests.h"
+#include "DialogboxTests.h"
 
 using namespace std;
 
@@ -56,7 +57,11 @@ void scrollbar_tests () {
 }
 
 int main(int argc, char** argv) {
-  ScrollbarTests tests;
+  ScrollbarTests tests; //TODO - améliorer ca avec des chapitres
   tests.execute();
-  return tests.report();
+  tests.report();
+  DialogboxTests tests2;
+  tests2.execute();
+  tests2.report();
+  return tests2.report();
 }

@@ -1,10 +1,10 @@
-#ifndef SCROLLBARTESTS_H
-#define SCROLLBARTESTS_H
+#ifndef DIALOGBOX_H
+#define DIALOGBOX_H
 
 #include "TestUnit.h"
 #include "GraphicComponents.h"
 
-class ScrollbarTests : testunit::TestManager {
+class DialogboxTests : testunit::TestManager {
   public:
     void execute ();
     int report ();
