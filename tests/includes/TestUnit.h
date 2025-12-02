@@ -18,12 +18,7 @@ namespace testunit {
   const string passed = GREEN + "Passed" + NOCOLOR;
   const string undef  = YELLOW + "Undefined" + NOCOLOR;
 
-  class TestComponent {
-    public:
-      void assert (bool test, string message);
-  };
-
-  class TestUnit : Leaf, TestComponent {
+  class TestUnit : Leaf {
     private:
       int _result = -1;
       string _message;
@@ -34,7 +29,7 @@ namespace testunit {
       int eval ();
   };
 
-  class TestManager : Composite, TestComponent {
+  class TestManager : Composite {
     private:
       unsigned int cpt = 0;
       unsigned int cptSuccess = 0;

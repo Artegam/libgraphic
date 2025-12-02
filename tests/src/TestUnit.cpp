@@ -2,9 +2,6 @@
 
 using namespace testunit;
 
-//TestComponent
-void TestComponent::assert (bool test, string message) {}
-
 //TestUnit
 void TestUnit::assert (bool test, string message) {
   _message = message;
