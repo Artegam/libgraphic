@@ -35,25 +35,26 @@ int TestUnit::eval () {
 }
 
 //TestManager - TODO: A ameliorer avec l instruction template ??
-void TestManager::add (TestUnit c) {children.push_back(c);}
-void TestManager::remove (TestUnit c){
-  for(list<TestUnit>::iterator it = children.begin(); it != children.end(); it++)
-    if(&(*it) == &c)
-      children.erase(it);
-}
-list<TestUnit> TestManager::getChildren () {return children;}
+TestManager::TestManager (string name) {_name = name;}
+void TestManager::execute () {}
 
 void TestManager::assert (bool test, string message) {
   cpt++;
   TestUnit tu;
   printf("%.3d", cpt);
   tu.assert(test, message);
-  add(tu);
+  add(&tu);
 }
 
 void TestManager::eval () {
-  for(list<TestUnit>::iterator it = children.begin(); it != children.end(); it++) {
-    switch(it->eval()) {
+  list<Component*> lst = getChildren();
+  cpt = lst.size();
+  for(list<Component*>::iterator it = lst.begin(); it != lst.end(); it++) {
+    if (TestManager* m = dynamic_cast<TestManager*>(*it); m != nullptr) {
+      m->execute();
+      m->report();
+    }
+    switch((*it)->eval()) {
       case true:
         cptSuccess++;
         break;
@@ -69,7 +70,10 @@ void TestManager::eval () {
 int TestManager::report () {
   eval();
   double rate = ((double)cptSuccess/cpt*100);
+  if(cptSuccess == 0 || cpt == 0)
+    rate = 0.0;
   printf("**************************************************\n");
+  printf("       %s\n", _name.c_str());
   printf("       TESTS REPORT\n\n");
   printf("  %s %d/%d\n", failed.c_str(), cptFailures, cpt);
   printf("  %s %d/%d\n", passed.c_str(), cptSuccess, cpt);

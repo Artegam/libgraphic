@@ -18,7 +18,7 @@ namespace testunit {
   const string passed = GREEN + "Passed" + NOCOLOR;
   const string undef  = YELLOW + "Undefined" + NOCOLOR;
 
-  class TestUnit : Leaf {
+  class TestUnit : public virtual Leaf {
     private:
       int _result = -1;
       string _message;
@@ -29,19 +29,17 @@ namespace testunit {
       int eval ();
   };
 
-  class TestManager : Composite {
+  class TestManager : public virtual Composite {
     private:
       unsigned int cpt = 0;
       unsigned int cptSuccess = 0;
       unsigned int cptFailures = 0;
       unsigned int cptUndef = 0;
 
-      list <TestUnit> children;
+      string _name;
       void eval ();
     public:
-      void add (TestUnit c);
-      void remove (TestUnit c);
-      list<TestUnit> getChildren ();
+      TestManager (string name = "TestManager");
 
       void assert (bool test, string message);
       void execute ();

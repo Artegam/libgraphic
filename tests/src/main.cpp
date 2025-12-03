@@ -4,8 +4,7 @@
 #include <iostream>
 #include <unistd.h>
 
-#include "ScrollbarTests.h"
-#include "DialogboxTests.h"
+#include "LibGraphicTestManager.h"
 
 using namespace std;
 
@@ -57,11 +56,9 @@ void scrollbar_tests () {
 }
 
 int main(int argc, char** argv) {
-  ScrollbarTests tests; //TODO - améliorer ca avec des chapitres
-  tests.execute();
-  tests.report();
-  DialogboxTests tests2;
-  tests2.execute();
-  tests2.report();
-  return tests2.report();
+  LibGraphicTestManager manager("GLOBAL");
+  manager.add(new ScrollbarTests());
+  manager.add(new DialogboxTests());
+  manager.execute();
+  return manager.report();
 }
