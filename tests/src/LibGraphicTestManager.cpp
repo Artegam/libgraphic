@@ -56,15 +56,7 @@ int LibGraphicTest::report () {return testunit::TestManager::report();}
 
 // LibGraphicTestManager
 LibGraphicTestManager::LibGraphicTestManager (string name) : testunit::TestManager(name) {}
-
-void LibGraphicTestManager::execute () {
-  for(list<Component*>::iterator it = children.begin(); it != children.end(); it++) {
-    if (LibGraphicTest* test = dynamic_cast<LibGraphicTest*>(*it); test != nullptr) {
-      test->execute();
-      test->report();
-    }
-  }
-}
+void LibGraphicTestManager::execute () {}
 
 int LibGraphicTestManager::report () {
   return TestManager::report();
