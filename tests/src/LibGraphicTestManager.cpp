@@ -10,6 +10,17 @@ void DialogboxTests::execute () {
   GraphicComponents::DialogBox diag(MAIN, 20, 10, 8, 45, titre, message);
   list<GraphicComponents::GraphicComponent *> lst = diag.components();
   assert(lst.size() == 3, "Verifie le nb de composants graphiques");
+  list<GraphicComponents::GraphicComponent *>::iterator it = lst.begin();
+  GraphicComponents::Button* b = dynamic_cast<GraphicComponents::Button*>(*it);
+  assert(b != nullptr, "First object is Button component");
+  assert(b->label() == "OK", "First object is OK Button");
+  it++;
+  b = dynamic_cast<GraphicComponents::Button*>(*it);
+  assert(b != nullptr, "Second object is Button component");
+  assert(b->label() == "Cancel", "Second object is Cancel Button");
+  it++;
+  GraphicComponents::Text* gc = dynamic_cast<GraphicComponents::Text*>(*it);
+  assert(gc != nullptr, "Third object is Text component");
 }
 
 int DialogboxTests::report () {
