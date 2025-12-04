@@ -57,8 +57,8 @@ void scrollbar_tests () {
 
 int main(int argc, char** argv) {
   LibGraphicTestManager manager("GLOBAL");
-  manager.add(new ScrollbarTests());
-  manager.add(new DialogboxTests());
+  manager.assert(new ScrollbarTests());
+  manager.assert(new DialogboxTests());
   manager.execute();
   return manager.report();
 }

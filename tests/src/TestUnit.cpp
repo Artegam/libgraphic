@@ -30,30 +30,31 @@ int TestUnit::report () {
   return 0;
 }
 
-int TestUnit::eval () {
-  return _result;
-}
-
 //TestManager - TODO: A ameliorer avec l instruction template ??
 TestManager::TestManager (string name) {_name = name;}
-void TestManager::execute () {}
 
 void TestManager::assert (bool test, string message) {
   cpt++;
-  TestUnit tu;
+  TestUnit* tu = new TestUnit();
   printf("%.3d", cpt);
-  tu.assert(test, message);
-  add(&tu);
+  tu->assert(test, message);
+  add(tu);
+  tu = NULL;
 }
 
-void TestManager::eval () {
-  list<Component*> lst = getChildren();
-  cpt = lst.size();
-  for(list<Component*>::iterator it = lst.begin(); it != lst.end(); it++) {
-    if (TestManager* m = dynamic_cast<TestManager*>(*it); m != nullptr) {
-      m->execute();
-      m->report();
-    }
+void TestManager::assert (TestManager* tm) {
+  tm->execute();
+  tm->report();
+  add(tm);
+}
+
+void TestManager::execute () {}
+
+int TestManager::eval () {
+  cptSuccess  = 0;
+  cptFailures = 0;
+  cptUndef    = 0;
+  for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
     switch((*it)->eval()) {
       case true:
         cptSuccess++;
@@ -64,7 +65,10 @@ void TestManager::eval () {
       default:
         cptUndef++;
     }
-  }
+  for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
+    if (TestManager* m = dynamic_cast<TestManager*>(*it); m != nullptr)
+      assert(m->eval(), m->name());
+  return cptSuccess == cpt;
 }
 
 int TestManager::report () {
@@ -81,8 +85,8 @@ int TestManager::report () {
   printf("\n");
   printf("  TOTAL: %.2f%c\n", rate, '%');
   printf("**************************************************\n");
-  if(rate == 100.0)
-    return 0; //Success
-  return 1;
+  _result = (rate == 100.0);
+  return _result;
 }
 
+string TestManager::name () {return _name;}

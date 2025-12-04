@@ -2,7 +2,7 @@
 
 // [ASC] Design pattern Composite
 void Component::execute () {};
-int Component::eval () {return -1;};
+int Component::eval () {return _result;};
 void Leaf::execute () {};
 void Composite::add (Component* c) {children.push_back(c);};
 void Composite::remove (Component* c) {
@@ -12,5 +12,6 @@ void Composite::remove (Component* c) {
 };
 list<Component*> Composite::getChildren () {return children;};
 void Composite::execute () {};
+int Composite::eval () {return -1;};
 // [ASC] Fin du design pattern
 

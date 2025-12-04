@@ -20,30 +20,30 @@ namespace testunit {
 
   class TestUnit : public virtual Leaf {
     private:
-      int _result = -1;
       string _message;
 
     public:
       void assert (bool test, string message);
       int report ();
-      int eval ();
   };
 
   class TestManager : public virtual Composite {
-    private:
+    protected:
       unsigned int cpt = 0;
       unsigned int cptSuccess = 0;
       unsigned int cptFailures = 0;
       unsigned int cptUndef = 0;
 
       string _name;
-      void eval ();
     public:
       TestManager (string name = "TestManager");
 
       void assert (bool test, string message);
-      void execute ();
+      void assert (TestManager* tm);
+      virtual void execute ();
+      virtual int eval ();
       int report ();
+      string name ();
   };
 }
 
