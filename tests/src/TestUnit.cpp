@@ -39,7 +39,7 @@ void TestManager::assert (bool test, string message) {
   printf("%.3d", cpt);
   tu->assert(test, message);
   add(tu);
-  tu = NULL;
+  tu = nullptr;
 }
 
 void TestManager::assert (TestManager* tm) {
