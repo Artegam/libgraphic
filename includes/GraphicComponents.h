@@ -149,7 +149,9 @@ namespace GraphicComponents {
   class DialogBox : public Screen {
     private:
     public:
-      DialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label, string message = "", const string name = "default dialogbox");
+      static const unsigned int OK        = 0;
+      static const unsigned int OK_CANCEL = 1;
+      DialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label, string message = "", unsigned int buttons = OK, const string name = "default dialogbox");
   };
 
   class OpenDialogBox : public DialogBox {
