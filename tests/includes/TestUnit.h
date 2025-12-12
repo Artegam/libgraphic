@@ -33,6 +33,12 @@ namespace testunit {
         _expected=to_string(expected);
         assert(test == expected, message);
       };
+      void assert (const char * test, const char * expected, const char * message = "") {
+        _got=test;
+        _expected=expected;
+        assert(_expected.compare(_got) == 0, message);
+      };
+
       int report ();
   };
 
