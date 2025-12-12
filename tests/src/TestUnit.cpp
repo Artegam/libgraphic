@@ -3,7 +3,7 @@
 using namespace testunit;
 
 //TestUnit
-void TestUnit::assert (bool test, string message) {
+void TestUnit::assert (bool test, const char * message) {
   _message = message;
   _result = false;
   if(test)
@@ -27,13 +27,17 @@ int TestUnit::report () {
     resultString = failed;
 
   printf("%s\n", (firstpart+spacer+"["+resultString+"]").c_str());
+  if(!_result && _expected != "") {
+    printf("%s\n", (YELLOW+"\tgot: \'"+_got+"\'"+NOCOLOR).c_str());
+    printf("%s\n", (YELLOW+"\texpected: \'"+_expected+"\'"+NOCOLOR).c_str());
+  }
   return 0;
 }
 
-//TestManager - TODO: A ameliorer avec l instruction template ??
+//TestManager
 TestManager::TestManager (string name) {_name = name;}
 
-void TestManager::assert (bool test, string message) {
+void TestManager::assert (bool test, const char * message) {
   cpt++;
   TestUnit* tu = new TestUnit();
   printf("%.3d", cpt);
@@ -67,7 +71,7 @@ int TestManager::eval () {
     }
   for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
     if (TestManager* m = dynamic_cast<TestManager*>(*it); m != nullptr)
-      assert(m->eval(), m->name());
+      assert(m->eval(), m->name().c_str());
   return cptSuccess == cpt;
 }
 

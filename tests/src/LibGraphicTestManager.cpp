@@ -12,6 +12,8 @@ void DialogboxTests::execute () {
   GraphicComponents::Button* b = dynamic_cast<GraphicComponents::Button*>(*it);
   assert(b != nullptr, "First object is Button component");
   assert(b->label() == "OK", "First object is OK Button");
+  assert(b->x(), 22, "OK Button X position");
+  assert(b->y(), 6, "OK Button Y position");
   it++;
 /*
   b = dynamic_cast<GraphicComponents::Button*>(*it);

@@ -21,9 +21,18 @@ namespace testunit {
   class TestUnit : public virtual Leaf {
     private:
       string _message;
+      string _got      = "";
+      string _expected = "";
 
     public:
-      void assert (bool test, string message);
+      //Base expression
+      void assert (bool test, const char * message = "");
+      template <typename T>
+      void assert (T test, T expected, const char * message = "") {
+        _got=to_string(test);
+        _expected=to_string(expected);
+        assert(test == expected, message);
+      };
       int report ();
   };
 
@@ -38,12 +47,23 @@ namespace testunit {
     public:
       TestManager (string name = "TestManager");
 
-      void assert (bool test, string message);
       void assert (TestManager* tm);
       virtual void execute ();
       virtual int eval ();
       int report ();
       string name ();
+
+      //Base expression
+      void assert (bool test, const char * message = "");
+      template <typename T>
+      void assert (T test, T expected, const char * message = "") {
+        cpt++;
+        TestUnit* tu = new TestUnit();
+        printf("%.3d", cpt);
+        tu->assert(test, expected, message);
+        add(tu);
+        tu = nullptr;
+      };
   };
 }
 
