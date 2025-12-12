@@ -6,29 +6,26 @@
 
 class LibGraphicTest : public virtual testunit::TestManager {
   public:
-    virtual void execute ();
-    virtual int report ();
+    virtual void execute () {};
+    virtual int report () {return TestManager::report();};
 };
 
 class ScrollbarTests : public virtual LibGraphicTest {
   public:
-    ScrollbarTests (string name = "ScrollbarTests");
+    ScrollbarTests (string name = "ScrollbarTests") : testunit::TestManager(name) {};
     void execute ();
-    int report ();
 };
 
 class DialogboxTests : public virtual LibGraphicTest {
   public:
-    DialogboxTests (string name = "DialogboxTests");
+    DialogboxTests (string name = "DialogboxTests") : testunit::TestManager(name) {};
     void execute ();
-    int report ();
 };
 
-class LibGraphicTestManager : public virtual testunit::TestManager {
+class LibGraphicTestManager : public virtual LibGraphicTest {
   public:
-    LibGraphicTestManager (string name = "LibGraphicTestManager");
-    void execute ();
-    int report ();
+    LibGraphicTestManager (string name = "LibGraphicTestManager") : testunit::TestManager(name) {};
+    void execute () {};
 };
 
 #endif

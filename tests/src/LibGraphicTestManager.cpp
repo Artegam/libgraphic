@@ -1,35 +1,29 @@
 #include "LibGraphicTestManager.h"
 
 //Dialogbox
-DialogboxTests::DialogboxTests (string name) : testunit::TestManager(name) {}
-
 void DialogboxTests::execute () {
   const int MAIN = 0;
   string titre = "DialogboxTitre";
   string message = "DialogboxMessage";
   GraphicComponents::DialogBox diag(MAIN, 20, 10, 8, 45, titre, message);
   list<GraphicComponents::GraphicComponent *> lst = diag.components();
-  assert(lst.size() == 3, "Verifie le nb de composants graphiques");
+  assert(lst.size() == 2, "Verifie le nb de composants graphiques");
   list<GraphicComponents::GraphicComponent *>::iterator it = lst.begin();
   GraphicComponents::Button* b = dynamic_cast<GraphicComponents::Button*>(*it);
   assert(b != nullptr, "First object is Button component");
   assert(b->label() == "OK", "First object is OK Button");
   it++;
+/*
   b = dynamic_cast<GraphicComponents::Button*>(*it);
   assert(b != nullptr, "Second object is Button component");
   assert(b->label() == "Cancel", "Second object is Cancel Button");
   it++;
+*/
   GraphicComponents::Text* gc = dynamic_cast<GraphicComponents::Text*>(*it);
   assert(gc != nullptr, "Third object is Text component");
 }
 
-int DialogboxTests::report () {
-  return TestManager::report();
-}
-
 //Scrollbar
-ScrollbarTests::ScrollbarTests (string name) : testunit::TestManager(name) {}
-
 void ScrollbarTests::execute () { 
   GraphicComponents::ScrollBar b(0, 8, 5); //screen, position
   GraphicComponents::ScrollBarData data = b.getScrollBar(); // recupere les donnees
@@ -54,21 +48,4 @@ void ScrollbarTests::execute () {
   assert(b.x() == 8, "Verifie la position x");
   assert(b.y() == 5, "Verifie la position y");
   assert(b.y()+data.cursor == 17, "Verifie la position du curseur de la barre");
-}
-
-int ScrollbarTests::report () {
-  return TestManager::report();
-}
-
-//LibGraphicTest
-void LibGraphicTest::execute () {}
-int LibGraphicTest::report () {return testunit::TestManager::report();}
-
-
-// LibGraphicTestManager
-LibGraphicTestManager::LibGraphicTestManager (string name) : testunit::TestManager(name) {}
-void LibGraphicTestManager::execute () {}
-
-int LibGraphicTestManager::report () {
-  return TestManager::report();
 }

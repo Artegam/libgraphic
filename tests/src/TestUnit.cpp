@@ -86,7 +86,10 @@ int TestManager::report () {
   printf("  TOTAL: %.2f%c\n", rate, '%');
   printf("**************************************************\n");
   _result = (rate == 100.0);
-  return _result;
+  if (_result)
+    return 0;
+  else
+    return 1;
 }
 
 string TestManager::name () {return _name;}
