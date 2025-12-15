@@ -3,7 +3,7 @@
 using namespace GraphicComponents;
 
 
-Text::Text (const int window, const int x, const int y, const string label, const string name): Leaf(window, x, y, name) {
+Text::Text (const int window, const int x, const int y, const string label, const string name): GraphicComponent(window, x, y, name) {
   _label = label;
 }
 

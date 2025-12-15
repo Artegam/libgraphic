@@ -6,15 +6,15 @@ using namespace GraphicComponents;
 Screen::Screen () : Composite () {
 }
 
-Screen::Screen (const int window, const int x, const int y, const string label, const string name) : Composite (window, x, y, name) {
+Screen::Screen (const int window, const int x, const int y, const string label, const string name) : GraphicComponent(window, x, y, name) {
   _label = label;
 }
 
 void Screen::select(const int index) {
-  Composite::select(index);
+  GraphicComponent::select(index);
 
   list<GraphicComponent *> lst;
-  lst = components();
+  lst = _components;
 
   for(list<GraphicComponent *>::iterator it = lst.begin(); it != lst.cend(); it++) {
     if (Menu * menu = dynamic_cast<Menu*>(*it); menu != nullptr)

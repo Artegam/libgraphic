@@ -3,7 +3,7 @@
 using namespace GraphicComponents;
 
 
-Cell::Cell (const int window, const int x, const int y, const string value, const string name): Leaf(window, x, y, name) {
+Cell::Cell (const int window, const int x, const int y, const string value, const string name): GraphicComponent(window, x, y, name) {
   _value = value;
   setHeight(1);
   setWidth(value.length());

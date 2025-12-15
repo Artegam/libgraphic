@@ -6,6 +6,7 @@
 #include <map>
 #include <functional>
 
+#include "Composite.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ namespace GraphicComponents {
 
   // interface
   /// class View - 
-  class GraphicComponent {
+  class GraphicComponent : public virtual Component {
     protected:
       int _x;
       int _y;
@@ -83,29 +84,7 @@ namespace GraphicComponents {
       const string getName();
   };
 
-  class Leaf : public GraphicComponent {
-    public:
-      Leaf(const int window, const int x, const int y, const string name = "default leaf");
-      virtual void select ();
-      virtual void select (const int idComponent);
-  };
-
-  class Composite : public GraphicComponent {
-    private:
-    public:
-      Composite ();
-      Composite (const int window, const int x, const int y, const string name = "default composite");
-      void add (GraphicComponent * gc);
-      void add (list<GraphicComponent *> lst);
-      void addBeginning (GraphicComponent * gc);
-      void removeBeginning ();
-      void replace (unsigned int index, unsigned int size, list<GraphicComponent *> lst);
-      list<GraphicComponent *> components ();
-      void select (const int index);
-      void resize (const int height, const int width);
-  };
-
-  class Screen : public Composite {
+  class Screen : public virtual GraphicComponent, public virtual Composite {
     private:
       string _label;
     public:
@@ -117,9 +96,16 @@ namespace GraphicComponents {
       void select (const int index);
       void selectNext ();
       string label ();
+      list<GraphicComponent *> getGraphicComponents () {
+        list<GraphicComponent *> lst;
+        for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
+          if (GraphicComponent * component = dynamic_cast<GraphicComponent*>(*it); component != nullptr)
+            lst.push_back(component);
+        return lst;
+      };
   };
 
-  class Text : public Leaf {
+  class Text : public virtual GraphicComponent, public virtual Leaf {
     private:
       string _label;
     public:
@@ -146,7 +132,7 @@ namespace GraphicComponents {
       Selector (const int window, const int x, const int y, const string label, const string name = "default selector");
   };
 
-  class DialogBox : public Screen {
+  class DialogBox : public virtual Screen {
     private:
     public:
       static const unsigned int OK        = 0;
@@ -167,7 +153,7 @@ namespace GraphicComponents {
       unsigned int to();
   };
 
-  class Menu : public Composite {
+  class Menu : public virtual GraphicComponent, public virtual Leaf {
     private:
       list<Text *> _items;
     public:
@@ -194,7 +180,7 @@ namespace GraphicComponents {
       VMenu (const int window, const int x, const int y, list<Text *> items, const string name = "default vmenu");
   };
 
-  class Button : public Leaf {
+  class Button : public virtual GraphicComponent, public virtual Leaf {
     private:
       string _label;
     public:
@@ -202,11 +188,11 @@ namespace GraphicComponents {
       const string label();
   };
 
-  class Image : public Leaf {
+  class Image : public virtual GraphicComponent, public virtual Leaf {
     private:
   };
 
-  class Cell : public Leaf {
+  class Cell : public virtual GraphicComponent, public virtual Leaf {
     private:
       string _value;
       bool _select = false;
@@ -220,7 +206,7 @@ namespace GraphicComponents {
       bool isSelected();
   };
 
-  class Table : public Leaf {
+  class Table : public virtual GraphicComponent, public virtual Leaf {
     private:
       tab _t;
       list<Cell*> cells;
@@ -248,7 +234,7 @@ namespace GraphicComponents {
       unsigned int cpt = 0;
   };
 
-  class ScrollBar : public Leaf {
+  class ScrollBar : public virtual GraphicComponent, public virtual Leaf {
     private:
       double _unit = 1.0;
       unsigned int _cursor = 1;
@@ -265,7 +251,7 @@ namespace GraphicComponents {
       void resize(const int height, const int width, const unsigned int count);
   };
 
-  class Calendar : public Leaf {
+  class Calendar : public virtual GraphicComponent, public virtual Leaf {
     private:
       Table * _daily;
       Selector * _month;
@@ -277,7 +263,7 @@ namespace GraphicComponents {
       Table getDaily ();
   };
 
-  class Agenda : public Leaf {
+  class Agenda : public virtual GraphicComponent, public virtual Leaf {
     private:
       Table * _hourly;
       Selector * _day;

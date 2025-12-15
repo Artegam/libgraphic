@@ -6,7 +6,7 @@
 using namespace GraphicComponents;
 
 
-Agenda::Agenda (const int window, const int x, const int y, const string name): Leaf(window, x, y, name) {
+Agenda::Agenda (const int window, const int x, const int y, const string name): GraphicComponent(window, x, y, name) {
   _name = new Text(window, x, y, "Employe 1");  
   _hourly = new Table(window, x, y+2, 12, 2);  
 

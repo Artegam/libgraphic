@@ -2,7 +2,7 @@
 
 using namespace GraphicComponents;
 
-ScrollBar::ScrollBar(const int window, const int x, const int y, const string name) : Leaf(window, x, y, name) {
+ScrollBar::ScrollBar(const int window, const int x, const int y, const string name) : GraphicComponent(window, x, y, name) {
   _height = 12;
   _width = 1;
 }

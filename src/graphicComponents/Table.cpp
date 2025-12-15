@@ -3,7 +3,7 @@
 using namespace GraphicComponents;
 
 
-Table::Table (const int window, const int x, const int y, const unsigned int rows, const unsigned int cols, string defaultval, const string name): Leaf(window, x, y, name) {
+Table::Table (const int window, const int x, const int y, const unsigned int rows, const unsigned int cols, string defaultval, const string name): GraphicComponent(window, x, y, name) {
   unsigned int nbCells = rows * cols;
   _t.rows = rows;
   _t.cols = cols;
