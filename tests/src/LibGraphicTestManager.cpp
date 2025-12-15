@@ -6,24 +6,27 @@ void DialogboxTests::execute () {
   string titre = "DialogboxTitre";
   string message = "DialogboxMessage";
   GraphicComponents::DialogBox diag(MAIN, 20, 10, 8, 45, titre, message);
-  list<GraphicComponents::GraphicComponent *> lst = diag.components();
+  list<GraphicComponents::GraphicComponent *> lst = diag.getGraphicComponents();
   assert((int)lst.size(), 2, "Verifie le nb de composants graphiques");
   list<GraphicComponents::GraphicComponent *>::iterator it = lst.begin();
   GraphicComponents::Button* b = dynamic_cast<GraphicComponents::Button*>(*it);
   assert(b != nullptr, "First object is Button component");
+  assert(b->id(), 1, "First object id is 1");
   assert(b->label().c_str(), "OK", "First object is OK Button");
   assert(b->x(), 22, "OK Button X position");
   assert(b->y(), 6, "OK Button Y position");
   it++;
   GraphicComponents::Text* gc = dynamic_cast<GraphicComponents::Text*>(*it);
   assert(gc != nullptr, "Second object is Text component");
+  assert(b->id(), 2, "Second object id is 2");
 
   GraphicComponents::DialogBox diag2(MAIN, 20, 10, 10, 66, titre, message, GraphicComponents::DialogBox::OK_CANCEL);
-  lst = diag2.components();
+  lst = diag2.getGraphicComponents();
   assert((int)lst.size(), 3, "(2 boutons) Verifie le nb de composants graphiques");
   it = lst.begin();
   b = dynamic_cast<GraphicComponents::Button*>(*it);
   assert(b != nullptr, "(2 boutons) First object is Button component");
+  assert(b->id(), 1, "(2 boutons) First object id is 1");
   assert(b->label().c_str(), "OK", "(2 boutons) First object is OK Button");
   assert(b->x(), 22, "(2 boutons) OK Button X position");
   assert(b->y(), 8, "(2 boutons) OK Button Y position");
@@ -31,6 +34,7 @@ void DialogboxTests::execute () {
 
   b = dynamic_cast<GraphicComponents::Button*>(*it);
   assert(b != nullptr, "(2 boutons) Second object is Button component");
+  assert(b->id(), 2, "(2 boutons) Second object id is 2");
   assert(b->label().c_str(), "Cancel", "(2 boutons) Second object is Cancel Button");
   assert(b->x(), 44, "(2 boutons) Cancel Button X position");
   assert(b->y(), 8, "(2 boutons) Cancel Button Y position");
@@ -38,6 +42,7 @@ void DialogboxTests::execute () {
 
   gc = dynamic_cast<GraphicComponents::Text*>(*it);
   assert(gc != nullptr, "(2 boutons) Third object is Text component");
+  assert(b->id(), 3, "(2 boutons) Third object id is 3");
 }
 
 //Scrollbar
