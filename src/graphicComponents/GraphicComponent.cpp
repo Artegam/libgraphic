@@ -7,13 +7,13 @@ using namespace GraphicComponents;
 GraphicComponent::GraphicComponent () {
 }
 
-GraphicComponent::GraphicComponent(const int window, const int x, const int y, const string name) {
-  //this->_id = id; // ici il faut donner le numéro du composant. SOn index dans une liste ?
+GraphicComponent::GraphicComponent(const int window, const int x, const int y, const string name, Composite* parent) {
   this->_window = window;
   this->_x = x;
   this->_y = y;
   _selectSize = 0;
   _name = name;
+  _parent = parent;
 }
 
 void GraphicComponent::resize(const int height, const int width) {
@@ -86,7 +86,9 @@ const bool GraphicComponent::isSelectable () {return _selectable;}
 const bool GraphicComponent::isSelected () {return _selected;}
 
 const int GraphicComponent::id() {
-  return _id;
+  if(_parent)
+    return _parent->getPosition(this);
+  return -1;
 }
 
 const int GraphicComponent::window() {

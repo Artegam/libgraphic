@@ -38,8 +38,6 @@ namespace GraphicComponents {
       const unsigned int occurences(const string str, char c);
   };
 
-  // interface
-  /// class View - 
   class GraphicComponent : public virtual Component {
     protected:
       int _x;
@@ -56,10 +54,11 @@ namespace GraphicComponents {
       int _selectSize;
       list<GraphicComponent *> _components;
       cursor _cursor;
+      Composite * _parent;
 
     public:
       GraphicComponent();
-      GraphicComponent(const int window, const int x, const int y, const string name = "default");
+      GraphicComponent(const int window, const int x, const int y, const string name = "default", Composite* parent = nullptr);
       virtual void select ();
       virtual void select (const int idComponent);
       virtual void unselect ();
@@ -109,7 +108,7 @@ namespace GraphicComponents {
     private:
       string _label;
     public:
-      Text (const int window, const int x, const int y, const string label, const string name = "default text");
+      Text (const int window, const int x, const int y, const string label, const string name = "default text", Composite* parent = nullptr);
       void setLabel (const string label);
       const string label ();
   };
@@ -184,7 +183,7 @@ namespace GraphicComponents {
     private:
       string _label;
     public:
-      Button (const int window, const int x, const int y, const string label, const string name = "default button");
+      Button (const int window, const int x, const int y, const string label, const string name = "default button", Composite* parent = nullptr);
       const string label();
   };
 

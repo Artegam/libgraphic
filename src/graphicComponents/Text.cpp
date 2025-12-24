@@ -3,7 +3,7 @@
 using namespace GraphicComponents;
 
 
-Text::Text (const int window, const int x, const int y, const string label, const string name): GraphicComponent(window, x, y, name) {
+Text::Text (const int window, const int x, const int y, const string label, const string name, Composite* parent): GraphicComponent(window, x, y, name, parent) {
   _label = label;
 }
 
