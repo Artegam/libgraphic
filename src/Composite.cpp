@@ -13,5 +13,14 @@ void Composite::remove (Component* c) {
 list<Component*> Composite::getChildren () {return children;};
 void Composite::execute () {};
 int Composite::eval () {return -1;};
+int Composite::getPosition (Component* c) {
+  int cpt = 0;
+  for(list<Component*>::iterator it = children.begin(); it != children.end(); it++) {
+    if((*it) == c)
+      return cpt;
+    cpt++;
+  }
+  return -1;
+};
 // [ASC] Fin du design pattern
 

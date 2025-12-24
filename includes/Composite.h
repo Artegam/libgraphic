@@ -29,6 +29,7 @@ class Composite : public virtual Component {
     list<Component*> getChildren ();
     void execute ();
     virtual int eval ();
+    int getPosition (Component* c);
 };
 // [ASC] Fin du design pattern
 
