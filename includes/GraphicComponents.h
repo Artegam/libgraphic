@@ -83,7 +83,7 @@ namespace GraphicComponents {
       const string getName();
   };
 
-  class Screen : public virtual GraphicComponent, public virtual Composite {
+  class Screen : public GraphicComponent, public virtual Composite {
     private:
       string _label;
     public:
@@ -104,7 +104,7 @@ namespace GraphicComponents {
       };
   };
 
-  class Text : public virtual GraphicComponent, public virtual Leaf {
+  class Text : public GraphicComponent, public virtual Leaf {
     private:
       string _label;
     public:
@@ -131,7 +131,7 @@ namespace GraphicComponents {
       Selector (const int window, const int x, const int y, const string label, const string name = "default selector");
   };
 
-  class DialogBox : public virtual Screen {
+  class DialogBox : public Screen {
     private:
     public:
       static const unsigned int OK        = 0;
@@ -152,7 +152,7 @@ namespace GraphicComponents {
       unsigned int to();
   };
 
-  class Menu : public virtual GraphicComponent, public virtual Leaf {
+  class Menu : public GraphicComponent, public virtual Leaf {
     private:
       list<Text *> _items;
     public:
@@ -179,7 +179,7 @@ namespace GraphicComponents {
       VMenu (const int window, const int x, const int y, list<Text *> items, const string name = "default vmenu");
   };
 
-  class Button : public virtual GraphicComponent, public virtual Leaf {
+  class Button : public GraphicComponent, public virtual Leaf {
     private:
       string _label;
     public:
@@ -187,11 +187,11 @@ namespace GraphicComponents {
       const string label();
   };
 
-  class Image : public virtual GraphicComponent, public virtual Leaf {
+  class Image : public GraphicComponent, public virtual Leaf {
     private:
   };
 
-  class Cell : public virtual GraphicComponent, public virtual Leaf {
+  class Cell : public GraphicComponent, public virtual Leaf {
     private:
       string _value;
       bool _select = false;
@@ -205,7 +205,7 @@ namespace GraphicComponents {
       bool isSelected();
   };
 
-  class Table : public virtual GraphicComponent, public virtual Leaf {
+  class Table : public GraphicComponent, public virtual Leaf {
     private:
       tab _t;
       list<Cell*> cells;
@@ -233,7 +233,7 @@ namespace GraphicComponents {
       unsigned int cpt = 0;
   };
 
-  class ScrollBar : public virtual GraphicComponent, public virtual Leaf {
+  class ScrollBar : public GraphicComponent, public virtual Leaf {
     private:
       double _unit = 1.0;
       unsigned int _cursor = 1;
@@ -250,7 +250,7 @@ namespace GraphicComponents {
       void resize(const int height, const int width, const unsigned int count);
   };
 
-  class Calendar : public virtual GraphicComponent, public virtual Leaf {
+  class Calendar : public GraphicComponent, public virtual Leaf {
     private:
       Table * _daily;
       Selector * _month;
@@ -262,7 +262,7 @@ namespace GraphicComponents {
       Table getDaily ();
   };
 
-  class Agenda : public virtual GraphicComponent, public virtual Leaf {
+  class Agenda : public GraphicComponent, public virtual Leaf {
     private:
       Table * _hourly;
       Selector * _day;
