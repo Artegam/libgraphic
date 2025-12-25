@@ -25,6 +25,7 @@ class Composite : public virtual Component {
     list <Component*> children;
   public:
     void add (Component* c);
+    void clear ();
     void remove ();
     void remove (Component* c);
     list<Component*> getChildren ();

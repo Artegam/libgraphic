@@ -5,6 +5,7 @@ void Component::execute () {};
 int Component::eval () {return _result;};
 void Leaf::execute () {};
 void Composite::add (Component* c) {children.push_back(c);};
+void Composite::clear () {children.clear();}
 void Composite::remove () {remove(*children.begin());}
 void Composite::remove (Component* c) {
   for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
