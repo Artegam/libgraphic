@@ -170,7 +170,7 @@ void Views::NCurses::display () {
 
   _dialog = NULL;
   for(list<Screen*>::iterator it=screens.begin(); it!=screens.end(); it++) {
-    list<GraphicComponent *> m = (*it)->components();
+    list<GraphicComponent *> m = (*it)->getGraphicComponents();
     for(list<GraphicComponent *>::iterator imap = m.begin(); imap!= m.end(); imap++)
       lst[lst.size()] = *imap;
   }
@@ -211,7 +211,7 @@ void Views::NCurses::display (DialogBox dialog) {
 
   mvwprintw(sub, 0, 1, "%s", dialog.label().c_str());
 
-  lst = dialog.components();
+  lst = dialog.getGraphicComponents();
   list<GraphicComponent *>::iterator idx = lst.begin();
   advance(idx, dialog.selected());
 
