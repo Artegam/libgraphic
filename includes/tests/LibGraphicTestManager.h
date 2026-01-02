@@ -1,8 +1,8 @@
 #ifndef LIBGRAPHICTESTMANAGER_H
 #define LIBGRAPHICTESTMANAGER_H
 
-#include "TestUnit.h"
-#include "GraphicComponents.h"
+#include <tests/TestUnit.h>
+#include <../GraphicComponents.h>
 
 class LibGraphicTest : public virtual testunit::TestManager {
   public:

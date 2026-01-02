@@ -8,7 +8,7 @@ BIN = bin/
 LIB = lib/
 INSTALL_DIR = /lib/x86_64-linux-gnu/
 HEADERS_DIR = /usr/include/
-TEST_DIR = $(TESTS)$(SRC)
+TEST_DIR = $(SRC)$(TESTS)
 
 PROJECT_DIRS = $(SRC) $(INC) $(LIB) $(OUT) $(BIN) $(TEST_DIR)
 
@@ -16,11 +16,14 @@ INCLUDES = -I $(INC) # -I $(INC_RENDER) -I $(TESTS)
 
 LIBS = -lncurses
 OPT = -Wall -Og -shared -fPIC 
+TESTS_OPT = -Wall
 OPT_THREAD = -std=c++0x -pthread
 
 
-SRC_FILES = $(shell if [ -d src/ ]; then find src/ -type f -name '*.cpp'; fi)
+SRC_FILES = $(shell if [ -d src/ ]; then find src/ -type f -name '*.cpp' | grep --invert-match tests/; fi)
 OBJ_FILES = $(patsubst src/%.cpp, o/%.o, $(SRC_FILES))
+TEST_SRC_FILES = $(shell if [ -d src/ ]; then find src/ -type f -name '*.cpp'; fi)
+TEST_OBJ_FILES = $(patsubst src/%.cpp, o/%.o, $(TEST_SRC_FILES))
 
 ## Pour declarer des targets qui ne sont pas des fichiers
 .PHONY: project clean install uninstall install-tools uninstall-tools tests
@@ -31,10 +34,9 @@ all: $(PROJECT)
 project:
 	mkdir --parents $(PROJECT_DIRS)
 
-tests:
-	cd tests; make; cd ..
-	make all install
-	./tests/bin/lib_tests || (echo " Some tests have failed. Compilation exiting.")
+tests: $(TEST_OBJ_FILES)
+	g++ $(TESTS_OPT) $(INCLUDES) $(OPT_THREAD) $^ -o $(BIN)$@ $(LIBS)
+	$(BIN)$@ || (echo " Some tests have failed. Compilation exiting.")
 
 $(PROJECT): $(OBJ_FILES)
 	g++ $(OPT) $(INCLUDES) $(OPT_THREAD) $^ -o $(LIB)$@ $(LIBS)

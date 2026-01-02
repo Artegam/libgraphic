@@ -1,4 +1,4 @@
-#include "LibGraphicTestManager.h"
+#include <tests/LibGraphicTestManager.h>
 
 //Dialogbox
 void DialogboxTests::execute () {
@@ -43,6 +43,9 @@ void DialogboxTests::execute () {
   gc = dynamic_cast<GraphicComponents::Text*>(*it);
   assert(gc != nullptr, "(2 boutons) Third object is Text component");
   assert(gc->id(), 2, "(2 boutons) Third object id is 2");
+
+  //selectNext() test
+  //diag2.selectNext();
 }
 
 //Scrollbar

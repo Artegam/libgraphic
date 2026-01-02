@@ -1,4 +1,4 @@
-#include "TestUnit.h"
+#include <tests/TestUnit.h>
 
 using namespace testunit;
 

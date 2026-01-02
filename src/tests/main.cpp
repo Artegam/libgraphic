@@ -4,7 +4,7 @@
 #include <iostream>
 #include <unistd.h>
 
-#include "LibGraphicTestManager.h"
+#include <tests/LibGraphicTestManager.h>
 
 using namespace std;
 
