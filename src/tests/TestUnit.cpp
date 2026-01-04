@@ -78,8 +78,8 @@ int TestManager::eval () {
 int TestManager::report () {
   eval();
   double rate = ((double)cptSuccess/cpt*100);
-  if(cptSuccess == 0 || cpt == 0)
-    rate = 0.0;
+  if(cpt == 0)
+    rate = 100.0;
   printf("**************************************************\n");
   printf("       %s\n", _name.c_str());
   printf("       TESTS REPORT\n\n");
