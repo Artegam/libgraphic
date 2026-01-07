@@ -382,9 +382,9 @@ void AgendaTests::execute () {
   assert(a1 != nullptr, "Agenda constructor (3 args)");
   assert(a2 != nullptr, "Agenda constructor (4 args)");
   //tests valued returned methods
-  //GraphicComponents::Selector s1 = a2->getDay(); //TODO: SEGFAULT
-  //GraphicComponents::Selector s2 = a2->getMonth(); //TODO: SEGFAULT
-  //GraphicComponents::Selector s3 = a2->getYear(); //TODO: SEGFAULT
+  GraphicComponents::Selector s1 = a2->getDay();
+  GraphicComponents::Selector s2 = a2->getMonth();
+  GraphicComponents::Selector s3 = a2->getYear();
   GraphicComponents::Table t1 = a2->getHourly();
   GraphicComponents::Text text1 = a2->getName();
 }

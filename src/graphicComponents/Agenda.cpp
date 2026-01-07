@@ -7,8 +7,11 @@ using namespace GraphicComponents;
 
 
 Agenda::Agenda (const int window, const int x, const int y, const string name): GraphicComponent(window, x, y, name) {
-  _name = new Text(window, x, y, "Employe 1");  
-  _hourly = new Table(window, x, y+2, 12, 2);  
+  _day = new Selector(window, x, y, "1");
+  _month = new Selector(window, x+3, y, "Janvier");
+  _year = new Selector(window, x+15, y, "1977");
+  _name = new Text(window, x, y+1, "Employe 1");
+  _hourly = new Table(window, x, y+3, 12, 2);
 
   tab t = _hourly->getTab();
   char val[6];

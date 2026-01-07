@@ -264,9 +264,9 @@ namespace GraphicComponents {
   class Agenda : public GraphicComponent, public virtual Leaf {
     private:
       Table * _hourly;
-      Selector * _day;
-      Selector * _month;
-      Selector * _year;
+      Selector * _day = nullptr;
+      Selector * _month = nullptr;
+      Selector * _year = nullptr;
       Text * _name;
     public:
       Agenda (const int window, const int x, const int y, const string name = "default agenda");
