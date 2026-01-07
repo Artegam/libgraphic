@@ -447,6 +447,7 @@ void GroupItemTests::execute () {
   assert(gi2 != nullptr, "GroupItem constructor (2 args)");
   //tests void returned methods
   gi2->setDefault(1);
+  gi2->setDefault(-1); //test negative bound
   //gi2->display();
   //gi2->selectItem(1);
   //tests valued returned methods
