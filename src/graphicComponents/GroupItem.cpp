@@ -9,9 +9,11 @@ GroupItem::GroupItem (Node * parent, string name) : Node (parent, name) {
 }
 
 void GroupItem::setDefault (const int index) {
-  defaultItem = index;
-  selectedItem = index;
-  this->display();
+  if(children.size() >= index) {
+    defaultItem = index;
+    selectedItem = index;
+    this->display();
+  }
 }
 
 void GroupItem::selectItem (const int index) {
