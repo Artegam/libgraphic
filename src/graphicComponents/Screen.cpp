@@ -29,6 +29,7 @@ void Screen::selectNext () {
     if((*it)->isSelectable())
       lst.push_front((*it));
   }
+/* TODO: SEGMENTATION FAULT
   list<GraphicComponent *>::iterator it = lst.begin();
   advance(it, _selectedIndex);
   (*it)->unselect();
@@ -36,6 +37,7 @@ void Screen::selectNext () {
   if(it == lst.end())
     it = lst.begin();
   (*it)->select();
+*/
 }
 
 string Screen::label() {

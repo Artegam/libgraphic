@@ -92,8 +92,8 @@ namespace GraphicComponents {
 
       Screen ();
       Screen (const int window, const int x, const int y, const string label, const string name = "default screen");
-      void select (const int index);
       void selectNext ();
+      void select (const int index);
       string label ();
       list<GraphicComponent *> getGraphicComponents () {
         list<GraphicComponent *> lst;
@@ -221,7 +221,6 @@ namespace GraphicComponents {
       void updateLengths ();
       void select (unsigned int row, unsigned int col);
       void setCursor(unsigned int row, unsigned int col);
-      Cell * getCursor ();
   };
 
   class ScrollBarData {

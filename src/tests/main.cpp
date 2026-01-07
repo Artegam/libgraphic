@@ -1,64 +1,29 @@
-#include <string>
-#include <list>
-
-#include <iostream>
-#include <unistd.h>
-
 #include <tests/LibGraphicTestManager.h>
-
-using namespace std;
-
-void title() {
-  cout << "hexdump v1.0 Schricke Anthony (c) 2025" << endl;
-}
-
-void error(const char *msg) {
-  perror(msg);
-  exit(0);
-}
-
-/*
-void argumentCheck(int argc, char** argv) {
-  string prototype = "hexdump [-c|--colors] [-b|--block n] filename";
-  if (argc < 2) {
-    fprintf(stderr,"ERROR: syntax is\n\t %s\n", prototype.c_str());
-    exit(0);
-  } else if(argc == 2 && argv[1][0] == '-') {
-    fprintf(stderr,"ERROR: syntax is\n\t %s\n", prototype.c_str());
-    exit(0);
-  } else if(argc >= 3 && argv[1][0] == '-') {
-    for(int i = 1; i<(argc-1); i++) {
-      string opt = argv[i];
-      if(opt == "-c" || opt == "--colors")
-        pres.appParam(APP_PARAMS_COLORS, true);
-      if(opt == "-a" || opt == "--ascii")
-        pres.appParam(APP_PARAMS_ASCII, true);
-      if(opt == "-f" || opt == "--find") {
-        pres.appParam(APP_PARAMS_RESEARCH, true);
-        pres.appParam(APP_PARAMS_TOFIND, argv[i+1]);
-        //inv = new Investigator(params.to_find);
-        i++;
-      }
-      if(opt == "-b" || opt == "--block") {
-        pres.appParam(APP_PARAMS_BLOCKSIZE, atoi(argv[i+1]));
-        i++;
-      }
-    }
-    pres.appParam(APP_PARAMS_FILEPATH, string(argv[argc-1]));
-  } else {
-    pres.appParam(APP_PARAMS_FILEPATH, string(argv[1]));
-  }
-}
-*/
-
-
-void scrollbar_tests () {
-}
 
 int main(int argc, char** argv) {
   LibGraphicTestManager manager("GLOBAL");
-  manager.assert(new ScrollbarTests());
+  manager.assert(new GraphicComponentTests());
+  manager.assert(new ScreenTests());
+  manager.assert(new TextTests());
+  manager.assert(new InputTests());
+  manager.assert(new SelectorTests());
   manager.assert(new DialogboxTests());
+  manager.assert(new OpenDialogboxTests());
+  manager.assert(new GotoDialogboxTests());
+  manager.assert(new MenuTests());
+  manager.assert(new HMenuTests());
+  manager.assert(new VMenuTests());
+  manager.assert(new ButtonTests());
+  manager.assert(new ImageTests());
+  manager.assert(new CellTests());
+  manager.assert(new TableTests());
+  manager.assert(new ScrollbarTests());
+  manager.assert(new CalendarTests());
+  manager.assert(new AgendaTests());
+  manager.assert(new NodeTests());
+  manager.assert(new ItemTests());
+  manager.assert(new GroupItemTests());
+
   manager.execute();
   return manager.report();
 }

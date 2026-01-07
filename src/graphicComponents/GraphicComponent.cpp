@@ -40,6 +40,7 @@ void GraphicComponent::select () {
 void GraphicComponent::select (const int index) {
   cout << "taille max confirmée : " << _selectSize << endl;
   cout << "la selection : " << index << endl;
+/* TODO: SEGFAULT
   this->unselectAll();
   if (index < 0)
     _selectedIndex = 0;
@@ -48,6 +49,7 @@ void GraphicComponent::select (const int index) {
   else
     _selectedIndex = index;
   selectedComponent()->select();
+*/
 }
 
 void GraphicComponent::unselect () {
