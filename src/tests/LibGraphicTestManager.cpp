@@ -448,7 +448,7 @@ void GroupItemTests::execute () {
   //tests void returned methods
   gi2->setDefault(1);
   gi2->setDefault(-1); //test negative bound
-  //gi2->display();
+  gi2->display();
   //gi2->selectItem(1);
   //tests valued returned methods
   GraphicComponents::Item * i1 = gi2->getSelectedItem();

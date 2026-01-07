@@ -42,7 +42,7 @@ Item * GroupItem::getSelectedItem () {
 
 void GroupItem::display () {
   Item * item = getSelectedItem();
-  item->select();
+  if(item != nullptr) item->select();
 }
 
 const int GroupItem::size() {
