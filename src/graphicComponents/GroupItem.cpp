@@ -20,9 +20,8 @@ void GroupItem::setDefault (const int index) {
 
 void GroupItem::selectItem (const int index) {
   list<Node *>::iterator it;
-  for(it = children.begin(); it != children.end(); it++) {
+  for(it = children.begin(); it != children.end(); it++)
     (*it)->clear();
-  }
 
   if((long unsigned int)index < children.size()) {
     it = children.begin();
