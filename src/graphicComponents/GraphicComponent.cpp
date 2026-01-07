@@ -40,7 +40,6 @@ void GraphicComponent::select () {
 void GraphicComponent::select (const int index) {
   cout << "taille max confirmée : " << _selectSize << endl;
   cout << "la selection : " << index << endl;
-/* TODO: SEGFAULT
   this->unselectAll();
   if (index < 0)
     _selectedIndex = 0;
@@ -48,8 +47,8 @@ void GraphicComponent::select (const int index) {
     _selectedIndex = _selectSize;
   else
     _selectedIndex = index;
-  selectedComponent()->select();
-*/
+  GraphicComponent* gc = selectedComponent();
+  if(gc != nullptr) gc->select();
 }
 
 void GraphicComponent::unselect () {
@@ -75,9 +74,12 @@ const int GraphicComponent::selected () {
 }
 
 GraphicComponent* GraphicComponent::selectedComponent () {
-  list<GraphicComponent*>::iterator i = _components.begin();
-  advance(i, _selectedIndex);
-  return *i;
+  if(_components.size() > 0) {
+    list<GraphicComponent*>::iterator i = _components.begin();
+    advance(i, _selectedIndex);
+    return *i;
+  }
+  return nullptr;
 }
 
 const bool GraphicComponent::isValidated () {
