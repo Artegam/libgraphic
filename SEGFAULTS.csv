@@ -1,0 +1,6 @@
+ID;Location;Description;Status
+SEGFAULT001;void GroupItem::setDefault (const int index);Bounds issues;FIXED
+SEGFAULT002;void GroupItem::display ();default call issue;FIXED
+SEGFAULT003;Agenda::Agenda (const int window, const int x, const int y, const string name);default values for _day, _month and _year pointers;FIXED
+SEGFAULT004;void GraphicComponent::select (const int index);When no _components in the list;FIXED
+SEGFAULT005;void Screen::selectNext ();when _components is empty;FIXED
