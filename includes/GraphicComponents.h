@@ -64,7 +64,7 @@ namespace GraphicComponents {
       virtual void unselect ();
       virtual void unselectAll();
       virtual const int selected ();
-      virtual GraphicComponent * selectedComponent ();
+      GraphicComponent * selectedComponent ();
       const bool isValidated ();
       const bool isSelectable ();
       const bool isSelected ();
@@ -95,6 +95,7 @@ namespace GraphicComponents {
       void selectNext ();
       void select (const int index);
       string label ();
+      GraphicComponent * selectedComponent () {return GraphicComponent::selectedComponent();};
       list<GraphicComponent *> getGraphicComponents () {
         list<GraphicComponent *> lst;
         for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
