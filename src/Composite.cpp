@@ -6,12 +6,8 @@ int Component::eval () {return _result;};
 void Leaf::execute () {};
 void Composite::add (Component* c) {children.push_back(c);};
 void Composite::clear () {children.clear();}
-void Composite::remove () {remove(*children.begin());}
-void Composite::remove (Component* c) {
-  for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
-    if((*it) == c)
-      children.erase(it);
-};
+void Composite::remove () {if(children.size()>0) remove(*children.begin());}
+void Composite::remove (Component* c) {children.remove(c);};
 list<Component*> Composite::getChildren () {return children;};
 void Composite::execute () {};
 int Composite::eval () {return -1;};

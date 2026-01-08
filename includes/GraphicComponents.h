@@ -94,6 +94,8 @@ namespace GraphicComponents {
       Screen (const int window, const int x, const int y, const string label, const string name = "default screen");
       void selectNext ();
       void select (const int index);
+      void remove () {Composite::remove ();};
+      void remove (Component* c) {Composite::remove (c);};
       string label ();
       GraphicComponent * selectedComponent () {return GraphicComponent::selectedComponent();};
       list<GraphicComponent *> getGraphicComponents () {

@@ -9,9 +9,9 @@ void GraphicComponentTests::execute () {
   GraphicComponents::GraphicComponent * gc3 = new GraphicComponents::GraphicComponent(MAIN, 0, 0, "my graphic component");
   GraphicComponents::GraphicComponent * gc4 = new GraphicComponents::GraphicComponent(MAIN, 0, 0, "my graphic component", comp);
   assert(gc != nullptr, "Graphic Component (0 argument)");
-  assert(gc2 != nullptr, "Screen constructor (3 arguments)");
-  assert(gc3 != nullptr, "Screen constructor (4 arguments)");
-  assert(gc4 != nullptr, "Screen constructor (5 arguments)");
+  assert(gc2 != nullptr, "Graphic Component constructor (3 arguments)");
+  assert(gc3 != nullptr, "Graphic Component constructor (4 arguments)");
+  assert(gc4 != nullptr, "Graphic Component constructor (5 arguments)");
 
   //test void methods with no arguments first
   gc->select();
@@ -66,6 +66,10 @@ void ScreenTests::execute () {
 
     // void methods with arguments
     scr->select(0);
+    scr->remove();
+    // SEGFAULT use case
+    scr->add(new GraphicComponents::DialogBox(MAIN, 20, 10, 8, 45, "titre", "message"));
+    scr->remove();
 
     // Assert methods with return statement
     assert(scr->label() == "Screen label", "Label is 'Screen label'");
