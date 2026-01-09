@@ -22,7 +22,7 @@ class Leaf : public virtual Component {
 
 class Composite : public virtual Component {
   protected:
-    list <Component*> children;
+    list <Component*> _children;
   public:
     void add (Component* c);
     void clear ();

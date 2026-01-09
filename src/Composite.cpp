@@ -4,16 +4,16 @@
 void Component::execute () {};
 int Component::eval () {return _result;};
 void Leaf::execute () {};
-void Composite::add (Component* c) {children.push_back(c);};
-void Composite::clear () {children.clear();}
-void Composite::remove () {if(children.size()>0) remove(children.back());}
-void Composite::remove (Component* c) {children.remove(c);};
-list<Component*> Composite::getChildren () {return children;};
+void Composite::add (Component* c) {_children.push_back(c);};
+void Composite::clear () {_children.clear();}
+void Composite::remove () {if(_children.size()>0) remove(_children.back());}
+void Composite::remove (Component* c) {_children.remove(c);};
+list<Component*> Composite::getChildren () {return _children;};
 void Composite::execute () {};
 int Composite::eval () {return -1;};
 int Composite::getPosition (Component* c) {
   int cpt = 0;
-  for(list<Component*>::iterator it = children.begin(); it != children.end(); it++) {
+  for(list<Component*>::iterator it = _children.begin(); it != _children.end(); it++) {
     if((*it) == c)
       return cpt;
     cpt++;

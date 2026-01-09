@@ -58,7 +58,7 @@ int TestManager::eval () {
   cptSuccess  = 0;
   cptFailures = 0;
   cptUndef    = 0;
-  for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
+  for(list<Component*>::iterator it = _children.begin(); it != _children.end(); it++)
     switch((*it)->eval()) {
       case true:
         cptSuccess++;
@@ -69,7 +69,7 @@ int TestManager::eval () {
       default:
         cptUndef++;
     }
-  for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
+  for(list<Component*>::iterator it = _children.begin(); it != _children.end(); it++)
     if (TestManager* m = dynamic_cast<TestManager*>(*it); m != nullptr)
       assert(m->eval(), m->name().c_str());
   return cptSuccess == cpt;
