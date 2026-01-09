@@ -38,7 +38,7 @@ namespace GraphicComponents {
       const unsigned int occurences(const string str, char c);
   };
 
-  class GraphicComponent : public virtual Component {
+  class GraphicComponent {
     protected:
       int _x;
       int _y;
@@ -54,23 +54,19 @@ namespace GraphicComponents {
       int _selectSize;
       list<GraphicComponent *> _components;
       cursor _cursor;
-      Composite * _parent;
 
     public:
       GraphicComponent();
-      GraphicComponent(const int window, const int x, const int y, const string name = "default", Composite* parent = nullptr);
+      GraphicComponent(const int window, const int x, const int y, const string name = "default graphic component");
       virtual void select ();
-      virtual void select (const int idComponent);
       virtual void unselect ();
       virtual void unselectAll();
       virtual const int selected ();
-      GraphicComponent * selectedComponent ();
       const bool isValidated ();
       const bool isSelectable ();
       const bool isSelected ();
       void setSelectSize(const int size);
       const int getSelectSize();
-      const int getComponentsCount();
       virtual void resize(const int height, const int width);
       const int id();
       const int window();
@@ -83,7 +79,23 @@ namespace GraphicComponents {
       const string getName();
   };
 
-  class Screen : public GraphicComponent, public virtual Composite {
+  class GraphicComposite : public GraphicComponent, public virtual Composite {
+    private:
+    public:
+      GraphicComposite();
+      GraphicComposite(const int window, const int x, const int y, const string name = "default graphic composite");
+      GraphicComponent * selectedComponent ();
+      virtual void select (const int idComponent);
+      const int getComponentsCount();
+  };
+
+  class GraphicLeaf : public GraphicComponent, public virtual Leaf {
+    public:
+      GraphicLeaf();
+      GraphicLeaf(const int window, const int x, const int y, const string name = "default graphic leaf");
+  };
+
+  class Screen : public virtual GraphicComposite {
     private:
       string _label;
     public:
@@ -97,21 +109,21 @@ namespace GraphicComponents {
       void remove () {Composite::remove ();};
       void remove (Component* c) {Composite::remove (c);};
       string label ();
-      GraphicComponent * selectedComponent () {return GraphicComponent::selectedComponent();};
+      //GraphicComponent * selectedComponent () {return GraphicComponent::selectedComponent();};
       list<GraphicComponent *> getGraphicComponents () {
         list<GraphicComponent *> lst;
-        for(list<Component*>::iterator it = children.begin(); it != children.end(); it++)
+        for(list<Component*>::iterator it = _children.begin(); it != _children.end(); it++)
           if (GraphicComponent * component = dynamic_cast<GraphicComponent*>(*it); component != nullptr)
             lst.push_back(component);
         return lst;
       };
   };
 
-  class Text : public GraphicComponent, public virtual Leaf {
+  class Text : public virtual GraphicLeaf {
     private:
       string _label;
     public:
-      Text (const int window, const int x, const int y, const string label, const string name = "default text", Composite* parent = nullptr);
+      Text (const int window, const int x, const int y, const string label, const string name = "default text");
       void setLabel (const string label);
       const string label ();
   };
@@ -134,7 +146,7 @@ namespace GraphicComponents {
       Selector (const int window, const int x, const int y, const string label, const string name = "default selector");
   };
 
-  class DialogBox : public Screen {
+  class DialogBox : public virtual Screen {
     private:
     public:
       static const unsigned int OK        = 0;
@@ -155,7 +167,7 @@ namespace GraphicComponents {
       unsigned int to();
   };
 
-  class Menu : public GraphicComponent, public virtual Leaf {
+  class Menu : public virtual GraphicLeaf {
     private:
       list<Text *> _items;
     public:
@@ -182,19 +194,19 @@ namespace GraphicComponents {
       VMenu (const int window, const int x, const int y, list<Text *> items, const string name = "default vmenu");
   };
 
-  class Button : public GraphicComponent, public virtual Leaf {
+  class Button : public virtual GraphicLeaf {
     private:
       string _label;
     public:
-      Button (const int window, const int x, const int y, const string label, const string name = "default button", Composite* parent = nullptr);
+      Button (const int window, const int x, const int y, const string label, const string name = "default button");
       const string label();
   };
 
-  class Image : public GraphicComponent, public virtual Leaf {
+  class Image : public virtual GraphicLeaf {
     private:
   };
 
-  class Cell : public GraphicComponent, public virtual Leaf {
+  class Cell : public virtual GraphicLeaf {
     private:
       string _value;
       bool _select = false;
@@ -208,7 +220,7 @@ namespace GraphicComponents {
       bool isSelected();
   };
 
-  class Table : public GraphicComponent, public virtual Leaf {
+  class Table : public virtual GraphicLeaf {
     private:
       tab _t;
       list<Cell*> cells;
@@ -235,7 +247,7 @@ namespace GraphicComponents {
       unsigned int cpt = 0;
   };
 
-  class ScrollBar : public GraphicComponent, public virtual Leaf {
+  class ScrollBar : public virtual GraphicLeaf {
     private:
       double _unit = 1.0;
       unsigned int _cursor = 1;
@@ -252,7 +264,7 @@ namespace GraphicComponents {
       void resize(const int height, const int width, const unsigned int count);
   };
 
-  class Calendar : public GraphicComponent, public virtual Leaf {
+  class Calendar : public virtual GraphicLeaf {
     private:
       Table * _daily;
       Selector * _month;
@@ -264,7 +276,7 @@ namespace GraphicComponents {
       Table getDaily ();
   };
 
-  class Agenda : public GraphicComponent, public virtual Leaf {
+  class Agenda : public virtual GraphicLeaf {
     private:
       Table * _hourly;
       Selector * _day = nullptr;

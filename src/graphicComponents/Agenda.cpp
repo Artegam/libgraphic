@@ -6,7 +6,7 @@
 using namespace GraphicComponents;
 
 
-Agenda::Agenda (const int window, const int x, const int y, const string name): GraphicComponent(window, x, y, name) {
+Agenda::Agenda (const int window, const int x, const int y, const string name): GraphicLeaf(window, x, y, name) {
   _day = new Selector(window, x, y, "1");
   _month = new Selector(window, x+3, y, "Janvier");
   _year = new Selector(window, x+15, y, "1977");

@@ -3,6 +3,7 @@
 int main(int argc, char** argv) {
   LibGraphicTestManager manager("GLOBAL");
   manager.assert(new GraphicComponentTests());
+  manager.assert(new GraphicCompositeTests());
   manager.assert(new ScreenTests());
   manager.assert(new TextTests());
   manager.assert(new InputTests());

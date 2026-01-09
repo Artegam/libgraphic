@@ -6,7 +6,7 @@
 using namespace GraphicComponents;
 
 
-Calendar::Calendar (const int window, const int x, const int y, const string name): GraphicComponent(window, x, y, name) {
+Calendar::Calendar (const int window, const int x, const int y, const string name): GraphicLeaf(window, x, y, name) {
   time_t t1 = time(0); 
   tm* now = localtime(&t1);
 

@@ -3,15 +3,12 @@
 //GraphicComponentTests
 void GraphicComponentTests::execute () {
   const int MAIN = 0;
-  Composite * comp = new Composite();
   GraphicComponents::GraphicComponent * gc = new GraphicComponents::GraphicComponent();
   GraphicComponents::GraphicComponent * gc2 = new GraphicComponents::GraphicComponent(MAIN, 0, 0);
   GraphicComponents::GraphicComponent * gc3 = new GraphicComponents::GraphicComponent(MAIN, 0, 0, "my graphic component");
-  GraphicComponents::GraphicComponent * gc4 = new GraphicComponents::GraphicComponent(MAIN, 0, 0, "my graphic component", comp);
   assert(gc != nullptr, "Graphic Component (0 argument)");
   assert(gc2 != nullptr, "Graphic Component constructor (3 arguments)");
   assert(gc3 != nullptr, "Graphic Component constructor (4 arguments)");
-  assert(gc4 != nullptr, "Graphic Component constructor (5 arguments)");
 
   //test void methods with no arguments first
   gc->select();
@@ -19,19 +16,21 @@ void GraphicComponentTests::execute () {
   gc->unselectAll();
 
   //test void methods with arguments
-  gc->select(0);
-  gc->select(5);
+  //gc->select(0);
+  //gc->select(5);
   gc->setSelectSize(10);
   gc->resize(20, 30);
 
   //test return values methods with no arguments
-  assert(gc->selected(), 5, "The select element is 5");
-  assert(gc->selectedComponent() != nullptr, "The selected component is not nullptr");
+  assert(gc->selected(), 0, "The select element is 0");
+  //gc->select(1);
+  //assert(gc->getComponentsCount(), 1, "There is 1 component in gc");
+  assert(gc->selected(), 1, "gc: The select element is 1");
+  //assert(gc->selectedComponent() != nullptr, "The selected component is not nullptr");
   assert(gc->isValidated(), true, "gc is validated");
   assert(gc->isSelectable(), true, "gc is selectable");
   assert(gc->isSelected(), true, "gc is selected");
   assert(gc->getSelectSize(), 10, "gc select size is 10");
-  assert(gc->getComponentsCount(), 10, "gc components count is 10");
   assert(gc->id(), 0, "gc id is 0");
   assert(gc->window(), 0, "gc window is 0");
   assert(gc->x(), 0, "gc x position is 0");
@@ -50,6 +49,22 @@ void GraphicComponentTests::execute () {
   assert(b.width, (unsigned int)30, "gc basic width is 30");
   assert(c.row, (unsigned int)0, "gc cursor row is 0");
   assert(c.col, (unsigned int)0, "gc cursor col is 0");
+}
+
+void GraphicCompositeTests::execute () {
+  const int MAIN = 0;
+  GraphicComponents::GraphicComposite * gc = new GraphicComponents::GraphicComposite();
+  GraphicComponents::GraphicComposite * gc2 = new GraphicComponents::GraphicComposite(MAIN, 0, 0);
+  GraphicComponents::GraphicComposite * gc3 = new GraphicComponents::GraphicComposite(MAIN, 0, 0, "my graphic component");
+  assert(gc != nullptr, "Graphic Component (0 argument)");
+  assert(gc2 != nullptr, "Graphic Component constructor (3 arguments)");
+  assert(gc3 != nullptr, "Graphic Component constructor (4 arguments)");
+
+  gc3->add(new GraphicComponents::Text(MAIN, 0, 0, "text1"));
+  gc3->add(new GraphicComponents::Text(MAIN, 0, 0, "text2"));
+  gc3->add(new GraphicComponents::Text(MAIN, 0, 0, "text3"));
+  assert(gc3->getComponentsCount(), 3, "gc components count is 3");
+
 }
 
 //ScreenTests
@@ -87,10 +102,8 @@ void TextTests::execute () {
   // test constructors
   GraphicComponents::Text * t = new GraphicComponents::Text(MAIN, 0, 0, "my text");
   GraphicComponents::Text * t1 = new GraphicComponents::Text(MAIN, 0, 0, "my text", "thing text");
-  GraphicComponents::Text * t2 = new GraphicComponents::Text(MAIN, 0, 0, "my text", "thing text", comp);
   assert(t != nullptr, "Text constructor (4 arguments)");
   assert(t1 != nullptr, "Text constructor (5 arguments)");
-  assert(t2 != nullptr, "Text constructor (6 arguments)");
 
   //test void return methods
   t->setLabel("new label");
@@ -313,12 +326,10 @@ void ButtonTests::execute () {
   //tests constructors
   GraphicComponents::Button * b1 = new GraphicComponents::Button(MAIN, 0, 0, "myButton");
   GraphicComponents::Button * b2 = new GraphicComponents::Button(MAIN, 0, 0, "myButton", "myButtonName");
-  GraphicComponents::Button * b3 = new GraphicComponents::Button(MAIN, 0, 0, "myButton", "myButtonName", p);
   assert(b1 != nullptr, "Button constructor (4 args)");
   assert(b2 != nullptr, "Button constructor (5 args)");
-  assert(b3 != nullptr, "Button constructor (6 args)");
   //tests value returned methods
-  assert(b3->label().c_str(), "myButton", "b3 label is 'myButton'");
+  assert(b2->label().c_str(), "myButton", "b2 label is 'myButton'");
 }
 
 void ImageTests::execute () {

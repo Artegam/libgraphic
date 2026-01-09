@@ -3,15 +3,15 @@
 using namespace GraphicComponents;
 
 
-Screen::Screen () : Composite () {
+Screen::Screen () : GraphicComposite () {
 }
 
-Screen::Screen (const int window, const int x, const int y, const string label, const string name) : GraphicComponent(window, x, y, name) {
+Screen::Screen (const int window, const int x, const int y, const string label, const string name) : GraphicComposite(window, x, y, name) {
   _label = label;
 }
 
 void Screen::select(const int index) {
-  GraphicComponent::select(index);
+  GraphicComposite::select(index);
 
   list<GraphicComponent *> lst;
   lst = _components;

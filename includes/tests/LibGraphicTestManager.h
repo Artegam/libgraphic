@@ -16,6 +16,12 @@ class GraphicComponentTests : public virtual LibGraphicTest {
     void execute ();
 };
 
+class GraphicCompositeTests : public virtual LibGraphicTest {
+  public:
+    GraphicCompositeTests (string name = "GraphicCompositeTests") : testunit::TestManager(name) {};
+    void execute ();
+};
+
 class ScreenTests : public virtual LibGraphicTest {
   public:
     ScreenTests (string name = "ScreenTests") : testunit::TestManager(name) {};

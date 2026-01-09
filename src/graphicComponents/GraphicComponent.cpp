@@ -7,13 +7,12 @@ using namespace GraphicComponents;
 GraphicComponent::GraphicComponent () {
 }
 
-GraphicComponent::GraphicComponent(const int window, const int x, const int y, const string name, Composite* parent) {
+GraphicComponent::GraphicComponent(const int window, const int x, const int y, const string name) {
   this->_window = window;
   this->_x = x;
   this->_y = y;
   _selectSize = 0;
   _name = name;
-  _parent = parent;
 }
 
 void GraphicComponent::resize(const int height, const int width) {
@@ -25,9 +24,11 @@ void GraphicComponent::setSelectSize (const int size) {
   _selectSize = size;
 }
 
+/*
 const int GraphicComponent::getComponentsCount() {
   return _components.size();
 }
+*/
 
 const int GraphicComponent::getSelectSize() {
   return _selectSize;
@@ -37,6 +38,7 @@ void GraphicComponent::select () {
   _selected = true;
 }
 
+/*
 void GraphicComponent::select (const int index) {
   cout << "taille max confirmée : " << _selectSize << endl;
   cout << "la selection : " << index << endl;
@@ -50,6 +52,7 @@ void GraphicComponent::select (const int index) {
   GraphicComponent* gc = selectedComponent();
   if(gc != nullptr) gc->select();
 }
+*/
 
 void GraphicComponent::unselect () {
   _selected = false;
@@ -73,15 +76,6 @@ const int GraphicComponent::selected () {
   return _selectedIndex;
 }
 
-GraphicComponent* GraphicComponent::selectedComponent () {
-  if(_components.size() > 0) {
-    list<GraphicComponent*>::iterator i = _components.begin();
-    advance(i, _selectedIndex);
-    return *i;
-  }
-  return nullptr;
-}
-
 const bool GraphicComponent::isValidated () {
   return _validated;
 }
@@ -90,8 +84,10 @@ const bool GraphicComponent::isSelectable () {return _selectable;}
 const bool GraphicComponent::isSelected () {return _selected;}
 
 const int GraphicComponent::id() {
+/*
   if(_parent)
     return _parent->getPosition(this);
+*/
   return -1;
 }
 
