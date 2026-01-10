@@ -95,7 +95,7 @@ namespace GraphicComponents {
       GraphicLeaf(const int window, const int x, const int y, const string name = "default graphic leaf");
   };
 
-  class Screen : public virtual GraphicComposite {
+  class Screen : public GraphicComposite {
     private:
       string _label;
     public:
@@ -145,7 +145,7 @@ namespace GraphicComponents {
       Selector (const int window, const int x, const int y, const string label, const string name = "default selector");
   };
 
-  class DialogBox : public virtual Screen {
+  class DialogBox : public Screen {
     private:
     public:
       static const unsigned int OK        = 0;
@@ -359,6 +359,10 @@ namespace GraphicComponents {
           return (GraphicComponent*)gl;
         else
           return nullptr;
+      };
+      GraphicComposite * to_graphicComposite(Component * c) {
+        GraphicComposite * gc = dynamic_cast<GraphicComposite*>(c);
+        return gc;
       };
       list<GraphicComponent *> to_graphicComponentList(list<Component *> l) {
         list<GraphicComponent *> lst;
