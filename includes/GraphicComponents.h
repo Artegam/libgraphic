@@ -350,6 +350,24 @@ namespace GraphicComponents {
       const int size();
   };
 
+  class GraphicParser {
+    public:
+      GraphicComponent * to_graphicComponent(Component * c) {
+        if (GraphicComposite * gc = dynamic_cast<GraphicComposite*>(c); gc != nullptr)
+          return (GraphicComponent*)gc;
+        else if (GraphicLeaf * gl = dynamic_cast<GraphicLeaf*>(c); gl != nullptr)
+          return (GraphicComponent*)gl;
+        else
+          return nullptr;
+      };
+      list<GraphicComponent *> to_graphicComponentList(list<Component *> l) {
+        list<GraphicComponent *> lst;
+        for(list<Component*>::iterator it = l.begin(); it != l.end(); it++)
+          lst.push_back(to_graphicComponent(*it));
+        return lst;
+      };
+  };
+
 };
 
 #endif

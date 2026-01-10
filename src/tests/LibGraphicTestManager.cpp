@@ -88,7 +88,8 @@ void ScreenTests::execute () {
 
     // Assert methods with return statement
     assert(scr->label() == "Screen label", "Label is 'Screen label'");
-    list<GraphicComponents::GraphicComponent *> lst = scr->getGraphicComponents();
+    GraphicComponents::GraphicParser p;
+    list<GraphicComponents::GraphicComponent *> lst = p.to_graphicComponentList(scr->getGraphicComponents());
     assert(lst.size() == 0, "Number of graphic components is 0");
   } catch (int errorNum) {
     string message = string(__FILE__)+":"+to_string(__LINE__)+" ERROR number " + to_string(errorNum);
@@ -187,7 +188,8 @@ void DialogboxTests::execute () {
   assert(d3 != nullptr, "DialogBox constructor (9 args)");
 
   GraphicComponents::DialogBox diag(MAIN, 20, 10, 8, 45, titre, message);
-  list<GraphicComponents::GraphicComponent *> lst = diag.getGraphicComponents();
+  GraphicComponents::GraphicParser p;
+  list<GraphicComponents::GraphicComponent *> lst = p.to_graphicComponentList(diag.getGraphicComponents());
   assert((int)lst.size(), 2, "Verifie le nb de composants graphiques");
   list<GraphicComponents::GraphicComponent *>::iterator it = lst.begin();
   GraphicComponents::Button* b = dynamic_cast<GraphicComponents::Button*>(*it);
@@ -202,7 +204,7 @@ void DialogboxTests::execute () {
   assert(gc->id(), 1, "Second object id is 1");
 
   GraphicComponents::DialogBox diag2(MAIN, 20, 10, 10, 66, titre, message, GraphicComponents::DialogBox::OK_CANCEL);
-  lst = diag2.getGraphicComponents();
+  lst = p.to_graphicComponentList(diag2.getGraphicComponents());
   assert((int)lst.size(), 3, "(2 boutons) Verifie le nb de composants graphiques");
   it = lst.begin();
   b = dynamic_cast<GraphicComponents::Button*>(*it);
