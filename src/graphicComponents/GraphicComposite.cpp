@@ -15,11 +15,11 @@ GraphicComposite::GraphicComposite(const int window, const int x, const int y, c
   _name = name;
 }
 
-GraphicComponent* GraphicComposite::selectedComponent () {
+Component* GraphicComposite::selectedComponent () {
   if(_components.size() > 0) {
     list<Component*>::iterator i = _children.begin();
     advance(i, _selectedIndex);
-    return (GraphicComponent*)*i;
+    return *i;
   }
   return nullptr;
 }
@@ -34,8 +34,17 @@ void GraphicComposite::select (const int index) {
     _selectedIndex = _selectSize;
   else
     _selectedIndex = index;
-  GraphicComponent* gc = selectedComponent();
-  if(gc != nullptr) gc->select();
+  Component* c = selectedComponent();
+  GraphicComposite * gc = nullptr;
+  GraphicLeaf * gl = nullptr;
+
+  if(c != nullptr) {
+    if (gc = dynamic_cast<GraphicComposite*>(c); gc != nullptr) {
+      //gc->select(); //TODO: A Ameliorer ici. Pourquoi ne pas pouvoir selectionner un graphic composite ?
+    } else if (gl = dynamic_cast<GraphicLeaf*>(c); gl != nullptr) {
+      gl->select();
+    }
+  }
 }
 
 const int GraphicComposite::getComponentsCount() {

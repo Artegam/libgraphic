@@ -164,20 +164,20 @@ void Views::NCurses::load (Screen screen) {
 }
 
 void Views::NCurses::display () {
-  map<int, GraphicComponent *> lst;
+  map<int, Component *> lst;
   wclear(stack[0]);
   box(stack.back(), ACS_VLINE, ACS_HLINE);
 
   _dialog = NULL;
   for(list<Screen*>::iterator it=screens.begin(); it!=screens.end(); it++) {
-    list<GraphicComponent *> m = (*it)->getGraphicComponents();
-    for(list<GraphicComponent *>::iterator imap = m.begin(); imap!= m.end(); imap++)
+    list<Component *> m = (*it)->getGraphicComponents();
+    for(list<Component *>::iterator imap = m.begin(); imap!= m.end(); imap++)
       lst[lst.size()] = *imap;
   }
 
   mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx);
 
-  for(map<int, GraphicComponent *>::iterator it = lst.begin(); it != lst.cend(); it++) {
+  for(map<int, Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
     if (DialogBox * box = dynamic_cast<DialogBox*>(it->second); box != nullptr)
       _dialog = box;
     else
@@ -196,12 +196,8 @@ void Views::NCurses::display () {
   usleep(100000);
 }
 
-void Views::NCurses::display (GraphicComponent * gc) {
-  View::display(gc);
-}
-
 void Views::NCurses::display (DialogBox dialog) {
-  list<GraphicComponent *> lst;
+  list<Component *> lst;
   WINDOW * sub = subwin(stack.back(), dialog.height(), dialog.width(), dialog.y(), dialog.x());
   stack.push_back(sub);
   wbkgd(sub, COLOR_PAIR(HMENU));
@@ -212,10 +208,10 @@ void Views::NCurses::display (DialogBox dialog) {
   mvwprintw(sub, 0, 1, "%s", dialog.label().c_str());
 
   lst = dialog.getGraphicComponents();
-  list<GraphicComponent *>::iterator idx = lst.begin();
+  list<Component *>::iterator idx = lst.begin();
   advance(idx, dialog.selected());
 
-  for(list<GraphicComponent *>::iterator it = lst.begin(); it != lst.cend(); it++) {
+  for(list<Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
     Input * input = dynamic_cast<Input*>(*it);
     if(input == nullptr && (*it) == (*idx))
       wattron(stack.back(), A_REVERSE);

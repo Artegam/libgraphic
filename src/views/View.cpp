@@ -35,35 +35,51 @@ void View::load (list<Screen*> lst) {
 void View::display () {
 }
 
-void View::display (GraphicComponent * gc) {
-  if (Selector * sel = dynamic_cast<Selector*>(gc); sel != nullptr) {
-    display((*sel));
-  } else if (Input * input = dynamic_cast<Input*>(gc); input != nullptr) {
-    display(input);
-  } else if (Button * button = dynamic_cast<Button*>(gc); button != nullptr) {
-    display((*button));
-  } else if (Text * text = dynamic_cast<Text*>(gc); text != nullptr) {
+void View::display (Component * c) {
+  if (GraphicComposite * gc = dynamic_cast<GraphicComposite*>(c); gc != nullptr) {
+    display(gc);
+  } else if (GraphicLeaf * gl = dynamic_cast<GraphicLeaf*>(c); gl != nullptr) {
+    display(gl);
+  }
+}
+
+void View::display (GraphicComposite * gc) {
+  if (Screen * scr = dynamic_cast<Screen*>(gc); scr != nullptr) {
+    //display((*scr));
+  } else if (DialogBox * db = dynamic_cast<DialogBox*>(gc); db != nullptr) {
+    display(db);
+  }
+}
+
+void View::display (GraphicLeaf * gl) {
+  if (Text * text = dynamic_cast<Text*>(gl); text != nullptr) {
     display((*text));
-  } else if (HMenu * menu = dynamic_cast<HMenu*>(gc); menu != nullptr) {
+  } else if (Input * input = dynamic_cast<Input*>(gl); input != nullptr) {
+    display(input);
+  }else if (Selector * sel = dynamic_cast<Selector*>(gl); sel != nullptr) {
+    display((*sel));
+  } else if (Menu * menu = dynamic_cast<Menu*>(gl); menu != nullptr) {
     display((*menu));
-  } else if (VMenu * menu = dynamic_cast<VMenu*>(gc); menu != nullptr) {
+  } else if (HMenu * menu = dynamic_cast<HMenu*>(gl); menu != nullptr) {
     display((*menu));
-  } else if (Menu * menu = dynamic_cast<Menu*>(gc); menu != nullptr) {
+  } else if (VMenu * menu = dynamic_cast<VMenu*>(gl); menu != nullptr) {
     display((*menu));
-  } else if (Calendar * cal = dynamic_cast<Calendar*>(gc); cal != nullptr) {
-    display((*cal));
-  } else if (Agenda * age = dynamic_cast<Agenda*>(gc); age != nullptr) {
-    display((*age));
-  } else if (Table * tab = dynamic_cast<Table*>(gc); tab != nullptr) {
-    display((*tab));
-  } else if (Cell * cell = dynamic_cast<Cell*>(gc); cell != nullptr) {
+  } else if (Button * button = dynamic_cast<Button*>(gl); button != nullptr) {
+    display((*button));
+  } else if (Cell * cell = dynamic_cast<Cell*>(gl); cell != nullptr) {
     display((*cell));
-  } else if (ScrollBar * scroll = dynamic_cast<ScrollBar*>(gc); scroll != nullptr) {
+  } else if (Table * tab = dynamic_cast<Table*>(gl); tab != nullptr) {
+    display((*tab));
+  } else if (ScrollBar * scroll = dynamic_cast<ScrollBar*>(gl); scroll != nullptr) {
     display((*scroll));
+  } else if (Calendar * cal = dynamic_cast<Calendar*>(gl); cal != nullptr) {
+    display((*cal));
+  } else if (Agenda * age = dynamic_cast<Agenda*>(gl); age != nullptr) {
+    display((*age));
   }
 
-  if(_active == NULL && gc->isSelected())
-    _active = gc;
+  if(_active == NULL && gl->isSelected())
+    _active = gl;
 }
 
 void View::display (DialogBox box) {}
@@ -169,9 +185,9 @@ void View::setMaxPage (const unsigned int max) {
     _maxPage = max;
 }
 
-GraphicComponent * View::validated () {
+Component * View::validated () {
   if(_valid) {
-    GraphicComponent * gc = _validated;
+    Component * gc = _validated;
     _validated = NULL;
     _submenu = false;
     _valid = false;
@@ -180,7 +196,7 @@ GraphicComponent * View::validated () {
     return NULL;
 }
 
-GraphicComponent * View::selected() {
+Component * View::selected() {
   return _active;
 }
 
@@ -236,7 +252,16 @@ const bool View::isDialog () {
 
 void View::onShortcut (const unsigned char shortcut) {
   submenuHCursor = _menu_shorcuts[shortcut];
-  if(_active != NULL)
-    _active->unselect();
-  _active = NULL;
+  GraphicComposite * gc = nullptr;
+  GraphicLeaf * gl = nullptr;
+
+  if(_active != nullptr) {
+    if (gc = dynamic_cast<GraphicComposite*>(_active); gc != nullptr) {
+      gc->unselect();
+    } else if (gl = dynamic_cast<GraphicLeaf*>(_active); gl != nullptr) {
+      gl->unselect();
+    }
+  }
+
+  _active = nullptr;
 }

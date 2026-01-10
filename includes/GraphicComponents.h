@@ -84,7 +84,7 @@ namespace GraphicComponents {
     public:
       GraphicComposite();
       GraphicComposite(const int window, const int x, const int y, const string name = "default graphic composite");
-      GraphicComponent * selectedComponent ();
+      Component * selectedComponent ();
       virtual void select (const int idComponent);
       const int getComponentsCount();
   };
@@ -110,11 +110,10 @@ namespace GraphicComponents {
       void remove (Component* c) {Composite::remove (c);};
       string label ();
       //GraphicComponent * selectedComponent () {return GraphicComponent::selectedComponent();};
-      list<GraphicComponent *> getGraphicComponents () {
-        list<GraphicComponent *> lst;
+      list<Component *> getGraphicComponents () {
+        list<Component *> lst;
         for(list<Component*>::iterator it = _children.begin(); it != _children.end(); it++)
-          if (GraphicComponent * component = dynamic_cast<GraphicComponent*>(*it); component != nullptr)
-            lst.push_back(component);
+            lst.push_back(*it);
         return lst;
       };
   };

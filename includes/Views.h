@@ -56,13 +56,13 @@ namespace Views {
       bool tobeClosed = false;
       size_win screenSize;
       unsigned int _page = 0;
-      GraphicComponent * _validated = NULL;
       bool _submenu = false;
-      GraphicComponent * _active = NULL;
+      Component * _active = nullptr;
+      Component * _validated = nullptr;
       unsigned int submenuVCursor = 0;
       unsigned int submenuHCursor = 0;
       unsigned int x = 0, y = 0;
-      DialogBox * _dialog = NULL;
+      DialogBox * _dialog = nullptr;
       map<char, int> _menu_shorcuts;
 
       // Operations
@@ -74,8 +74,8 @@ namespace Views {
       void close ();
       size_win getScreenSize ();
       virtual void free ();
-      virtual GraphicComponent * validated ();
-      virtual GraphicComponent * selected();
+      virtual Component * validated ();
+      virtual Component * selected();
       void valid(const bool val = true);
       virtual int getChar ();
       virtual void initScreen();
@@ -87,7 +87,9 @@ namespace Views {
       virtual void load (list<Screen*> screens);
       //[ASC] Display member functions
       virtual void display ();
-      virtual void display (GraphicComponent * gc);
+      virtual void display (Component * c);
+      virtual void display (GraphicComposite * gc);
+      virtual void display (GraphicLeaf * gl);
       virtual void display (DialogBox box);
       virtual void display (Menu menu);
       virtual void display (HMenu menu);
@@ -173,7 +175,9 @@ string test = "";
       void colorize ();
       void load (Screen screen);
       void display ();
-      void display (GraphicComponent * gc);
+      void display (Component * c) {View::display(c);};
+      void display (GraphicComposite * gc) {View::display(gc);};
+      void display (GraphicLeaf * gl) {View::display(gl);};
       void display (DialogBox box);
       void display (Menu menu);
       void display (HMenu menu);
