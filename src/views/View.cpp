@@ -51,6 +51,7 @@ void View::display (GraphicComposite * gc) {
   }
 }
 
+//[ASC] Du plus détaille au plus general (ordre important)
 void View::display (GraphicLeaf * gl) {
   if (Text * text = dynamic_cast<Text*>(gl); text != nullptr) {
     display((*text));
@@ -58,11 +59,11 @@ void View::display (GraphicLeaf * gl) {
     display(input);
   }else if (Selector * sel = dynamic_cast<Selector*>(gl); sel != nullptr) {
     display((*sel));
-  } else if (Menu * menu = dynamic_cast<Menu*>(gl); menu != nullptr) {
-    display((*menu));
   } else if (HMenu * menu = dynamic_cast<HMenu*>(gl); menu != nullptr) {
     display((*menu));
   } else if (VMenu * menu = dynamic_cast<VMenu*>(gl); menu != nullptr) {
+    display((*menu));
+  } else if (Menu * menu = dynamic_cast<Menu*>(gl); menu != nullptr) {
     display((*menu));
   } else if (Button * button = dynamic_cast<Button*>(gl); button != nullptr) {
     display((*button));
