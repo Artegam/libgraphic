@@ -279,7 +279,7 @@ void MenuTests::execute () {
   assert(t1 != nullptr, "Menu validation (no args)");
   assert(t2 != nullptr, "Menu second validation (number arg)");
   assert(t3 != nullptr, "Menu item selected");
-  assert(t4 == titem, "Menu third validation (address)");
+  assert(t4, titem, "Menu third validation (address)");
 }
 
 void HMenuTests::execute () {

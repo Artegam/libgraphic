@@ -23,22 +23,33 @@ namespace testunit {
       string _message;
       string _got      = "";
       string _expected = "";
+      char address[19]; // [ASC] taille + 1 car '\0' est obligatoire en fin de chaine
 
+      template <typename T>
+      const char * addressToString(T* addr) {
+        const unsigned int addr1 = (unsigned long)&addr;
+        const unsigned int addr2 = ((unsigned long)&addr)>>32;
+        sprintf(address, "0x%08x%08x", addr2, addr1);
+        return address;
+      };
+      template <typename T>
+      void saveParams(T test, T expected) {_got=to_string(test);_expected=to_string(expected);};
+      template <typename T>
+      void saveParams(T* test, T* expected) {
+        _got=addressToString(test);
+        _expected=addressToString(expected);
+      };
     public:
       //Base expression
       void assert (bool test, const char * message = "");
       template <typename T>
       void assert (T test, T expected, const char * message = "") {
-        _got=to_string(test);
-        _expected=to_string(expected);
-        assert(test == expected, message);
+        saveParams(test, expected);
+        if(std::is_array<T>::value)
+          assert(_expected.compare(_got) == 0, message);
+        else
+          assert(_expected == _got, message);
       };
-      void assert (const char * test, const char * expected, const char * message = "") {
-        _got=test;
-        _expected=expected;
-        assert(_expected.compare(_got) == 0, message);
-      };
-
       int report ();
   };
 
