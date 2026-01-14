@@ -3,7 +3,7 @@
 using namespace GraphicComponents;
 
 
-Menu::Menu (const int window, const int x, const int y, list<string> items, const string name) : GraphicLeaf(window, x, y, name) {
+Menu::Menu (const int window, const int x, const int y, list<string> items, const string name) : GraphicComposite(window, x, y, name) {
   list<string>::iterator it;
   unsigned int pos = y;
 
@@ -16,7 +16,7 @@ Menu::Menu (const int window, const int x, const int y, list<string> items, cons
   _selectSize = _items.size();
 }
 
-Menu::Menu (const int window, const int x, const int y, list<Text *> items, const string name) : GraphicLeaf(window, x, y, name) {
+Menu::Menu (const int window, const int x, const int y, list<Text *> items, const string name) : GraphicComposite(window, x, y, name) {
   _items = items;
   list<Text *>::iterator it;
 

@@ -47,6 +47,17 @@ void GraphicComposite::select (const int index) {
   }
 }
 
+const int GraphicComposite::selected () {
+  if(_selectedIndex == 0)
+    for(list<GraphicComponent*>::iterator i = _components.begin(); i!=_components.end(); i++) {
+      if((*i)->isSelected()) {
+        _selectedIndex = distance(_components.begin(), i);
+        break;
+      }
+    }
+  return _selectedIndex;
+}
+
 const int GraphicComposite::getComponentsCount() {
   return _children.size();
 }

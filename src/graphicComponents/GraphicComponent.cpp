@@ -24,12 +24,6 @@ void GraphicComponent::setSelectSize (const int size) {
   _selectSize = size;
 }
 
-/*
-const int GraphicComponent::getComponentsCount() {
-  return _components.size();
-}
-*/
-
 const int GraphicComponent::getSelectSize() {
   return _selectSize;
 }
@@ -37,22 +31,6 @@ const int GraphicComponent::getSelectSize() {
 void GraphicComponent::select () {
   _selected = true;
 }
-
-/*
-void GraphicComponent::select (const int index) {
-  cout << "taille max confirmée : " << _selectSize << endl;
-  cout << "la selection : " << index << endl;
-  this->unselectAll();
-  if (index < 0)
-    _selectedIndex = 0;
-  else if(index > _selectSize)
-    _selectedIndex = _selectSize;
-  else
-    _selectedIndex = index;
-  GraphicComponent* gc = selectedComponent();
-  if(gc != nullptr) gc->select();
-}
-*/
 
 void GraphicComponent::unselect () {
   _selected = false;
@@ -62,18 +40,6 @@ void GraphicComponent::unselectAll () {
   _selectedIndex = 0;
   for(list<GraphicComponent*>::iterator i = _components.begin(); i!=_components.end(); i++)
     (*i)->unselect();
-}
-
-const int GraphicComponent::selected () {
-  if(_selectedIndex == 0)
-    for(list<GraphicComponent*>::iterator i = _components.begin(); i!=_components.end(); i++) {
-      if((*i)->isSelected()) {
-        _selectedIndex = distance(_components.begin(), i);
-        break;
-      }
-    }
-
-  return _selectedIndex;
 }
 
 const bool GraphicComponent::isValidated () {

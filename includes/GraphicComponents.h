@@ -61,7 +61,6 @@ namespace GraphicComponents {
       virtual void select ();
       virtual void unselect ();
       virtual void unselectAll();
-      virtual const int selected ();
       const bool isValidated ();
       const bool isSelectable ();
       const bool isSelected ();
@@ -86,6 +85,7 @@ namespace GraphicComponents {
       GraphicComposite(const int window, const int x, const int y, const string name = "default graphic composite");
       Component * selectedComponent ();
       virtual void select (const int idComponent);
+      virtual const int selected ();
       const int getComponentsCount();
   };
 
@@ -166,7 +166,7 @@ namespace GraphicComponents {
       unsigned int to();
   };
 
-  class Menu : public virtual GraphicLeaf {
+  class Menu : public virtual GraphicComposite {
     private:
       list<Text *> _items;
     public:
