@@ -99,7 +99,6 @@ void ScreenTests::execute () {
 
 void TextTests::execute () {
   const int MAIN = 0;
-  Composite * comp = new Composite();
   // test constructors
   GraphicComponents::Text * t = new GraphicComponents::Text(MAIN, 0, 0, "my text");
   GraphicComponents::Text * t1 = new GraphicComponents::Text(MAIN, 0, 0, "my text", "thing text");
@@ -324,7 +323,6 @@ void VMenuTests::execute () {
 
 void ButtonTests::execute () {
   const int MAIN = 0;
-  Composite * p = new Composite();
   //tests constructors
   GraphicComponents::Button * b1 = new GraphicComponents::Button(MAIN, 0, 0, "myButton");
   GraphicComponents::Button * b2 = new GraphicComponents::Button(MAIN, 0, 0, "myButton", "myButtonName");
@@ -361,6 +359,10 @@ void TableTests::execute () {
   GraphicComponents::Table * t1 = new GraphicComponents::Table(MAIN, 0, 0, 2, 3);
   GraphicComponents::Table * t2 = new GraphicComponents::Table(MAIN, 0, 0, 2, 3, "***");
   GraphicComponents::Table * t3 = new GraphicComponents::Table(MAIN, 0, 0, 2, 3, "***", "my table");
+  assert(t1 != nullptr, "Table constructor (5 args)");
+  assert(t2 != nullptr, "Table constructor (6 args)");
+  assert(t3 != nullptr, "Table constructor (7 args)");
+
   //tests void returned methods
   t3->setValue(1, 1, "value of c(1,1)");
   string s = "value of c(1,2)";
