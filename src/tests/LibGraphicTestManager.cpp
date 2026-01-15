@@ -24,7 +24,7 @@ void GraphicComponentTests::execute () {
   assert(gc->isSelectable(), false, "gc is selectable");
   assert(gc->isSelected(), false, "gc is selected");
   assert(gc->getSelectSize(), 10, "gc select size is 10");
-  assert(gc->id(), 0, "gc id is 0");
+  assert(gc->id(), -1, "gc id is -1 by default");
   assert(gc->window(), 0, "gc window is 0");
   assert(gc->x(), 0, "gc x position is 0");
   assert(gc->y(), 0, "gc y position is 0");
@@ -192,7 +192,7 @@ void DialogboxTests::execute () {
   assert((int)lst.size(), 2, "Verifie le nb de composants graphiques");
   list<GraphicComponents::GraphicComponent *>::iterator it = lst.begin();
   GraphicComponents::Button* b = dynamic_cast<GraphicComponents::Button*>(*it);
-  assert(b != nullptr, "First object is Button component");
+  assert(b != nullptr, "First object is not nullptr Button component");
   assert(b->id(), 0, "First object id is 0");
   assert(b->label().c_str(), "OK", "First object is OK Button");
   assert(b->x(), 22, "OK Button X position");

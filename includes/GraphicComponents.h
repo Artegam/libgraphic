@@ -44,7 +44,7 @@ namespace GraphicComponents {
       int _y;
       int _height;
       int _width;
-      int _id;
+      int _id = -1;
       string _name;
       bool _validated = false;
       bool _selectable = false;
@@ -65,6 +65,7 @@ namespace GraphicComponents {
       const bool isSelectable ();
       const bool isSelected ();
       void setSelectSize(const int size);
+      void setId (const int n);
       const int getSelectSize();
       virtual void resize(const int height, const int width);
       const int id();
@@ -78,6 +79,12 @@ namespace GraphicComponents {
       const string getName();
   };
 
+  class GraphicLeaf : public GraphicComponent, public virtual Leaf {
+    public:
+      GraphicLeaf();
+      GraphicLeaf(const int window, const int x, const int y, const string name = "default graphic leaf");
+  };
+
   class GraphicComposite : public GraphicComponent, public virtual Composite {
     private:
     public:
@@ -87,12 +94,8 @@ namespace GraphicComponents {
       virtual void select (const int idComponent);
       virtual const int selected ();
       const int getComponentsCount();
-  };
-
-  class GraphicLeaf : public GraphicComponent, public virtual Leaf {
-    public:
-      GraphicLeaf();
-      GraphicLeaf(const int window, const int x, const int y, const string name = "default graphic leaf");
+      void add (GraphicComposite* gc) {gc->setId(_children.size());Composite::add(gc);};
+      void add (GraphicLeaf* gl) {gl->setId(_children.size());Composite::add(gl);};
   };
 
   class Screen : public GraphicComposite {
@@ -109,11 +112,10 @@ namespace GraphicComponents {
       void remove () {Composite::remove ();};
       void remove (Component* c) {Composite::remove (c);};
       string label ();
-      //GraphicComponent * selectedComponent () {return GraphicComponent::selectedComponent();};
       list<Component *> getGraphicComponents () {
         list<Component *> lst;
         for(list<Component*>::iterator it = _children.begin(); it != _children.end(); it++)
-            lst.push_back(*it);
+          lst.push_back(*it);
         return lst;
       };
   };

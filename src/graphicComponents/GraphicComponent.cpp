@@ -24,6 +24,10 @@ void GraphicComponent::setSelectSize (const int size) {
   _selectSize = size;
 }
 
+void GraphicComponent::setId (const int n) {
+  _id = n;
+}
+
 const int GraphicComponent::getSelectSize() {
   return _selectSize;
 }
@@ -50,11 +54,7 @@ const bool GraphicComponent::isSelectable () {return _selectable;}
 const bool GraphicComponent::isSelected () {return _selected;}
 
 const int GraphicComponent::id() {
-/*
-  if(_parent)
-    return _parent->getPosition(this);
-*/
-  return -1;
+  return _id;
 }
 
 const int GraphicComponent::window() {
