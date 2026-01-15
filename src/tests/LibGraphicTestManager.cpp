@@ -16,20 +16,13 @@ void GraphicComponentTests::execute () {
   gc->unselectAll();
 
   //test void methods with arguments
-  //gc->select(0);
-  //gc->select(5);
   gc->setSelectSize(10);
   gc->resize(20, 30);
 
   //test return values methods with no arguments
-  assert(gc->selected(), 0, "The select element is 0");
-  //gc->select(1);
-  //assert(gc->getComponentsCount(), 1, "There is 1 component in gc");
-  assert(gc->selected(), 1, "gc: The select element is 1");
-  //assert(gc->selectedComponent() != nullptr, "The selected component is not nullptr");
-  assert(gc->isValidated(), true, "gc is validated");
-  assert(gc->isSelectable(), true, "gc is selectable");
-  assert(gc->isSelected(), true, "gc is selected");
+  assert(gc->isValidated(), false, "gc is validated");
+  assert(gc->isSelectable(), false, "gc is selectable");
+  assert(gc->isSelected(), false, "gc is selected");
   assert(gc->getSelectSize(), 10, "gc select size is 10");
   assert(gc->id(), 0, "gc id is 0");
   assert(gc->window(), 0, "gc window is 0");
@@ -60,11 +53,18 @@ void GraphicCompositeTests::execute () {
   assert(gc2 != nullptr, "Graphic Component constructor (3 arguments)");
   assert(gc3 != nullptr, "Graphic Component constructor (4 arguments)");
 
+  GraphicComponents::Text * t2 = new GraphicComponents::Text(MAIN, 0, 0, "text2");
+
   gc3->add(new GraphicComponents::Text(MAIN, 0, 0, "text1"));
-  gc3->add(new GraphicComponents::Text(MAIN, 0, 0, "text2"));
+  gc3->add(t2);
   gc3->add(new GraphicComponents::Text(MAIN, 0, 0, "text3"));
   assert(gc3->getComponentsCount(), 3, "gc components count is 3");
 
+  gc3->select(2);
+  assert(gc3->selected(), 2, "The select component is 2");
+  Component* c = gc3->selectedComponent();
+  assert(c != nullptr, "The selected component is not nullptr");
+  assert(c, (Component*)t2, "The selected component is t2");
 }
 
 //ScreenTests

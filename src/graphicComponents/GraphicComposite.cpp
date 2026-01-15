@@ -16,7 +16,7 @@ GraphicComposite::GraphicComposite(const int window, const int x, const int y, c
 }
 
 Component* GraphicComposite::selectedComponent () {
-  if(_components.size() > 0) {
+  if(_children.size() > 0) {
     list<Component*>::iterator i = _children.begin();
     advance(i, _selectedIndex);
     return *i;
@@ -25,13 +25,12 @@ Component* GraphicComposite::selectedComponent () {
 }
 
 void GraphicComposite::select (const int index) {
+  _selectSize = _components.size();
   cout << "taille max confirmée : " << _selectSize << endl;
   cout << "la selection : " << index << endl;
   this->unselectAll();
   if (index < 0)
     _selectedIndex = 0;
-  else if(index > _selectSize)
-    _selectedIndex = _selectSize;
   else
     _selectedIndex = index;
   Component* c = selectedComponent();
