@@ -324,7 +324,7 @@ namespace GraphicComponents {
 
   class Item : public Node {
     private:
-      bool selected = false;
+      bool _selected = false;
       std::function<void(Item *)> fct;
 
     public:

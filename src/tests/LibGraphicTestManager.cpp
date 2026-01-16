@@ -436,7 +436,7 @@ void NodeTests::execute () {
   assert(group1 != nullptr, "n2 getParent('Group1') returns a non null pointer");
   assert(position2 != nullptr, "n2 getParent(2) returns a non null pointer");
   assert(n2->getRank("Group1") == 2, "n2 node named 'Group1' rank is 2");
-  assert(n2->getNameOffset("Group1"), (unsigned int)2, "n2 node named 'Group1' name offset is 2");
+  assert(n2->getNameOffset("Group1"), (unsigned int)17, "n2 node named 'Group1' name offset is 17"); //[ASC]For HMenu
   assert(n2->validate(), "n2 is validate");
 }
 
@@ -449,9 +449,10 @@ void ItemTests::execute () {
   assert(i2 != nullptr, "Item constructor (2 args)");
   // tests void returned methods
   i1->select();
-  i1->clear();
-  //tests value returned methods
   assert(i1->isSelected(), "i1 is selected");
+  i1->clear();
+  assert(!i1->isSelected(), "i1 is not selected (cleared)");
+  //tests value returned methods
   assert(!i2->isSelected(), "i2 is not selected");
   assert(i1->getName().c_str(), "Item1", "i1 name is 'Item1'");
   assert(i1->validate(), "i1 is validate()");

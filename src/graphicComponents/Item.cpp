@@ -15,11 +15,11 @@ Item::Item (Node * parent, string name) : Node (parent, name) {
 }
 
 void Item::select () {
-  this->selected = !this->selected;
+  _selected = !_selected;
 }
 
 bool Item::isSelected () {
-  return this->selected;
+  return _selected;
 }
 
 string Item::getName () {
@@ -32,5 +32,5 @@ bool Item::validate () {
 }
 
 void Item::clear () {
-  this->selected = false;
+  _selected = false;
 }
