@@ -10,33 +10,35 @@ GroupItem::GroupItem (Node * parent, string name) : Node (parent, name) {
 
 void GroupItem::setDefault (const int index) {
   unsigned int idx = 0;
-  if(index > 0 && children.size() >= (const unsigned int)index) {
+  if(index > 0 && _children.size() >= (const unsigned int)index) {
     idx = index;
-    defaultItem = idx;
-    selectedItem = idx;
+    _defaultItem = idx;
+    _selectedItem = idx;
     this->display();
   }
 }
 
 void GroupItem::selectItem (const int index) {
-  list<Node *>::iterator it;
-  for(it = children.begin(); it != children.end(); it++)
-    (*it)->clear();
+  list<Item *> lst = castList<Item *>(getChildren());
+  list<Item *>::iterator it = lst.begin();
 
-  if((long unsigned int)index < children.size()) {
-    it = children.begin();
+  for(it = lst.begin(); it != lst.end(); it++)
+    if((*it) != nullptr)
+      (*it)->clear();
+
+  if((long unsigned int)index < lst.size()) {
+    it = lst.begin();
     advance(it, index);
-    selectedItem = index;
-    Item * item = dynamic_cast<Item*>(*it);
-    item->validate();
+    _selectedItem = index;
+    (*it)->validate();
   }
 }
 
 Item * GroupItem::getSelectedItem () {
-  list<Node *>::iterator it = children.begin();
-  advance(it, selectedItem);
-
-  return dynamic_cast<Item*>(*it);
+  list<Item *> lst = castList<Item *>(getChildren());
+  list<Item *>::iterator it = lst.begin();
+  advance(it, _selectedItem);
+  return (*it);
 }
 
 void GroupItem::display () {
@@ -45,5 +47,5 @@ void GroupItem::display () {
 }
 
 const int GroupItem::size() {
-  return children.size();
+  return _children.size();
 }

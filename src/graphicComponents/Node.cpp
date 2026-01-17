@@ -10,25 +10,6 @@ Node::Node (string name) : Atom(name) {
 Node::Node (Node * parent, string name) : Atom(parent, name){
 }
 
-void Node::add (Node * node) {
-  _children.push_back(node);
-}
-
-void Node::add (string name) {
-  Node * node = new Node(this, name);
-  _children.push_back(node);
-}
-
-void Node::addItem (string name) {
-  Item * item = new Item(this, name);
-  _children.push_back(item);
-}
-
-void Node::addGroup (string name) {
-  GroupItem * group = new GroupItem(this, name);
-  _children.push_back(group);
-}
-
 void Node::erase (unsigned int position) {
   list<Component *>::iterator it = _children.begin();
   advance(it, position);
@@ -90,9 +71,6 @@ bool Node::validate () {
     // Needs to put the logger here !!!
     //std::cout << "ERROR: Bad function call\n";
   }
-}
-
-void Node::clear () {
 }
 
 void Node::attach(GraphicComponent * comp) {

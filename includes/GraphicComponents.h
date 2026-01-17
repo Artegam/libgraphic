@@ -301,6 +301,7 @@ namespace GraphicComponents {
       Atom (string name);
       Atom (Atom * parent, string name);
       virtual string getName () {return _name;};
+      virtual void clear () {};
   };
 
   class Node: public Atom, public virtual Composite{
@@ -308,7 +309,6 @@ namespace GraphicComponents {
       GraphicComponent * gc = NULL;
 
     protected:
-      list<Node *> children;
 
     public:
       template <typename R, typename C>
@@ -317,16 +317,14 @@ namespace GraphicComponents {
       list<R> castList(list<C> l) {
         list<R> lst;
         for(typename list<C>::iterator it = l.begin(); it != l.end(); it++)
-          lst.push_back(dynamic_cast<R>(*it));
+          lst.push_back(cast<R>(*it));
         return lst;
       };
 
       Node (string name);
       Node (Node * parent, string name);
-      void add (Node * node);
-      void add (string name);
-      void addItem (string name);
-      void addGroup (string name);
+      template <typename C>
+      void add (C c) {_children.push_back(c);};
       void erase (unsigned int position);
       list<Atom *> getChildren ();
       Atom * getParent ();
@@ -335,7 +333,7 @@ namespace GraphicComponents {
       const unsigned int getRank (string name);
       const unsigned int getNameOffset (string name);
       virtual bool validate ();
-      virtual void clear ();
+      virtual void clear () {};
       void attach(GraphicComponent * comp);
       void detach();
   };
@@ -357,8 +355,8 @@ namespace GraphicComponents {
 
   class GroupItem : public Node {
     private:
-      unsigned int defaultItem;
-      unsigned int selectedItem;
+      unsigned int _defaultItem;
+      unsigned int _selectedItem;
 
     public:
       GroupItem (string name);

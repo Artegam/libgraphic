@@ -428,9 +428,9 @@ void NodeTests::execute () {
   //tests void returned methods
   GraphicComponents::Node * n3 = new GraphicComponents::Node("myNode3");
   n2->add(n3);
-  n2->add("myNode4");
-  n2->addItem("Item1");
-  n2->addGroup("Group1");
+  n2->add(new GraphicComponents::Node("myNode4"));
+  n2->add(new GraphicComponents::Item("Item1"));
+  n2->add(new GraphicComponents::GroupItem("Group1"));
   n2->erase(1); // erase node position 1
   GraphicComponents::GraphicComponent * gc = new GraphicComponents::GraphicComponent(MAIN, 0, 0, "my graphic component");
   n2->attach(gc);
@@ -475,13 +475,18 @@ void GroupItemTests::execute () {
   GraphicComponents::GroupItem * gi2 = new GraphicComponents::GroupItem(n1, "GroupItem1");
   assert(gi1 != nullptr, "GroupItem constructor (1 arg)");
   assert(gi2 != nullptr, "GroupItem constructor (2 args)");
+
   //tests void returned methods
   gi2->setDefault(1);
   gi2->setDefault(-1); //test negative bound
   gi2->display();
   gi2->selectItem(1);
   //tests valued returned methods
+  gi2->add(new GraphicComponents::Item("Item1"));
+  gi2->add(new GraphicComponents::Item("Item2"));
+  gi2->add(new GraphicComponents::Item("Item3"));
+  gi2->selectItem(2);
   GraphicComponents::Item * i1 = gi2->getSelectedItem();
   assert(i1 != nullptr, "gi2 getSelectedItem is not null pointer");
-  assert(gi2->size(), 1, "gi2 size is 1");
+  assert(gi2->size(), 3, "gi2 size is 3");
 }
