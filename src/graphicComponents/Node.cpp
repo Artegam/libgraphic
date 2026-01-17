@@ -20,24 +20,24 @@ list<Atom *> Node::getChildren () {
   return castList<Atom *>(_children);
 }
 
-Atom * Node::getParent () {
-  return _parent;
+Node * Node::getParent () {
+  return cast<Node*>(_parent);
 }
 
-Atom * Node::getNode(string name) {
+Node * Node::getNode(string name) {
   list<Atom *> lst = getChildren();
   for(list<Atom *>::iterator it = lst.begin(); it != lst.end(); it++) {
     if((*it) != nullptr && (*it)->getName() == name)
-      return (*it);
+      return cast<Node*>(*it);
   }
   return nullptr;
 }
 
-Atom * Node::getNode(const unsigned int position) {
+Node * Node::getNode(const unsigned int position) {
   list<Atom *> lst = getChildren();
   list<Atom *>::iterator it = lst.begin();
   advance(it, position);
-  return *it;
+  return cast<Node*>(*it);
 }
 
 const unsigned int Node::getRank (string name) {

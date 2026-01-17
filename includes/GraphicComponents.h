@@ -304,7 +304,7 @@ namespace GraphicComponents {
       virtual void clear () {};
   };
 
-  class Node: public Atom, public virtual Composite{
+  class Node: public Atom, public virtual Composite {
     private:
       GraphicComponent * gc = NULL;
 
@@ -327,9 +327,9 @@ namespace GraphicComponents {
       void add (C c) {_children.push_back(c);};
       void erase (unsigned int position);
       list<Atom *> getChildren ();
-      Atom * getParent ();
-      Atom * getNode(string name);
-      Atom * getNode(const unsigned int position);
+      Node * getParent ();
+      Node * getNode(string name);
+      Node * getNode(const unsigned int position);
       const unsigned int getRank (string name);
       const unsigned int getNameOffset (string name);
       virtual bool validate ();
