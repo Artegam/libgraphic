@@ -44,10 +44,16 @@ void View::display (Component * c) {
 }
 
 void View::display (GraphicComposite * gc) {
-  if (Screen * scr = dynamic_cast<Screen*>(gc); scr != nullptr) {
-    //display((*scr));
-  } else if (DialogBox * db = dynamic_cast<DialogBox*>(gc); db != nullptr) {
+  if (DialogBox * db = dynamic_cast<DialogBox*>(gc); db != nullptr) {
     display(db);
+  } else if (HMenu * menu = dynamic_cast<HMenu*>(gc); menu != nullptr) {
+    display((*menu));
+  } else if (VMenu * menu = dynamic_cast<VMenu*>(gc); menu != nullptr) {
+    display((*menu));
+  } else if (Menu * menu = dynamic_cast<Menu*>(gc); menu != nullptr) {
+    display((*menu));
+  } else if (Screen * scr = dynamic_cast<Screen*>(gc); scr != nullptr) {
+    //display((*scr));
   }
 }
 
@@ -59,12 +65,6 @@ void View::display (GraphicLeaf * gl) {
     display(input);
   }else if (Selector * sel = dynamic_cast<Selector*>(gl); sel != nullptr) {
     display((*sel));
-  } else if (HMenu * menu = dynamic_cast<HMenu*>(gl); menu != nullptr) {
-    display((*menu));
-  } else if (VMenu * menu = dynamic_cast<VMenu*>(gl); menu != nullptr) {
-    display((*menu));
-  } else if (Menu * menu = dynamic_cast<Menu*>(gl); menu != nullptr) {
-    display((*menu));
   } else if (Button * button = dynamic_cast<Button*>(gl); button != nullptr) {
     display((*button));
   } else if (Cell * cell = dynamic_cast<Cell*>(gl); cell != nullptr) {

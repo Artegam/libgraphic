@@ -169,7 +169,7 @@ void Views::NCurses::display () {
   box(stack.back(), ACS_VLINE, ACS_HLINE);
 
   _dialog = NULL;
-  for(list<Screen*>::iterator it=screens.begin(); it!=screens.end(); it++) {
+  for(list<Screen*>::reverse_iterator it=screens.rbegin(); it!=screens.rend(); it++) {
     list<Component *> m = (*it)->getGraphicComponents();
     for(list<Component *>::iterator imap = m.begin(); imap!= m.end(); imap++)
       lst[lst.size()] = *imap;
