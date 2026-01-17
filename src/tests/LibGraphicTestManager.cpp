@@ -410,6 +410,16 @@ void AgendaTests::execute () {
 
 void NodeTests::execute () {
   const int MAIN = 0;
+  //tests template methods
+  GraphicComponents::Node * n = new GraphicComponents::Node("node1");
+  Component * c = n->cast<Component*>(n);
+  assert(c != nullptr, "cast operational (not nullptr)");
+  list<GraphicComponents::Node*> lst;
+  lst.push_back(n);
+  list<Component*> lst_c = n->castList<Component*>(lst);
+  list<GraphicComponents::Node*> lst_n = n->castList<GraphicComponents::Node*>(lst_c);
+  assert(lst_n.size() > 0, "castList operational");
+
   //tests constructors
   GraphicComponents::Node * n1 = new GraphicComponents::Node("myNode1");
   GraphicComponents::Node * n2 = new GraphicComponents::Node(n1, "myNode2");
@@ -427,11 +437,11 @@ void NodeTests::execute () {
   n2->detach();
   n1->clear();
   //tests valued returned methods
-  list<GraphicComponents::Node *> childs = n2->getChildren();
+  list<GraphicComponents::Atom *> childs = n2->getChildren();
   assert(n2->getName().c_str(), "myNode2", "n2 name is 'myNode2'");
-  GraphicComponents::Node * parent = n2->getParent();
-  GraphicComponents::Node * group1 = n2->getNode("Group1");
-  GraphicComponents::Node * position2 = n2->getNode(2);
+  GraphicComponents::Atom * parent = n2->getParent();
+  GraphicComponents::Atom * group1 = n2->getNode("Group1");
+  GraphicComponents::Atom * position2 = n2->getNode(2);
   assert(parent != nullptr, "n2 getParent() returns a non null pointer");
   assert(group1 != nullptr, "n2 getParent('Group1') returns a non null pointer");
   assert(position2 != nullptr, "n2 getParent(2) returns a non null pointer");

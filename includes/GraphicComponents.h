@@ -293,15 +293,34 @@ namespace GraphicComponents {
       Text getName ();
   };
 
-  class Node {
-    private:
+  class Atom {
+    protected:
       string _name;
-      Node * _parent;
+      Atom * _parent;
+    public:
+      Atom (string name);
+      Atom (Atom * parent, string name);
+      virtual string getName () {return _name;};
+  };
+
+  class Node: public Atom, public virtual Composite{
+    private:
       GraphicComponent * gc = NULL;
 
     protected:
       list<Node *> children;
+
     public:
+      template <typename R, typename C>
+      R cast(C c) {return dynamic_cast<R>(c);};
+      template <typename R, typename C>
+      list<R> castList(list<C> l) {
+        list<R> lst;
+        for(typename list<C>::iterator it = l.begin(); it != l.end(); it++)
+          lst.push_back(dynamic_cast<R>(*it));
+        return lst;
+      };
+
       Node (string name);
       Node (Node * parent, string name);
       void add (Node * node);
@@ -309,11 +328,10 @@ namespace GraphicComponents {
       void addItem (string name);
       void addGroup (string name);
       void erase (unsigned int position);
-      list<Node *> getChildren ();
-      virtual string getName ();
-      Node * getParent ();
-      Node * getNode(string name);
-      Node * getNode(const unsigned int position);
+      list<Atom *> getChildren ();
+      Atom * getParent ();
+      Atom * getNode(string name);
+      Atom * getNode(const unsigned int position);
       const unsigned int getRank (string name);
       const unsigned int getNameOffset (string name);
       virtual bool validate ();
@@ -322,7 +340,7 @@ namespace GraphicComponents {
       void detach();
   };
 
-  class Item : public Node {
+  class Item : public Atom, public virtual Leaf { //[ASC] A reflexionner ici pas possible heritage diamant
     private:
       bool _selected = false;
       std::function<void(Item *)> fct;
@@ -372,6 +390,14 @@ namespace GraphicComponents {
           lst.push_back(to_graphicComponent(*it));
         return lst;
       };
+      template <typename R, typename C>
+      list<R*> castList(list<C*> l) {
+        list<R*> lst;
+        for(typename list<C*>::iterator it = l.begin(); it != l.end(); it++)
+          lst.push_back(dynamic_cast<R*>(*it));
+        return lst;
+      };
+
   };
 
 };

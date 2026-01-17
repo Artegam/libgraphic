@@ -2,13 +2,13 @@
 
 using namespace GraphicComponents;
 
-Item::Item (string name) : Node (name) {
+Item::Item (string name) : Atom (name) {
   fct = [] (Item * i) {
     i->select();
   };
 }
 
-Item::Item (Node * parent, string name) : Node (parent, name) {
+Item::Item (Node * parent, string name) : Atom (parent, name) {
   fct = [] (Item * i) {
     i->select();
   };
@@ -23,7 +23,7 @@ bool Item::isSelected () {
 }
 
 string Item::getName () {
-  return Node::getName();
+  return Atom::getName();
 }
 
 bool Item::validate () {

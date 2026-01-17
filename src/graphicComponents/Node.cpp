@@ -3,73 +3,66 @@
 using namespace GraphicComponents;
 
 
-Node::Node (string name) {
-  _name = name;
+Node::Node (string name) : Atom(name) {
   _parent = this;
 }
 
-Node::Node (Node * parent, string name) {
-  _name = name;
-  _parent = parent;
+Node::Node (Node * parent, string name) : Atom(parent, name){
 }
 
 void Node::add (Node * node) {
-  this->children.push_back(node);
+  _children.push_back(node);
 }
 
 void Node::add (string name) {
   Node * node = new Node(this, name);
-  this->children.push_back(node);
+  _children.push_back(node);
 }
 
 void Node::addItem (string name) {
   Item * item = new Item(this, name);
-  this->children.push_back(item);
+  _children.push_back(item);
 }
 
 void Node::addGroup (string name) {
   GroupItem * group = new GroupItem(this, name);
-  this->children.push_back(group);
+  _children.push_back(group);
 }
 
 void Node::erase (unsigned int position) {
-  list<Node *>::iterator it = this->children.begin();
+  list<Component *>::iterator it = _children.begin();
   advance(it, position);
-  this->children.erase(it);
+  _children.erase(it);
 }
 
-list<Node *> Node::getChildren () {
-  return this->children;
+list<Atom *> Node::getChildren () {
+  return castList<Atom *>(_children);
 }
 
-string Node::getName () {
-  return _name;
-}
-
-Node * Node::getParent () {
+Atom * Node::getParent () {
   return _parent;
 }
 
-Node * Node::getNode(string name) {
-  list<Node *>::iterator it;
-  for(it = children.begin(); it != children.end(); it++) {
-    if((*it)->getName() == name)
+Atom * Node::getNode(string name) {
+  list<Atom *> lst = getChildren();
+  for(list<Atom *>::iterator it = lst.begin(); it != lst.end(); it++) {
+    if((*it) != nullptr && (*it)->getName() == name)
       return (*it);
   }
-
-  return NULL;
+  return nullptr;
 }
 
-Node * Node::getNode(const unsigned int position) {
-  list<Node *>::iterator it = children.begin();
+Atom * Node::getNode(const unsigned int position) {
+  list<Atom *> lst = getChildren();
+  list<Atom *>::iterator it = lst.begin();
   advance(it, position);
   return *it;
 }
 
 const unsigned int Node::getRank (string name) {
-  list<Node *>::iterator it;
+  list<Atom *> lst = getChildren();
   unsigned int rank = 0;
-  for(it = children.begin(); it != children.end(); it++) {
+  for(list<Atom *>::iterator it = lst.begin(); it != lst.end(); it++) {
     if((*it)->getName() == name)
       return rank;
     rank++;
@@ -79,9 +72,9 @@ const unsigned int Node::getRank (string name) {
 
 // Calcule un offset a partir de la longueur des noms des nodes
 const unsigned int Node::getNameOffset (string name) {
-  list<Node *>::iterator it;
+  list<Atom *> lst = getChildren();
   unsigned int len = 1;
-  for(it = children.begin(); it != children.end(); it++) {
+  for(list<Atom *>::iterator it = lst.begin(); it != lst.end(); it++) {
     if((*it)->getName() == name)
       return len;
     len+=(*it)->getName().size()+2;
