@@ -94,6 +94,7 @@ namespace GraphicComponents {
       virtual void select (const int idComponent);
       virtual const int selected ();
       const int getComponentsCount();
+      void add (Component* c) {Composite::add(c);};
       void add (GraphicComposite* gc) {gc->setId(_children.size());Composite::add(gc);};
       void add (GraphicLeaf* gl) {gl->setId(_children.size());Composite::add(gl);};
   };
