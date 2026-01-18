@@ -1,7 +1,9 @@
 #include <tests/LibGraphicTestManager.h>
+#include <tests/ViewsTestManager.h>
 
 int main(int argc, char** argv) {
   LibGraphicTestManager manager("GLOBAL");
+  //Core lib
   manager.assert(new GraphicComponentTests());
   manager.assert(new GraphicCompositeTests());
   manager.assert(new ScreenTests());
@@ -24,6 +26,10 @@ int main(int argc, char** argv) {
   manager.assert(new NodeTests());
   manager.assert(new ItemTests());
   manager.assert(new GroupItemTests());
+
+  //Views
+  manager.assert(new ViewTests());
+  //manager.assert(new NCursesTests());
 
   manager.execute();
   return manager.report();

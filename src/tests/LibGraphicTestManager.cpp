@@ -1,5 +1,7 @@
 #include <tests/LibGraphicTestManager.h>
 
+//"Pugnare in Tenebris, Vincere in Luminis"
+
 //GraphicComponentTests
 void GraphicComponentTests::execute () {
   const int MAIN = 0;
