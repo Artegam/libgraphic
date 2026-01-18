@@ -59,10 +59,10 @@ void View::display (GraphicComposite * gc) {
 
 //[ASC] Du plus détaille au plus general (ordre important)
 void View::display (GraphicLeaf * gl) {
-  if (Text * text = dynamic_cast<Text*>(gl); text != nullptr) {
-    display((*text));
-  } else if (Input * input = dynamic_cast<Input*>(gl); input != nullptr) {
+  if (Input * input = dynamic_cast<Input*>(gl); input != nullptr) {
     display(input);
+  }else if (Text * text = dynamic_cast<Text*>(gl); text != nullptr) {
+    display((*text));
   }else if (Selector * sel = dynamic_cast<Selector*>(gl); sel != nullptr) {
     display((*sel));
   } else if (Button * button = dynamic_cast<Button*>(gl); button != nullptr) {
