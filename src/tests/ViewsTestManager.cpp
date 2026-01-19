@@ -13,5 +13,6 @@ void NCursesTests::execute () {
   //tests constructors
   Views::NCurses * v = new Views::NCurses();
   assert(v != nullptr, "NCurses constructor (0 args)");
+  delete v;
   //TODO: TO BE CONTINUED....
 }

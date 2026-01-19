@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 
   //Views
   manager.assert(new ViewTests());
-  //manager.assert(new NCursesTests());
+  manager.assert(new NCursesTests());
 
   manager.execute();
   return manager.report();

@@ -68,6 +68,7 @@ namespace Views {
       // Operations
     public:
       View ();
+      virtual ~View () {};
       virtual void init (int height, int width);
       void end ();
       bool shouldClose ();

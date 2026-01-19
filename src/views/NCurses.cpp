@@ -33,6 +33,7 @@ Views::NCurses::NCurses () : View () {
 
 Views::NCurses::~NCurses () {
   free();
+  endwin();
 }
 
 void Views::NCurses::init (int height, int width) {
