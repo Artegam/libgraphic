@@ -19,7 +19,6 @@ Views::NCurses::NCurses () : View () {
   // Ncurses initialization
   setlocale(LC_ALL, "");
   initscr();
-  initColors();
   cbreak();
   noecho();
   if(stack.size() == 0)
@@ -28,6 +27,7 @@ Views::NCurses::NCurses () : View () {
   nodelay(stack.back(), TRUE); // For the keyboard
   getmaxyx(stack.back(), screenSize.height, screenSize.width);
   getyx(stack.back(), y, x);
+  init(screenSize.height, screenSize.width);
   colorize();
 }
 
@@ -52,12 +52,7 @@ void Views::NCurses::init (int height, int width) {
     exit(1);
   }
 
-  start_color();
-  init_pair(EMPTY_PAIR, COLOR_WHITE, COLOR_BLACK);
-  init_pair(WATER_PAIR, COLOR_BLUE, COLOR_BLACK);
-  init_pair(PLAIN_PAIR, COLOR_GREEN, COLOR_BLACK);
-  init_pair(SHARK_PAIR, COLOR_RED, COLOR_BLACK);
-  init_pair(FISH_PAIR, COLOR_CYAN, COLOR_BLACK);
+  initColors();
 }
 
 void Views::NCurses::createWindow (int screen, int x, int y, int height, int width) {
@@ -149,6 +144,12 @@ void Views::NCurses::initColors () {
   init_pair(HMENU, 0, 7);
   init_pair(HMENU_SELECTED, 0, 2);
   init_pair(INPUT, 2, 0);
+
+  init_pair(EMPTY_PAIR, COLOR_WHITE, COLOR_BLACK);
+  init_pair(WATER_PAIR, COLOR_BLUE, COLOR_BLACK);
+  init_pair(PLAIN_PAIR, COLOR_GREEN, COLOR_BLACK);
+  init_pair(SHARK_PAIR, COLOR_RED, COLOR_BLACK);
+  init_pair(FISH_PAIR, COLOR_CYAN, COLOR_BLACK);
 }
 
 void Views::NCurses::colorize () {
@@ -167,7 +168,7 @@ void Views::NCurses::load (Screen screen) {
 void Views::NCurses::display () {
   map<int, Component *> lst;
   wclear(stack[0]);
-  box(stack.back(), ACS_VLINE, ACS_HLINE);
+  mvwprintw(stack[0], screenSize.height/2, (screenSize.width-15)/2, "libgraphic v1.0");
 
   _dialog = NULL;
   for(list<Screen*>::reverse_iterator it=screens.rbegin(); it!=screens.rend(); it++) {
@@ -176,7 +177,7 @@ void Views::NCurses::display () {
       lst[lst.size()] = *imap;
   }
 
-  mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx);
+  //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug
 
   for(map<int, Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
     if (DialogBox * box = dynamic_cast<DialogBox*>(it->second); box != nullptr)
