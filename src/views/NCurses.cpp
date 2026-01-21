@@ -430,9 +430,13 @@ void Views::NCurses::display (Table table) {
 void Views::NCurses::display (ScrollBar bar) {
   ScrollBarData data = bar.getScrollBar();
   
-  mvwprintw(stack[bar.window()], bar.y(), bar.x(), "-");
-  mvwprintw(stack[bar.window()], bar.y()+data.cursor+1, bar.x(), "*");
-  mvwprintw(stack[bar.window()], bar.y()+bar.height()-1, bar.x(), "+");
+  mvwaddch(stack[bar.window()], bar.y(), bar.x(), ACS_UARROW);
+  for(unsigned int i =bar.y()+1; i <= bar.y()+data.cursor; i++)
+    mvwaddch(stack[bar.window()], i, bar.x(), ACS_CKBOARD);
+  mvwaddch(stack[bar.window()], bar.y()+data.cursor+1, bar.x(), ACS_BLOCK);
+  for(unsigned int i =bar.y()+data.cursor+2; i <= bar.y()+bar.height()-2; i++)
+    mvwaddch(stack[bar.window()], i, bar.x(), ACS_CKBOARD);
+  mvwaddch(stack[bar.window()], bar.y()+bar.height()-1, bar.x(), ACS_DARROW);
 }
 
 void Views::NCurses::display (Agenda age) {
