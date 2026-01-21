@@ -12,9 +12,9 @@ Calendar::Calendar (const int window, const int x, const int y, const string nam
 
   string Months[12] = {"Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"};
 
-  int iyear = now->tm_year+1900;
+  unsigned short iyear = now->tm_year+1900;
   char s[5] = "0000";
-  sprintf(s, "%d", iyear);
+  sprintf(s, "%hu", iyear);
   string str = s;
   unsigned int imonth = now->tm_mon;
   unsigned int monthday = now->tm_mday;
