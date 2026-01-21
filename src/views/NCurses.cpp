@@ -379,7 +379,10 @@ void Views::NCurses::display (Input * input) {
       wattroff(stack.back(), COLOR_PAIR(INPUT));
 
       key = wgetch(stack.back());
-      if((input->value().size() < input->width()-1) || key == 0x7F) // [ASC] Backspace
+      long unsigned int w = 0;
+      if(input->width()-1>=0)
+        w = input->width()-1;
+      if((input->value().size() < w) || key == 0x7F) // [ASC] Backspace
         input->setch(key);
     }
   }
