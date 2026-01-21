@@ -15,7 +15,7 @@ PROJECT_DIRS = $(SRC) $(INC) $(LIB) $(OUT) $(BIN) $(TEST_DIR)
 INCLUDES = -I $(INC) # -I $(INC_RENDER) -I $(TESTS)
 
 LIBS = -lncurses
-OPT = -Wall -Og -shared -fPIC 
+OPT = -Wall -O -g -shared -fPIC
 TESTS_OPT = -Wall
 OPT_THREAD = -std=c++0x -pthread
 
