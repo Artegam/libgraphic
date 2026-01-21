@@ -21,12 +21,12 @@ Views::NCurses::NCurses () : View () {
   initscr();
   cbreak();
   noecho();
-  if(stack.size() == 0)
+  if(stack.size() == 0)  //[ASC] first screen is stdscr
     stack.push_back(stdscr);
   keypad(stack.back(), TRUE); //keypad of the keyboard
   nodelay(stack.back(), TRUE); // For the keyboard
-  getmaxyx(stack.back(), screenSize.height, screenSize.width);
-  getyx(stack.back(), y, x);
+  getmaxyx(stack.back(), screenSize.height, screenSize.width); //get height and width
+  getyx(stack.back(), y, x); //get x and y start positions
   init(screenSize.height, screenSize.width);
   colorize();
 }
@@ -41,7 +41,7 @@ void Views::NCurses::init (int height, int width) {
   this->worldWidth = width;
 
   // Creation of the stack
-  stack[0] = subwin(stack.back(), screenSize.height, screenSize.width, 0, 0);
+  stack[0] = subwin(stack.back(), screenSize.height, screenSize.width, y, x);
 
   // Enable keyboard for first standart screen
   keypad(stack.back(), true);
@@ -168,7 +168,12 @@ void Views::NCurses::load (Screen screen) {
 void Views::NCurses::display () {
   map<int, Component *> lst;
   wclear(stack[0]);
-  mvwprintw(stack[0], screenSize.height/2, (screenSize.width-15)/2, "libgraphic v1.0");
+  //[ASC] default display
+  if(screens.size() == 0) {
+    Text * t = new Text(0, 0, screenSize.height/2, "libgraphic v1.0");
+    t->align(Text::CENTER);
+    display(t);
+  }
 
   _dialog = NULL;
   for(list<Screen*>::reverse_iterator it=screens.rbegin(); it!=screens.rend(); it++) {
@@ -264,7 +269,8 @@ void Views::NCurses::display (HMenu menu) {
   unsigned int cursorPosition = 0;
   unsigned int num = 0;
 
-  WINDOW * sub = subwin(stack[menu.window()], 1, screenSize.width-2,  1, 1);
+  WINDOW * sub = subwin(stack[menu.window()], 1, screenSize.width,  0, 0);
+  //WINDOW * sub = stack[menu.window()];
   wbkgd(sub, COLOR_PAIR(HMENU));
   _menu_shorcuts = menu.shortcuts();
 
@@ -335,7 +341,21 @@ void Views::NCurses::display (VMenu menu) {
 }
 
 void Views::NCurses::display (Text text) {
-  mvwprintw(stack.back(), text.y(), text.x(), "%s", text.label().c_str());
+  unsigned int x = 0;
+  if(text.align() == Text::LEFT)
+    x = text.x();
+  else if(text.align() == Text::CENTER) {
+    if(text.width()>0)
+      x = text.x() + (text.width() - text.lenght())/2;
+    else
+      x = text.x() + (screenSize.width - text.lenght())/2;
+  } else if(text.align() == Text::RIGHT) {
+    if(text.width()>0)
+      x = text.x() + (text.width() - text.lenght());
+    else
+      x = screenSize.width - text.lenght();
+  }
+  mvwprintw(stack.back(), text.y(), x, "%s", text.label().c_str());
 }
 
 void Views::NCurses::display (Input * input) {

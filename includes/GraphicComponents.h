@@ -124,10 +124,27 @@ namespace GraphicComponents {
   class Text : public virtual GraphicLeaf {
     private:
       string _label;
+      int _align = 0x00;
+
+    protected:
+      int _width = -1;
+      int _height = 1;
+
     public:
+      static const int LEFT     = 0x00;
+      static const int CENTER   = 0x01;
+      static const int RIGHT    = 0x02;
+
       Text (const int window, const int x, const int y, const string label, const string name = "default text");
       void setLabel (const string label);
+      void width (const int w) {_width = w;};
+      void height (const int h) {_height = h;};
+      void align (const int param) {_align = param;};
       const string label ();
+      const int width () {return _width;};
+      const int height () {return _height;};
+      const int align () {return _align;};
+      const unsigned int lenght () {return _label.size();};
   };
 
   class Input : public Text {
