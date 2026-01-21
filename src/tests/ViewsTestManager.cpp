@@ -4,8 +4,12 @@
 
 void ViewTests::execute () {
   //tests constructors
-  Views::View * v = new Views::View();
-  assert(v != nullptr, "View constructor (0 args)");
+  Views::View * view = new Views::View();
+  assert(view != nullptr, "View constructor (0 args)");
+
+  const unsigned char second_key = 'f';
+  view->onShortcut(second_key);
+  assert(view->selected() != nullptr, "A graphic component is selected in the view");
   //TODO: TO BE CONTINUED....
 }
 

@@ -55,6 +55,9 @@ void View::display (GraphicComposite * gc) {
   } else if (Screen * scr = dynamic_cast<Screen*>(gc); scr != nullptr) {
     //display((*scr));
   }
+
+  if(_active == NULL && gc->isSelected())
+    _active = gc;
 }
 
 //[ASC] Du plus détaille au plus general (ordre important)
@@ -87,6 +90,7 @@ void View::display (DialogBox box) {}
 void View::display (Menu menu) {}
 void View::display (HMenu menu) {
   menu.select(submenuHCursor);
+  _menu_shorcuts = menu.shortcuts();
   _active = menu.itemSelected();
 }
 void View::display (VMenu menu) {}

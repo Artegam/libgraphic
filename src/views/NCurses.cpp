@@ -272,7 +272,6 @@ void Views::NCurses::display (HMenu menu) {
   WINDOW * sub = subwin(stack[menu.window()], 1, screenSize.width,  0, 0);
   //WINDOW * sub = stack[menu.window()];
   wbkgd(sub, COLOR_PAIR(HMENU));
-  _menu_shorcuts = menu.shortcuts();
 
   for(it=items.begin(); it != items.end(); it++) {
     string str=(*it);
