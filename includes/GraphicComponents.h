@@ -38,6 +38,9 @@ namespace GraphicComponents {
       const unsigned int occurences(const string str, char c);
   };
 
+  class ColorPalette {
+  };
+
   class GraphicComponent {
     protected:
       int _x;
@@ -54,6 +57,7 @@ namespace GraphicComponents {
       int _selectSize;
       list<GraphicComponent *> _components;
       cursor _cursor;
+      ColorPalette * _colors;
 
     public:
       GraphicComponent();
@@ -77,6 +81,7 @@ namespace GraphicComponents {
       const basic getBasic();
       cursor getCursor ();
       const string getName();
+      void setColorPalette (ColorPalette * p) {_colors = p;};
   };
 
   class GraphicLeaf : public GraphicComponent, public virtual Leaf {
