@@ -16,6 +16,12 @@ class ViewTests : public virtual ViewsTest {
     void execute ();
 };
 
+class NCursesPaletteTests : public virtual ViewsTest {
+  public:
+    NCursesPaletteTests (string name = "NCursesPaletteTests") : testunit::TestManager(name) {};
+    void execute ();
+};
+
 class NCursesTests : public virtual ViewsTest {
   public:
     NCursesTests (string name = "NCursesTests") : testunit::TestManager(name) {};

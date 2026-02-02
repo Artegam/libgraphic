@@ -38,9 +38,6 @@ namespace GraphicComponents {
       const unsigned int occurences(const string str, char c);
   };
 
-  class ColorPalette {
-  };
-
   class GraphicComponent {
     protected:
       int _x;
@@ -57,7 +54,7 @@ namespace GraphicComponents {
       int _selectSize;
       list<GraphicComponent *> _components;
       cursor _cursor;
-      ColorPalette * _colors;
+      unsigned short _colorIndex = 1;
 
     public:
       GraphicComponent();
@@ -81,7 +78,8 @@ namespace GraphicComponents {
       const basic getBasic();
       cursor getCursor ();
       const string getName();
-      void setColorPalette (ColorPalette * p) {_colors = p;};
+      void setColor (const unsigned short index) {_colorIndex = index;};
+      const unsigned short getColor() {return _colorIndex;};
   };
 
   class GraphicLeaf : public GraphicComponent, public virtual Leaf {
@@ -107,10 +105,8 @@ namespace GraphicComponents {
   class Screen : public GraphicComposite {
     private:
       string _label;
-    public:
-      int backgroundColor = 0;
-      int textColor = 7;
 
+    public:
       Screen ();
       Screen (const int window, const int x, const int y, const string label, const string name = "default screen");
       void selectNext ();

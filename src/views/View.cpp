@@ -10,6 +10,8 @@ View::View () {
 void View::init (int height, int width) {
 }
 
+void View::loadPalette () {}
+
 void View::end () {
   tobeClosed = true;
 }

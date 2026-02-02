@@ -20,6 +20,14 @@
 
 #define V_QUIT 0x01
 
+//TODO: pourquoi ne pas mettre ceci dans une map ?
+#define SCREEN         1
+#define HMENU          2
+#define HMENU_SELECTED 3
+#define INPUT          4
+#define TABLE          5
+#define DEFAULT        6
+
 using namespace std;
 using namespace GraphicComponents;
 
@@ -39,6 +47,43 @@ namespace Views {
   struct size_win {
     unsigned int height;
     unsigned int width;
+  };
+
+  class ColorPalette {
+    private:
+      map<unsigned short, pair<short, short>> _colorpalette;
+      /*
+         NCurses colors indexes
+         binary  decimal  Name
+         000     0        Black
+         001     1        Red
+         010     2        Green
+         011     3        Yellow
+         100     4        Blue
+         101     5        Magenta
+         110     6        Cyan
+         111     7        White
+
+         (See intensifier bit in the documentation)
+         1000    8        Bright Black (grey)
+         1001    9        Bright Red
+         1010    10       Bright Green
+         1011    11       Bright Yellow
+         1100    12       Bright Blue
+         1101    13       Bright Magenta
+         1110    14       Bright Cyan
+         1111    15       Bright White
+       */
+
+    public:
+      ColorPalette () {};
+      ColorPalette (const map<unsigned short,pair<short, short>> palette) {_colorpalette = palette;};
+      //chtype getColorPair (const int pair) {return COLOR_PAIR(pair);};
+      pair<short,short> getPair (const unsigned int id) {return _colorpalette[id];};
+      void add (const int id, unsigned short foreground, unsigned short background) {
+        _colorpalette[id] = {foreground, background};
+      };
+      const unsigned long size () {return _colorpalette.size();};
   };
 
   // interface
@@ -64,12 +109,14 @@ namespace Views {
       unsigned int x = 0, y = 0;
       DialogBox * _dialog = nullptr;
       map<char, int> _menu_shorcuts;
+      ColorPalette * _colorPalette;
 
       // Operations
     public:
       View ();
       virtual ~View () {};
       virtual void init (int height, int width);
+      virtual void loadPalette ();
       void end ();
       bool shouldClose ();
       void close ();
@@ -137,58 +184,7 @@ namespace Views {
       bool isSubMenu ();
       // [ASC] Events
       void onShortcut (const unsigned char shortcut);
-  };
-
-  class NCursesPalette : public ColorPalette {
-    protected:
-#define EMPTY_PAIR     1
-#define WATER_PAIR     2
-#define PLAIN_PAIR     3
-#define SHARK_PAIR     4
-#define FISH_PAIR      5
-#define SCREEN         6
-#define HMENU          7
-#define HMENU_SELECTED 8
-#define INPUT          9
-
-      /*
-         NCurses colors indexes
-         binary  decimal  Name
-         000     0        Black
-         001     1        Blue
-         010     2        Green
-         011     3        Cyan
-         100     4        Red
-         101     5        Magenta
-         110     6        Yellow
-         111     7        White
-
-         (See intensifier bit in the documentation)
-         1000    8        Bright Black
-         1001    9        Bright Blue
-         1010    10       Bright Green
-         1011    11       Bright Cyan
-         1100    12       Bright Red
-         1101    13       Bright Magenta
-         1110    14       Bright Yellow
-         1111    15       Bright White
-       */
-
-    public:
-      NCursesPalette () {
-        start_color();
-        init_pair(SCREEN, 7, 4);
-        init_pair(HMENU, 0, 7);
-        init_pair(HMENU_SELECTED, 0, 2);
-        init_pair(INPUT, 2, 0);
-
-        init_pair(EMPTY_PAIR, COLOR_WHITE, COLOR_BLACK);
-        init_pair(WATER_PAIR, COLOR_BLUE, COLOR_BLACK);
-        init_pair(PLAIN_PAIR, COLOR_GREEN, COLOR_BLACK);
-        init_pair(SHARK_PAIR, COLOR_RED, COLOR_BLACK);
-        init_pair(FISH_PAIR, COLOR_CYAN, COLOR_BLACK);
-      };
-      chtype getColorPair (const int pair) {return COLOR_PAIR(pair);};
+      void setColorPalette (ColorPalette * palette) {_colorPalette=palette;};
   };
 
   /// class NCursesView -
@@ -206,7 +202,6 @@ namespace Views {
 string test = "";
       char second_key = 255;
       vector<WINDOW*> stack; //LIFO
-      NCursesPalette * _palette;
 
     protected:
       bool toClear = true;
@@ -216,6 +211,7 @@ string test = "";
       NCurses ();
       ~NCurses ();
       void init (int height, int width);
+      void loadPalette ();
       void createWindow (int screen, int x, int y, int height = 2, int width = 10);
       void displayCursorPosition (int keybPosition);
       void end ();

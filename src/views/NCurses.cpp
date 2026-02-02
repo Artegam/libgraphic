@@ -41,8 +41,16 @@ void Views::NCurses::init (int height, int width) {
     printf("Your terminal does not support color\n");
     exit(1);
   }
+}
 
-  _palette = new NCursesPalette();
+void Views::NCurses::loadPalette () {
+  //[ASC] init colors
+  //init_pair(NAME, Text color, background color)
+  if(_colorPalette != nullptr) {
+    start_color();
+    for(unsigned short i = 1; i <= _colorPalette->size(); i++)
+      init_pair(i, _colorPalette->getPair(i).first, _colorPalette->getPair(i).second);
+  }
 }
 
 void Views::NCurses::createWindow (int screen, int x, int y, int height, int width) {
@@ -53,9 +61,9 @@ void Views::NCurses::createWindow (int screen, int x, int y, int height, int wid
 }
 
 void Views::NCurses::drawChar (WINDOW * win, int x, int y, char c, char color) {
-  wattron(win, _palette->getColorPair(color));
+  wattron(win, COLOR_PAIR(color));
   mvwaddch(win, y, x, c);
-  wattroff(win, _palette->getColorPair(color));
+  wattroff(win, COLOR_PAIR(color));
 }
 
 void Views::NCurses::displayCursorPosition (int keybPosition) {
@@ -107,7 +115,8 @@ void Views::NCurses::hello () {
 
 void Views::NCurses::colorize () {
   wclear(stack[0]);
-  wbkgd(stack[0], _palette->getColorPair(SCREEN));
+  start_color();
+  wbkgd(stack[0], COLOR_PAIR(SCREEN));
 }
 
 void Views::NCurses::load (Screen screen) {
@@ -115,7 +124,9 @@ void Views::NCurses::load (Screen screen) {
   View::load(screen);
   WINDOW * sub = subwin(stack.back(), screen.height(), screen.width(), screen.y(), screen.x());
   stack.push_back(sub);
-  wbkgd(stack.back(), _palette->getColorPair(SCREEN));
+
+  start_color();
+  wbkgd(sub, COLOR_PAIR(SCREEN));
 }
 
 void Views::NCurses::display () {
@@ -160,7 +171,7 @@ void Views::NCurses::display (DialogBox dialog) {
   list<Component *> lst;
   WINDOW * sub = subwin(stack.back(), dialog.height(), dialog.width(), dialog.y(), dialog.x());
   stack.push_back(sub);
-  wbkgd(sub, _palette->getColorPair(HMENU));
+  wbkgd(sub, COLOR_PAIR(HMENU));
   wclear(sub);
   box(sub, ACS_VLINE, ACS_HLINE);
   wrefresh(sub);
@@ -224,20 +235,20 @@ void Views::NCurses::display (HMenu menu) {
 
   WINDOW * sub = subwin(stack[menu.window()], 1, screenSize.width,  0, 0);
   //WINDOW * sub = stack[menu.window()];
-  wbkgd(sub, _palette->getColorPair(HMENU));
+  wbkgd(sub, COLOR_PAIR(HMENU));
 
   for(it=items.begin(); it != items.end(); it++) {
     string str=(*it);
     string::iterator ptr=str.begin();
     if(_submenu && submenuHCursor == num)
-      wattron(sub, _palette->getColorPair(HMENU_SELECTED));
+      wattron(sub, COLOR_PAIR(HMENU_SELECTED));
     wattron(sub, A_BOLD | A_UNDERLINE);
     mvwprintw(sub, 0, cursorPosition, "%c", *ptr);
     cursorPosition++;
     wattroff(sub, A_BOLD | A_UNDERLINE);
     mvwprintw(sub, 0, cursorPosition, "%s", str.substr(1, str.size()-1).c_str());
     if(_submenu && submenuHCursor == num)
-      wattroff(sub, _palette->getColorPair(HMENU_SELECTED));
+      wattroff(sub, COLOR_PAIR(HMENU_SELECTED));
     cursorPosition+=(*it).size()+1;
     num++;
   }
@@ -279,7 +290,7 @@ void Views::NCurses::display (VMenu menu) {
     menu.select(submenuVCursor);
     _validated = menu.validation(submenuVCursor);
     WINDOW * sub = subwin(stack[menu.window()], lst.size(), 11,  menu.y(), menu.x());
-    wbkgd(sub, _palette->getColorPair(HMENU));
+    wbkgd(sub, COLOR_PAIR(HMENU));
     int line = 0;
     for(list<string>::iterator it=lst.begin(); it!=lst.end(); it++) {
       if(line == menu.selected())
@@ -314,10 +325,10 @@ void Views::NCurses::display (Input * input) {
   display(*(dynamic_cast<Text*>(input)));
   unsigned int startx = input->x() + input->label().length();
 
-  wattron(stack.back(), _palette->getColorPair(INPUT));
+  wattron(stack.back(), COLOR_PAIR(INPUT));
   mvwprintw(stack.back(), input->y(), startx, "%s", string(input->width(), ' ').c_str());
   mvwprintw(stack.back(), input->y(), startx, "%s", input->value().c_str());
-  wattroff(stack.back(), _palette->getColorPair(INPUT));
+  wattroff(stack.back(), COLOR_PAIR(INPUT));
   curs_set(1);
   wrefresh(stack[stack.size()-2]);
   wmove(stack.back(), input->y(), startx); // repositione le curseur
@@ -326,10 +337,10 @@ void Views::NCurses::display (Input * input) {
     _active = input;
     unsigned char key = 0x00;
     while(input->isSelected() && key != 0x0a && key != 0x09) {
-      wattron(stack.back(), _palette->getColorPair(INPUT));
+      wattron(stack.back(), COLOR_PAIR(INPUT));
       mvwprintw(stack.back(), input->y(), startx, "%s", string(input->width(), ' ').c_str());
       mvwprintw(stack.back(), input->y(), startx, "%s", input->value().c_str());
-      wattroff(stack.back(), _palette->getColorPair(INPUT));
+      wattroff(stack.back(), COLOR_PAIR(INPUT));
 
       key = wgetch(stack.back());
       long unsigned int w = 0;
@@ -382,7 +393,7 @@ void Views::NCurses::display (Table table) {
 
 void Views::NCurses::display (ScrollBar bar) {
   ScrollBarData data = bar.getScrollBar();
-  
+
   mvwaddch(stack[bar.window()], bar.y(), bar.x(), ACS_UARROW);
   for(unsigned int i =bar.y()+1; i <= bar.y()+data.cursor; i++)
     mvwaddch(stack[bar.window()], i, bar.x(), ACS_CKBOARD);
@@ -455,11 +466,11 @@ void Views::NCurses::tablerow (list<Cell*> lst, list<unsigned int> colssizes, un
     Cell c = **it;
 
     if(c.isSelected())
-      wattron(stack.back(), _palette->getColorPair(WATER_PAIR));
+      wattron(stack.back(), COLOR_PAIR(TABLE));
 
     mvwprintw(win, y+maxrowsize, x+col+1, "%s", c.value().c_str());
     if(c.isSelected())
-      wattroff(stack.back(), _palette->getColorPair(WATER_PAIR));
+      wattroff(stack.back(), COLOR_PAIR(TABLE));
 
     // length of foot and junction tee
     wmove(win, y+maxrowsize+1, x+col+1);
