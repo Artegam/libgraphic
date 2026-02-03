@@ -318,7 +318,9 @@ void Views::NCurses::display (Text text) {
     else
       x = screenSize.width - text.lenght();
   }
+  wattron(stack.back(), COLOR_PAIR(text.getColor()));
   mvwprintw(stack.back(), text.y(), x, "%s", text.label().c_str());
+  wattroff(stack.back(), COLOR_PAIR(text.getColor()));
 }
 
 void Views::NCurses::display (Input * input) {
