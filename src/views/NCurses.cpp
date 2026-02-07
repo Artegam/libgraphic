@@ -5,6 +5,7 @@
 
 using namespace Views;
 
+unsigned char Views::k;
 Views::NCurses::NCurses () : View () {
   // Ncurses initialization
   setlocale(LC_ALL, "");
@@ -32,6 +33,7 @@ void Views::NCurses::init (int height, int width) {
 
   // Creation of the stack
   stack[0] = subwin(stack.back(), screenSize.height, screenSize.width, y, x);
+  Views::out = stack[0];
 
   // Enable keyboard for first standart screen
   keypad(stack.back(), true);
@@ -132,6 +134,7 @@ void Views::NCurses::load (Screen screen) {
 void Views::NCurses::display () {
   map<int, Component *> lst;
   wclear(stack[0]);
+
   //[ASC] default display
   if(screens.size() == 0) {
     Text * t = new Text(0, 0, screenSize.height/2, "libgraphic v1.0");
@@ -147,6 +150,7 @@ void Views::NCurses::display () {
   }
 
   //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug
+  mvwprintw(stack[0], 2, 50, "key pressed: %d", Views::k); //[ASC] Pour le debug
 
   for(map<int, Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
     if (DialogBox * box = dynamic_cast<DialogBox*>(it->second); box != nullptr)
@@ -541,9 +545,7 @@ void Views::NCurses::rect(basic b) {
 }
 
 const unsigned char Views::NCurses::keyboard () {
-  unsigned char key = 0x00;
-  key = wgetch(stack[0]);
-  return key;
+  return _keyboard->listen();
 }
 
 void Views::NCurses::free () {
@@ -557,4 +559,17 @@ void Views::NCurses::setSubMenu (const bool active) {
     curs_set(0);
   else
     curs_set(1);
+}
+
+void Views::NCurses::setKeyboard (int screen) {
+  _keyboard = new InputDevices::NCursesKeyboard(stack[screen]);
+  _keyboard->setOnKeyPressed(Views::NCurses::onKeyPressed);
+  _keyboard = _keyboard;
+}
+
+InputDevices::Keyboard * Views::NCurses::getKeyboard () {return _keyboard;}
+
+void Views::NCurses::onKeyPressed (unsigned char key) {
+  Views::k = key;
+  //mvwprintw(stack[0], 3, 50, "Key pressed: %c", _keyboard->key()); //[ASC] Pour le debug
 }

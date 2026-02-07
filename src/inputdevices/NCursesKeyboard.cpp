@@ -1,38 +1,27 @@
 #include "InputDevices.h"
 
 #include <unistd.h>
-#include <thread>
 
 using namespace InputDevices;
 
 NCursesKeyboard::NCursesKeyboard (WINDOW * window) {
   onKeyPressed=nullptr;
   _window = window;
-  _interval = 1000;
 };
 
-void NCursesKeyboard::start () {
-  _running = true;
-  std::thread t(NCursesKeyboard::onKeyPressed);
-  t.join();
-}
-
-void NCursesKeyboard::stop () {
-  _running = false;
-}
-
-void NCursesKeyboard::listen () { //[ASC] devrait être un pointeur sur fonction genre void* a exécuter...
+unsigned char NCursesKeyboard::listen () { //[ASC] devrait être un pointeur sur fonction genre void* a exécuter...
 //[ASC] TODO: Comment utiliser des évènements (pointeurs sur fonctions) ??
-  while(_running) {
-    _key = 0x00;
-    _key = wgetch(_window);
-    usleep(_interval * 1000);
-  }
+  _key = 0x00;
+  _key = wgetch(_window);
+  execute();
+  return _key;
 }
+
+void NCursesKeyboard::execute () {
+  if(onKeyPressed != nullptr)
+    onKeyPressed(_key);
 /*
   switch(_key) {
-*/
-/*
     case KEYB_UP:
       onKeyboardUp(x, y);
       break;
@@ -81,6 +70,6 @@ void NCursesKeyboard::listen () { //[ASC] devrait être un pointeur sur fonction
       }
       break;
   }
-
 */
-/*}*/
+}
+

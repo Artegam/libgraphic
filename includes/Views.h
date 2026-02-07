@@ -2,8 +2,8 @@
 #define VIEWS_H
 
 #include "GraphicComponents.h"
+#include "InputDevices.h"
 #include <ncurses.h>
-
 
 #include <unistd.h>
 #include <map>
@@ -185,7 +185,12 @@ namespace Views {
       // [ASC] Events
       void onShortcut (const unsigned char shortcut);
       void setColorPalette (ColorPalette * palette) {_colorPalette=palette;};
+      virtual void setKeyboard (int screen);
+      virtual InputDevices::Keyboard * getKeyboard ();
   };
+
+  static WINDOW* out=0x00;
+extern unsigned char k;
 
   /// class NCursesView -
   class NCurses : public View {
@@ -202,6 +207,7 @@ namespace Views {
 string test = "";
       char second_key = 255;
       vector<WINDOW*> stack; //LIFO
+      InputDevices::NCursesKeyboard * _keyboard;
 
     protected:
       bool toClear = true;
@@ -244,6 +250,9 @@ string test = "";
       void tablerow (list<Cell*> lst, list<unsigned int> colssizes, unsigned int x, unsigned int y, const unsigned int cols, Cell * cursor = nullptr, unsigned int mode = 0);
       void free ();
       void setSubMenu (const bool active = true);
+      void setKeyboard (int screen);
+      InputDevices::Keyboard * getKeyboard ();
+      static void onKeyPressed (unsigned char key);
   };
 
 };

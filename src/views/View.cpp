@@ -1,6 +1,5 @@
 #include "Views.h"
 
-
 using namespace std;
 using namespace Views;
 
@@ -272,3 +271,6 @@ void View::onShortcut (const unsigned char shortcut) {
 
   _active = nullptr;
 }
+
+void View::setKeyboard (int screen) {}
+InputDevices::Keyboard * View::getKeyboard () {return nullptr;}

@@ -9,26 +9,17 @@ namespace InputDevices {
   class Keyboard : public Device {};
   class NCursesKeyboard : public Keyboard {
     private:
-      static WINDOW * _window;
-      static unsigned char _key;
-      static bool _running;
-      static unsigned int _interval;
+      WINDOW * _window;
+      unsigned char _key;
 
-      void (*onKeyPressed)();
+      void (*onKeyPressed)(unsigned char key);
     public:
       NCursesKeyboard (WINDOW * window);
-      void start ();
-      void stop ();
-      static void listen ();
-
-      //void onKeyPressed ();
+      unsigned char listen ();
+      void execute ();
+      void setOnKeyPressed (void (*fct)(unsigned char key)) {onKeyPressed = fct;};
+      unsigned char key() {return _key;};
   };
-  WINDOW * NCursesKeyboard::_window;
-  unsigned char NCursesKeyboard::_key;
-  bool NCursesKeyboard::_running;
-  unsigned int NCursesKeyboard::_interval;
-
 };
-
 #endif
 
