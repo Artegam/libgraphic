@@ -110,9 +110,12 @@ namespace Views {
       DialogBox * _dialog = nullptr;
       map<char, int> _menu_shorcuts;
       ColorPalette * _colorPalette;
-
       // Operations
+
     public:
+      static unsigned char _first_key;
+      static unsigned char _second_key;
+
       View ();
       virtual ~View () {};
       virtual void init (int height, int width);
@@ -190,7 +193,6 @@ namespace Views {
   };
 
   static WINDOW* out=0x00;
-extern unsigned char k;
 
   /// class NCursesView -
   class NCurses : public View {
@@ -208,6 +210,7 @@ string test = "";
       char second_key = 255;
       vector<WINDOW*> stack; //LIFO
       InputDevices::NCursesKeyboard * _keyboard;
+
 
     protected:
       bool toClear = true;

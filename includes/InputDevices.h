@@ -9,12 +9,13 @@ namespace InputDevices {
   class Keyboard : public Device {};
   class NCursesKeyboard : public Keyboard {
     private:
-      WINDOW * _window;
-      unsigned char _key;
+      static WINDOW * _window;
+      static unsigned char _key;
 
       void (*onKeyPressed)(unsigned char key);
     public:
       NCursesKeyboard (WINDOW * window);
+      static unsigned char listenChar ();
       unsigned char listen ();
       void execute ();
       void setOnKeyPressed (void (*fct)(unsigned char key)) {onKeyPressed = fct;};

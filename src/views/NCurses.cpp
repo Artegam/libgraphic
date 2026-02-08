@@ -5,7 +5,9 @@
 
 using namespace Views;
 
-unsigned char Views::k;
+unsigned char Views::View::_first_key;
+unsigned char Views::View::_second_key;
+
 Views::NCurses::NCurses () : View () {
   // Ncurses initialization
   setlocale(LC_ALL, "");
@@ -150,7 +152,8 @@ void Views::NCurses::display () {
   }
 
   //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug
-  mvwprintw(stack[0], 2, 50, "key pressed: %d", Views::k); //[ASC] Pour le debug
+  mvwprintw(stack[0], 2, 50, "1st key pressed: %d", View::_first_key); //[ASC] Pour le debug
+  mvwprintw(stack[0], 3, 50, "2nd key pressed: %d", _second_key); //[ASC] Pour le debug
 
   for(map<int, Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
     if (DialogBox * box = dynamic_cast<DialogBox*>(it->second); box != nullptr)
@@ -570,6 +573,7 @@ void Views::NCurses::setKeyboard (int screen) {
 InputDevices::Keyboard * Views::NCurses::getKeyboard () {return _keyboard;}
 
 void Views::NCurses::onKeyPressed (unsigned char key) {
-  Views::k = key;
-  //mvwprintw(stack[0], 3, 50, "Key pressed: %c", _keyboard->key()); //[ASC] Pour le debug
+  _second_key = 0x00;
+  View::_first_key = key;
+  if(key == 27 || key == 53 || key == 54 || key == 49) _second_key = InputDevices::NCursesKeyboard::listenChar(); 
 }

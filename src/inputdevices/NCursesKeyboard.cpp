@@ -4,15 +4,22 @@
 
 using namespace InputDevices;
 
+WINDOW * NCursesKeyboard::_window;
+unsigned char NCursesKeyboard::_key;
+
 NCursesKeyboard::NCursesKeyboard (WINDOW * window) {
   onKeyPressed=nullptr;
   _window = window;
 };
 
+unsigned char NCursesKeyboard::listenChar () {
+  return wgetch(_window);
+}
+
 unsigned char NCursesKeyboard::listen () { //[ASC] devrait être un pointeur sur fonction genre void* a exécuter...
 //[ASC] TODO: Comment utiliser des évènements (pointeurs sur fonctions) ??
   _key = 0x00;
-  _key = wgetch(_window);
+  _key = listenChar();
   execute();
   return _key;
 }
@@ -72,4 +79,3 @@ void NCursesKeyboard::execute () {
   }
 */
 }
-
