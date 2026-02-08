@@ -37,9 +37,6 @@ void Views::NCurses::init (int height, int width) {
   stack[0] = subwin(stack.back(), screenSize.height, screenSize.width, y, x);
   Views::out = stack[0];
 
-  // Enable keyboard for first standart screen
-  keypad(stack.back(), true);
-
   if (has_colors() == FALSE) {
     endwin();
     printf("Your terminal does not support color\n");

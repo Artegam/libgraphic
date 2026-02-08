@@ -10,6 +10,8 @@ unsigned char NCursesKeyboard::_key;
 NCursesKeyboard::NCursesKeyboard (WINDOW * window) {
   onKeyPressed=nullptr;
   _window = window;
+  // Enable keyboard for first standart screen
+  keypad(_window, true);
 };
 
 unsigned char NCursesKeyboard::listenChar () {
