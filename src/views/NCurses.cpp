@@ -7,6 +7,8 @@ using namespace Views;
 
 unsigned char Views::View::_first_key;
 unsigned char Views::View::_second_key;
+unsigned int Views::View::_page = 0;
+unsigned int Views::View::_maxPage = 1;
 
 Views::NCurses::NCurses () : View () {
   // Ncurses initialization
@@ -16,8 +18,6 @@ Views::NCurses::NCurses () : View () {
   noecho();
   if(stack.size() == 0)  //[ASC] first screen is stdscr
     stack.push_back(stdscr);
-  keypad(stack.back(), TRUE); //keypad of the keyboard
-  nodelay(stack.back(), TRUE); // For the keyboard
   getmaxyx(stack.back(), screenSize.height, screenSize.width); //get height and width
   getyx(stack.back(), y, x); //get x and y start positions
   init(screenSize.height, screenSize.width);
@@ -101,10 +101,6 @@ void Views::NCurses::end () {
   endwin();
 }
 
-int Views::NCurses::getChar () {
-  return wgetch(stack.back());
-}
-
 void Views::NCurses::hello () {
   // pour tester
   initscr();
@@ -149,8 +145,8 @@ void Views::NCurses::display () {
   }
 
   //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug
-  mvwprintw(stack[0], 2, 50, "1st key pressed: %d", View::_first_key); //[ASC] Pour le debug
-  mvwprintw(stack[0], 3, 50, "2nd key pressed: %d", _second_key); //[ASC] Pour le debug
+  mvwprintw(stack[0], 2, 40, "1st key pressed: %d", View::_first_key);
+  mvwprintw(stack[0], 3, 40, "2nd key pressed: %d", View::_second_key);
 
   for(map<int, Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
     if (DialogBox * box = dynamic_cast<DialogBox*>(it->second); box != nullptr)
@@ -564,13 +560,12 @@ void Views::NCurses::setSubMenu (const bool active) {
 void Views::NCurses::setKeyboard (int screen) {
   _keyboard = new InputDevices::NCursesKeyboard(stack[screen]);
   _keyboard->setOnKeyPressed(Views::NCurses::onKeyPressed);
-  _keyboard = _keyboard;
 }
 
 InputDevices::Keyboard * Views::NCurses::getKeyboard () {return _keyboard;}
 
 void Views::NCurses::onKeyPressed (unsigned char key) {
-  _second_key = 0x00;
+  View::_second_key = 0x00;
   View::_first_key = key;
-  if(key == 27 || key == 53 || key == 54 || key == 49) _second_key = InputDevices::NCursesKeyboard::listenChar(); 
+  if(key == 27 || key == 53 || key == 54 || key == 49) View::_second_key = InputDevices::NCursesKeyboard::listenChar();
 }

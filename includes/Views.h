@@ -95,12 +95,10 @@ namespace Views {
       unsigned int _keyboardy = 0;
       unsigned int _maxKeyboardx = 0;
       unsigned int _maxKeyboardy = 0;
-      unsigned int _maxPage = 1;
       bool _valid = false;
       list<Screen*> screens;
       bool tobeClosed = false;
       size_win screenSize;
-      unsigned int _page = 0;
       bool _submenu = false;
       Component * _active = nullptr;
       Component * _validated = nullptr;
@@ -115,6 +113,8 @@ namespace Views {
     public:
       static unsigned char _first_key;
       static unsigned char _second_key;
+      static unsigned int _page;
+      static unsigned int _maxPage;
 
       View ();
       virtual ~View () {};
@@ -188,9 +188,11 @@ namespace Views {
       // [ASC] Events
       void onShortcut (const unsigned char shortcut);
       void setColorPalette (ColorPalette * palette) {_colorPalette=palette;};
+      virtual void setEvent (unsigned char key, void (*fct)());
       virtual void setKeyboard (int screen);
       virtual InputDevices::Keyboard * getKeyboard ();
   };
+
 
   static WINDOW* out=0x00;
 
@@ -224,7 +226,6 @@ string test = "";
       void createWindow (int screen, int x, int y, int height = 2, int width = 10);
       void displayCursorPosition (int keybPosition);
       void end ();
-      int getChar ();
       void hello (); // Pour tester l'affichage en cas de soucis
       void validateOption (int optionNumber);
       void clearScreen();
@@ -255,6 +256,7 @@ string test = "";
       void setSubMenu (const bool active = true);
       void setKeyboard (int screen);
       InputDevices::Keyboard * getKeyboard ();
+      void setEvent (unsigned char key, void (*fct)()) {_keyboard->setEvent(key, fct);};
       static void onKeyPressed (unsigned char key);
   };
 

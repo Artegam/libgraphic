@@ -12,6 +12,8 @@ NCursesKeyboard::NCursesKeyboard (WINDOW * window) {
   _window = window;
   // Enable keyboard for first standart screen
   keypad(_window, true);
+  noecho();
+  timeout(0);
 };
 
 unsigned char NCursesKeyboard::listenChar () {
@@ -26,9 +28,30 @@ unsigned char NCursesKeyboard::listen () { //[ASC] devrait être un pointeur sur
   return _key;
 }
 
+void NCursesKeyboard::setEvent (unsigned char key, void (*fct)()) {
+  switch(key) {
+    case 83:
+      onPageUp = fct;
+      break;
+    case 82:
+      onPageDown = fct;
+      break;
+  }
+};
+
 void NCursesKeyboard::execute () {
   if(onKeyPressed != nullptr)
     onKeyPressed(_key);
+
+  switch(_key) {
+    case 83:
+      onPageUp();
+      break;
+    case 82:
+      onPageDown();
+      break;
+  }
+
 /*
   switch(_key) {
     case KEYB_UP:
