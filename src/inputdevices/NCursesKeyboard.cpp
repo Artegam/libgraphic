@@ -44,10 +44,10 @@ void NCursesKeyboard::execute () {
     onKeyPressed(_key);
 
   switch(_key) {
-    case 83:
+    case KEYB_PAGEUP:
       onPageUp();
       break;
-    case 82:
+    case KEYB_PAGEDOWN:
       onPageDown();
       break;
   }

@@ -32,18 +32,6 @@ using namespace std;
 using namespace GraphicComponents;
 
 namespace Views {
-  // Keyboard keys
-  const int KEYB_DOWN     = 2;
-  const int KEYB_UP       = 3;
-  const int KEYB_LEFT     = 4;
-  const int KEYB_RIGHT    = 5;
-  const int KEYB_ENTER    = 10;
-  const int KEYB_CR       = 13;
-  const int KEYB_SPACE    = 32;
-  const int KEYB_ESCAPE   = 27;
-  const int KEYB_PAGEDOWN = 82;
-  const int KEYB_PAGEUP   = 83;
-
   struct size_win {
     unsigned int height;
     unsigned int width;
