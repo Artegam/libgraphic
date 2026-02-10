@@ -4,16 +4,16 @@
 #include <ncurses.h>
 
 // Keyboard keys
-const int KEYB_DOWN     = 2;
-const int KEYB_UP       = 3;
-const int KEYB_LEFT     = 4;
-const int KEYB_RIGHT    = 5;
-const int KEYB_ENTER    = 10;
-const int KEYB_CR       = 13;
-const int KEYB_SPACE    = 32;
-const int KEYB_ESCAPE   = 27;
-const int KEYB_PAGEDOWN = 82;
-const int KEYB_PAGEUP   = 83;
+const int KEYB_ARROW_DOWN  = 2;
+const int KEYB_ARROW_UP    = 3;
+const int KEYB_ARROW_LEFT  = 4;
+const int KEYB_ARROW_RIGHT = 5;
+const int KEYB_ENTER       = 10;
+const int KEYB_CR          = 13;
+const int KEYB_SPACE       = 32;
+const int KEYB_ESCAPE      = 27;
+const int KEYB_PAGEDOWN    = 82;
+const int KEYB_PAGEUP      = 83;
 
 namespace InputDevices {
   class Device {};
@@ -24,6 +24,10 @@ namespace InputDevices {
       static unsigned char _key;
 
       void (*onKeyPressed)(unsigned char key);
+      void (*onArrowUp)();
+      void (*onArrowDown)();
+      void (*onArrowLeft)();
+      void (*onArrowRight)();
       void (*onPageUp)();
       void (*onPageDown)();
     public:

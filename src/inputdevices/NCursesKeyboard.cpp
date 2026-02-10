@@ -9,6 +9,12 @@ unsigned char NCursesKeyboard::_key;
 
 NCursesKeyboard::NCursesKeyboard (WINDOW * window) {
   onKeyPressed=nullptr;
+  onArrowUp=nullptr;
+  onArrowDown=nullptr;
+  onArrowLeft=nullptr;
+  onArrowRight=nullptr;
+  onPageUp=nullptr;
+  onPageDown=nullptr;
   _window = window;
   // Enable keyboard for first standart screen
   keypad(_window, true);
@@ -30,6 +36,18 @@ unsigned char NCursesKeyboard::listen () { //[ASC] devrait être un pointeur sur
 
 void NCursesKeyboard::setEvent (unsigned char key, void (*fct)()) {
   switch(key) {
+    case KEYB_ARROW_UP:
+      onArrowUp = fct;
+      break;
+    case KEYB_ARROW_DOWN:
+      onArrowDown = fct;
+      break;
+    case KEYB_ARROW_LEFT:
+      onArrowLeft = fct;
+      break;
+    case KEYB_ARROW_RIGHT:
+      onArrowRight = fct;
+      break;
     case KEYB_PAGEUP:
       onPageUp = fct;
       break;
@@ -40,38 +58,31 @@ void NCursesKeyboard::setEvent (unsigned char key, void (*fct)()) {
 };
 
 void NCursesKeyboard::execute () {
-  if(onKeyPressed != nullptr)
-    onKeyPressed(_key);
+  if(onKeyPressed != nullptr) onKeyPressed(_key);
 
   switch(_key) {
+    case KEYB_ARROW_UP:
+      if(onArrowUp != nullptr) onArrowUp();
+      break;
+    case KEYB_ARROW_DOWN:
+      if(onArrowDown != nullptr) onArrowDown();
+      break;
+    case KEYB_ARROW_LEFT:
+      if(onArrowLeft != nullptr) onArrowLeft();
+      break;
+    case KEYB_ARROW_RIGHT:
+      if(onArrowRight != nullptr) onArrowRight();
+      break;
     case KEYB_PAGEUP:
-      onPageUp();
+      if(onPageUp != nullptr) onPageUp();
       break;
     case KEYB_PAGEDOWN:
-      onPageDown();
+      if(onPageUp != nullptr) onPageDown();
       break;
   }
 
 /*
   switch(_key) {
-    case KEYB_UP:
-      onKeyboardUp(x, y);
-      break;
-    case KEYB_DOWN:
-      onKeyboardDown(x, y);
-      break;
-    case KEYB_LEFT:
-      onKeyboardLeft(x, y);
-      break;
-    case KEYB_RIGHT:
-      onKeyboardRight(x, y);
-      break;
-    case KEYB_PAGEUP:
-      onKeyboardPageUp(x, y);
-      break;
-    case KEYB_PAGEDOWN:
-      onKeyboardPageDown(x, y);
-      break;
     case KEYB_SPACE:
       break;
     case KEYB_ENTER:
