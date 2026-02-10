@@ -30,10 +30,10 @@ unsigned char NCursesKeyboard::listen () { //[ASC] devrait être un pointeur sur
 
 void NCursesKeyboard::setEvent (unsigned char key, void (*fct)()) {
   switch(key) {
-    case 83:
+    case KEYB_PAGEUP:
       onPageUp = fct;
       break;
-    case 82:
+    case KEYB_PAGEDOWN:
       onPageDown = fct;
       break;
   }
