@@ -92,7 +92,6 @@ namespace Views {
       Component * _validated = nullptr;
       unsigned int submenuVCursor = 0;
       unsigned int submenuHCursor = 0;
-      unsigned int x = 0, y = 0;
       DialogBox * _dialog = nullptr;
       map<char, int> _menu_shorcuts;
       ColorPalette * _colorPalette;
@@ -103,6 +102,8 @@ namespace Views {
       static unsigned char _second_key;
       static unsigned int _page;
       static unsigned int _maxPage;
+      static unsigned int _cursor_x;
+      static unsigned int _cursor_y;
 
       View ();
       virtual ~View () {};
@@ -166,9 +167,6 @@ namespace Views {
       virtual void setMaxPage (const unsigned int max = 1);
       void movePage(const bool next = true);
       void movePage(const unsigned int to_page);
-      //[ASC] Cursor member functions
-      pair<unsigned int, unsigned int> getCursorPosition ();
-      void setCursorPosition (pair<unsigned int, unsigned int> p);
       //[ASC] isXX member functions
       const bool isDialog ();
       bool isValid ();

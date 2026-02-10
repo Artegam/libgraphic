@@ -228,15 +228,6 @@ const unsigned int View::getSubmenuHCursor () {
   return submenuHCursor;
 }
 
-pair<unsigned int, unsigned int> View::getCursorPosition () {
-  return pair<unsigned int, unsigned int>(x, y);
-}
-
-void View::setCursorPosition (pair<unsigned int, unsigned int> p) {
-  x = p.first;
-  y = p.second;
-}
-
 void View::movePage(const bool next) {
   if(next && _page<_maxPage)
     _page++;

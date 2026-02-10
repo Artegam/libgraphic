@@ -9,6 +9,8 @@ unsigned char Views::View::_first_key;
 unsigned char Views::View::_second_key;
 unsigned int Views::View::_page = 0;
 unsigned int Views::View::_maxPage = 1;
+unsigned int Views::View::_cursor_x = 0;
+unsigned int Views::View::_cursor_y = 0;
 
 Views::NCurses::NCurses () : View () {
   // Ncurses initialization
@@ -19,7 +21,7 @@ Views::NCurses::NCurses () : View () {
   if(stack.size() == 0)  //[ASC] first screen is stdscr
     stack.push_back(stdscr);
   getmaxyx(stack.back(), screenSize.height, screenSize.width); //get height and width
-  getyx(stack.back(), y, x); //get x and y start positions
+  getyx(stack.back(), Views::View::_cursor_y, Views::View::_cursor_x); //get x and y start positions
   init(screenSize.height, screenSize.width);
   colorize();
 }
@@ -34,7 +36,7 @@ void Views::NCurses::init (int height, int width) {
   this->worldWidth = width;
 
   // Creation of the stack
-  stack[0] = subwin(stack.back(), screenSize.height, screenSize.width, y, x);
+  stack[0] = subwin(stack.back(), screenSize.height, screenSize.width, Views::View::_cursor_y, Views::View::_cursor_x);
   Views::out = stack[0];
 
   if (has_colors() == FALSE) {
@@ -161,7 +163,7 @@ void Views::NCurses::display () {
     _active = _dialog->selectedComponent();
   }
 
-  wmove(stack.back(), y, x); // repositione le curseur
+  wmove(stack.back(), Views::View::_cursor_y, Views::View::_cursor_x); // repositione le curseur
   refresh();
   wrefresh(stack.back());
   usleep(100000);
