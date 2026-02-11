@@ -87,7 +87,6 @@ namespace Views {
       list<Screen*> screens;
       bool tobeClosed = false;
       size_win screenSize;
-      bool _submenu = false;
       Component * _active = nullptr;
       Component * _validated = nullptr;
       unsigned int submenuVCursor = 0;
@@ -104,6 +103,7 @@ namespace Views {
       static unsigned int _maxPage;
       static unsigned int _cursor_x;
       static unsigned int _cursor_y;
+      static bool _isSubmenu;
 
       View ();
       virtual ~View () {};

@@ -157,7 +157,7 @@ void View::setMaxKeyboardy (const int max) {
 }
 
 void View::setSubMenu (const bool active) {
-  _submenu = active;
+  _isSubmenu = active;
 }
 
 void View::resetKeyboard () {
@@ -172,7 +172,7 @@ bool View::isValid () {
 }
 
 bool View::isSubMenu () {
-  return _submenu;
+  return _isSubmenu;
 }
 
 size_win View::getScreenSize () {
@@ -195,7 +195,7 @@ Component * View::validated () {
   if(_valid) {
     Component * gc = _validated;
     _validated = NULL;
-    _submenu = false;
+    _isSubmenu = false;
     _valid = false;
     return gc;
   } else

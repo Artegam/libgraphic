@@ -11,6 +11,7 @@ unsigned int Views::View::_page = 0;
 unsigned int Views::View::_maxPage = 1;
 unsigned int Views::View::_cursor_x = 0;
 unsigned int Views::View::_cursor_y = 0;
+bool Views::View::_isSubmenu = false;
 
 Views::NCurses::NCurses () : View () {
   // Ncurses initialization
@@ -242,20 +243,20 @@ void Views::NCurses::display (HMenu menu) {
   for(it=items.begin(); it != items.end(); it++) {
     string str=(*it);
     string::iterator ptr=str.begin();
-    if(_submenu && submenuHCursor == num)
+    if(_isSubmenu && submenuHCursor == num)
       wattron(sub, COLOR_PAIR(HMENU_SELECTED));
     wattron(sub, A_BOLD | A_UNDERLINE);
     mvwprintw(sub, 0, cursorPosition, "%c", *ptr);
     cursorPosition++;
     wattroff(sub, A_BOLD | A_UNDERLINE);
     mvwprintw(sub, 0, cursorPosition, "%s", str.substr(1, str.size()-1).c_str());
-    if(_submenu && submenuHCursor == num)
+    if(_isSubmenu && submenuHCursor == num)
       wattroff(sub, COLOR_PAIR(HMENU_SELECTED));
     cursorPosition+=(*it).size()+1;
     num++;
   }
 
-  if(_submenu) {
+  if(_isSubmenu) {
     unsigned int offset = 1;
     unsigned int num = 0;
     list<string> lst = menu.items();
