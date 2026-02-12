@@ -180,8 +180,6 @@ namespace Views {
   };
 
 
-  static WINDOW* out=0x00;
-
   /// class NCursesView -
   class NCurses : public View {
     private:

@@ -38,7 +38,6 @@ void Views::NCurses::init (int height, int width) {
 
   // Creation of the stack
   stack[0] = subwin(stack.back(), screenSize.height, screenSize.width, Views::View::_cursor_y, Views::View::_cursor_x);
-  Views::out = stack[0];
 
   if (has_colors() == FALSE) {
     endwin();
