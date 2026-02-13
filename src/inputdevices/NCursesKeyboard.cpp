@@ -19,7 +19,9 @@ NCursesKeyboard::NCursesKeyboard (WINDOW * window) {
   // Enable keyboard for first standart screen
   keypad(_window, true);
   noecho();
+  nodelay(_window, true);
   timeout(0);
+  set_escdelay(100);
 };
 
 unsigned char NCursesKeyboard::listenChar () {
