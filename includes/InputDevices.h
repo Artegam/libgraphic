@@ -2,6 +2,7 @@
 #define INPUTDEVICES_H
 
 #include <ncurses.h>
+#include <map>
 
 // Keyboard keys
 const int KEYB_ARROW_DOWN  = 2;
@@ -16,6 +17,7 @@ const int KEYB_PAGEDOWN    = 82;
 const int KEYB_PAGEUP      = 83;
 
 namespace InputDevices {
+  typedef void (*fctptr)();
   class Device {};
   class Keyboard : public Device {};
   class NCursesKeyboard : public Keyboard {
@@ -30,6 +32,7 @@ namespace InputDevices {
       void (*onArrowRight)();
       void (*onPageUp)();
       void (*onPageDown)();
+      std::map<int, fctptr> _events;
     public:
       NCursesKeyboard (WINDOW * window);
       static unsigned char listenChar ();
