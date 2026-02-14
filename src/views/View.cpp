@@ -258,9 +258,8 @@ void View::onShortcut (const unsigned char shortcut) {
     } else if (gl = dynamic_cast<GraphicLeaf*>(_active); gl != nullptr) {
       gl->unselect();
     }
+    _active = nullptr;
   }
-
-  _active = nullptr;
 }
 
 void View::setEvent (unsigned char key, void (*fct)()) {}
