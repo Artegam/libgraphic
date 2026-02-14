@@ -46,36 +46,17 @@ void GraphicComponent::unselectAll () {
     (*i)->unselect();
 }
 
-const bool GraphicComponent::isValidated () {
-  return _validated;
-}
-
+const bool GraphicComponent::isValidated ()  {return _validated;}
 const bool GraphicComponent::isSelectable () {return _selectable;}
-const bool GraphicComponent::isSelected () {return _selected;}
+const bool GraphicComponent::isSelected ()   {return _selected;}
 
-const int GraphicComponent::id() {
-  return _id;
-}
+const int GraphicComponent::id()     {return _id;}
+const int GraphicComponent::window() {return _window;}
+const int GraphicComponent::x()      {return _x;}
+const int GraphicComponent::y()      {return _y;}
 
-const int GraphicComponent::window() {
-  return _window;
-}
-
-const int GraphicComponent::x() {
-  return _x;
-}
-
-const int GraphicComponent::y() {
-  return _y;
-}
-
-const unsigned int GraphicComponent::width() {
-  return _width;
-}
-
-const unsigned int GraphicComponent::height() {
-  return _height;
-}
+const unsigned int GraphicComponent::width()  {return _width;}
+const unsigned int GraphicComponent::height() {return _height;}
 
 const basic GraphicComponent::getBasic() {
   basic b;
@@ -86,10 +67,5 @@ const basic GraphicComponent::getBasic() {
   return b;
 }
 
-cursor GraphicComponent::getCursor () {
-  return _cursor;
-}
-
-const string GraphicComponent::getName() {
-  return _name;
-}
+cursor GraphicComponent::getCursor ()    {return _cursor;}
+const string GraphicComponent::getName() {return _name;}
