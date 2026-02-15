@@ -54,11 +54,11 @@ const unsigned int Node::getRank (string name) {
 // Calcule un offset a partir de la longueur des noms des nodes
 const unsigned int Node::getNameOffset (string name) {
   list<Atom *> lst = getChildren();
-  unsigned int len = 1;
+  unsigned int len = 0;
   for(list<Atom *>::iterator it = lst.begin(); it != lst.end(); it++) {
     if((*it)->getName() == name)
       return len;
-    len+=(*it)->getName().size()+2;
+    len+=(*it)->getName().size()+1;
   }
   return len;
 }

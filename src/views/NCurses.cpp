@@ -60,7 +60,6 @@ void Views::NCurses::createWindow (int screen, int x, int y, int height, int wid
   if(stack.size() < (unsigned long)(screen + 1)) 
     stack.resize(screen+1);
   stack.push_back(subwin(stack.back(), height, width, y, x));
-  refresh();
 }
 
 void Views::NCurses::drawChar (WINDOW * win, int x, int y, char c, char color) {
@@ -119,8 +118,10 @@ void Views::NCurses::colorize () {
 }
 
 void Views::NCurses::load (Screen screen) {
+//[ASC] TODO: il y a un soucis ici... a creuser ou a refaire
   clear();
   View::load(screen);
+
   WINDOW * sub = subwin(stack.back(), screen.height(), screen.width(), screen.y(), screen.x());
   stack.push_back(sub);
 
@@ -165,7 +166,6 @@ void Views::NCurses::display () {
 
   wmove(stack.back(), Views::View::_cursor_y, Views::View::_cursor_x); // repositione le curseur
   refresh();
-  wrefresh(stack.back());
   usleep(100000);
 }
 
@@ -240,6 +240,8 @@ void Views::NCurses::display (HMenu menu) {
   unsigned int cursorPosition = 0;
   unsigned int num = 0;
 
+  submenuHCursor=submenuHCursor%items.size();
+
   pair<unsigned int, unsigned int> position = menu.position();
   if(!exists(position))
     windows[position] = subwin(stack[menu.window()], 1, screenSize.width, 0, 0);
@@ -248,6 +250,11 @@ void Views::NCurses::display (HMenu menu) {
   for(it=items.begin(); it != items.end(); it++) {
     string str=(*it);
     string::iterator ptr=str.begin();
+
+    mvwprintw(stack[0], 2, 3, "submenuHCursor: %d", submenuHCursor);
+    mvwprintw(stack[0], 3, 3, "num : %d", num);
+    mvwprintw(stack[0], 4, 3, "isSubmenu: %d", _isSubmenu);
+
     if(_isSubmenu && submenuHCursor == num)
       wattron(windows[position], COLOR_PAIR(HMENU_SELECTED));
     wattron(windows[position], A_BOLD | A_UNDERLINE);
@@ -265,10 +272,6 @@ void Views::NCurses::display (HMenu menu) {
     unsigned int offset = 1;
     unsigned int num = 0;
     bool found = false;
-//[ASC] bizarre le -1
-    if(submenuHCursor>items.size())
-      submenuHCursor=items.size()-1;
-    submenuHCursor=submenuHCursor%items.size();
 
     for(list<string>::iterator it = items.begin(); it!=items.end()||found; it++) {
       string s = *it;
@@ -301,18 +304,20 @@ void Views::NCurses::display (VMenu menu) {
 
     pair<unsigned int, unsigned int> position = menu.position();
     if(!exists(position))
-      windows[position] = subwin(stack[menu.window()], lst.size(), 11,  menu.y(), menu.x());
+      windows[position] = subwin(stack[menu.window()], lst.size(), menu.width()+2,  menu.y(), menu.x());
 
     wbkgd(windows[position], COLOR_PAIR(HMENU));
+
     int line = 0;
     for(list<string>::iterator it=lst.begin(); it!=lst.end(); it++) {
       if(line == menu.selected())
         wattron(windows[position], A_REVERSE);
-      mvwprintw(windows[position], line, 0, "%s", (*it).c_str());
+      mvwprintw(windows[position], line, 1, "%s", (*it).c_str());
       if(line == menu.selected())
         wattroff(windows[position], A_REVERSE);
       line++;
     }
+
   }
 }
 
