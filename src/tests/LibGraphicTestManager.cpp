@@ -321,6 +321,7 @@ void VMenuTests::execute () {
   assert(m2 != nullptr, "VMenu constructor string list (5 args)");
   assert(m3 != nullptr, "VMenu constructor Text* list (4 args)");
   assert(m4 != nullptr, "VMenu constructor Text* list (5 args)");
+  assert(m2->getName() == "my string list VMenu", "VMenu check name");
 }
 
 void ButtonTests::execute () {
