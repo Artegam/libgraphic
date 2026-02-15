@@ -171,14 +171,17 @@ void Views::NCurses::display () {
 
 void Views::NCurses::display (DialogBox dialog) {
   list<Component *> lst;
-  WINDOW * sub = subwin(stack.back(), dialog.height(), dialog.width(), dialog.y(), dialog.x());
-  stack.push_back(sub);
-  wbkgd(sub, COLOR_PAIR(HMENU));
-  wclear(sub);
-  box(sub, ACS_VLINE, ACS_HLINE);
-  wrefresh(sub);
+  pair<unsigned int, unsigned int> position = dialog.position();
+  if(!exists(position))
+    windows[position] = subwin(stack[dialog.window()], dialog.height(), dialog.width(), dialog.y(), dialog.x());
 
-  mvwprintw(sub, 0, 1, "%s", dialog.label().c_str());
+  stack.push_back(windows[position]);
+  wbkgd(windows[position], COLOR_PAIR(HMENU));
+  wclear(windows[position]);
+  box(windows[position], ACS_VLINE, ACS_HLINE);
+  wrefresh(windows[position]);
+
+  mvwprintw(windows[position], 0, 1, "%s", dialog.label().c_str());
 
   lst = dialog.getGraphicComponents();
   list<Component *>::iterator idx = lst.begin();
@@ -211,15 +214,17 @@ void Views::NCurses::display (Menu menu) {
   mvwprintw(stack[scr.window()], 5, 50, "_maxKeyboardx: %d", _maxKeyboardx);
 
   //TODO: le 10 c'est la largeur, donc le calcul de la plus longue chaine de caracteres
-  WINDOW * sub = subwin(stack[menu.window()], items.size() + 2, 10,  y - 1, x - 1);
-  box(sub, ACS_VLINE, ACS_HLINE);
+  pair<unsigned int, unsigned int> position = menu.position();
+  if(!exists(position))
+    windows[position] = subwin(stack[menu.window()], items.size() + 2, 10,  y - 1, x - 1);
+  box(windows[position], ACS_VLINE, ACS_HLINE);
 
   for(it = items.begin(); it != items.end(); it++) {
     if(cursorPosition == _keyboardx)
-      wattron(stack[menu.window()], A_REVERSE);
-    mvwprintw(stack[menu.window()], y, x, "%s", (*it).c_str());
+      wattron(windows[position], A_REVERSE);
+    mvwprintw(windows[position], y, x, "%s", (*it).c_str());
     if(cursorPosition == _keyboardx)
-      wattroff(stack[menu.window()], A_REVERSE);
+      wattroff(windows[position], A_REVERSE);
 
     y++;
     cursorPosition++;
@@ -235,22 +240,23 @@ void Views::NCurses::display (HMenu menu) {
   unsigned int cursorPosition = 0;
   unsigned int num = 0;
 
-  WINDOW * sub = subwin(stack[menu.window()], 1, screenSize.width,  0, 0);
-  //WINDOW * sub = stack[menu.window()];
-  wbkgd(sub, COLOR_PAIR(HMENU));
+  pair<unsigned int, unsigned int> position = menu.position();
+  if(!exists(position))
+    windows[position] = subwin(stack[menu.window()], 1, screenSize.width, 0, 0);
+  wbkgd(windows[position], COLOR_PAIR(menu.getColor()));
 
   for(it=items.begin(); it != items.end(); it++) {
     string str=(*it);
     string::iterator ptr=str.begin();
     if(_isSubmenu && submenuHCursor == num)
-      wattron(sub, COLOR_PAIR(HMENU_SELECTED));
-    wattron(sub, A_BOLD | A_UNDERLINE);
-    mvwprintw(sub, 0, cursorPosition, "%c", *ptr);
+      wattron(windows[position], COLOR_PAIR(HMENU_SELECTED));
+    wattron(windows[position], A_BOLD | A_UNDERLINE);
+    mvwprintw(windows[position], 0, cursorPosition, "%c", *ptr);
     cursorPosition++;
-    wattroff(sub, A_BOLD | A_UNDERLINE);
-    mvwprintw(sub, 0, cursorPosition, "%s", str.substr(1, str.size()-1).c_str());
+    wattroff(windows[position], A_BOLD | A_UNDERLINE);
+    mvwprintw(windows[position], 0, cursorPosition, "%s", str.substr(1, str.size()-1).c_str());
     if(_isSubmenu && submenuHCursor == num)
-      wattroff(sub, COLOR_PAIR(HMENU_SELECTED));
+      wattroff(windows[position], COLOR_PAIR(HMENU_SELECTED));
     cursorPosition+=(*it).size()+1;
     num++;
   }
@@ -258,12 +264,13 @@ void Views::NCurses::display (HMenu menu) {
   if(_isSubmenu) {
     unsigned int offset = 1;
     unsigned int num = 0;
-    list<string> lst = menu.items();
     bool found = false;
-    if(submenuHCursor>lst.size())
-      submenuHCursor=lst.size()-1;
-    submenuHCursor=submenuHCursor%lst.size();
-    for(list<string>::iterator it = lst.begin(); it!=lst.end()||found; it++) {
+//[ASC] bizarre le -1
+    if(submenuHCursor>items.size())
+      submenuHCursor=items.size()-1;
+    submenuHCursor=submenuHCursor%items.size();
+
+    for(list<string>::iterator it = items.begin(); it!=items.end()||found; it++) {
       string s = *it;
       string::iterator s_it = s.begin();
       if(tolower(*s_it) == second_key) {
@@ -291,15 +298,19 @@ void Views::NCurses::display (VMenu menu) {
     submenuVCursor=submenuVCursor%lst.size();
     menu.select(submenuVCursor);
     _validated = menu.validation(submenuVCursor);
-    WINDOW * sub = subwin(stack[menu.window()], lst.size(), 11,  menu.y(), menu.x());
-    wbkgd(sub, COLOR_PAIR(HMENU));
+
+    pair<unsigned int, unsigned int> position = menu.position();
+    if(!exists(position))
+      windows[position] = subwin(stack[menu.window()], lst.size(), 11,  menu.y(), menu.x());
+
+    wbkgd(windows[position], COLOR_PAIR(HMENU));
     int line = 0;
     for(list<string>::iterator it=lst.begin(); it!=lst.end(); it++) {
       if(line == menu.selected())
-        wattron(sub, A_REVERSE);
-      mvwprintw(sub, line, 0, "%s", (*it).c_str());
+        wattron(windows[position], A_REVERSE);
+      mvwprintw(windows[position], line, 0, "%s", (*it).c_str());
       if(line == menu.selected())
-        wattroff(sub, A_REVERSE);
+        wattroff(windows[position], A_REVERSE);
       line++;
     }
   }
@@ -320,33 +331,34 @@ void Views::NCurses::display (Text text) {
     else
       x = screenSize.width - text.lenght();
   }
-  wattron(stack.back(), COLOR_PAIR(text.getColor()));
-  mvwprintw(stack.back(), text.y(), x, "%s", text.label().c_str());
-  wattroff(stack.back(), COLOR_PAIR(text.getColor()));
+
+  wattron(stack[text.window()], COLOR_PAIR(text.getColor()));
+  mvwprintw(stack[text.window()], text.y(), x, "%s", text.label().c_str());
+  wattroff(stack[text.window()], COLOR_PAIR(text.getColor()));
 }
 
 void Views::NCurses::display (Input * input) {
   display(*(dynamic_cast<Text*>(input)));
   unsigned int startx = input->x() + input->label().length();
 
-  wattron(stack.back(), COLOR_PAIR(INPUT));
-  mvwprintw(stack.back(), input->y(), startx, "%s", string(input->width(), ' ').c_str());
-  mvwprintw(stack.back(), input->y(), startx, "%s", input->value().c_str());
-  wattroff(stack.back(), COLOR_PAIR(INPUT));
+  wattron(stack[input->window()], COLOR_PAIR(INPUT));
+  mvwprintw(stack[input->window()], input->y(), startx, "%s", string(input->width(), ' ').c_str());
+  mvwprintw(stack[input->window()], input->y(), startx, "%s", input->value().c_str());
+  wattroff(stack[input->window()], COLOR_PAIR(INPUT));
   curs_set(1);
   wrefresh(stack[stack.size()-2]);
-  wmove(stack.back(), input->y(), startx); // repositione le curseur
+  wmove(stack[input->window()], input->y(), startx); // repositione le curseur
 
   if(input->isSelected()) {
     _active = input;
     unsigned char key = 0x00;
     while(input->isSelected() && key != 0x0a && key != 0x09) {
-      wattron(stack.back(), COLOR_PAIR(INPUT));
-      mvwprintw(stack.back(), input->y(), startx, "%s", string(input->width(), ' ').c_str());
-      mvwprintw(stack.back(), input->y(), startx, "%s", input->value().c_str());
-      wattroff(stack.back(), COLOR_PAIR(INPUT));
+      wattron(stack[input->window()], COLOR_PAIR(INPUT));
+      mvwprintw(stack[input->window()], input->y(), startx, "%s", string(input->width(), ' ').c_str());
+      mvwprintw(stack[input->window()], input->y(), startx, "%s", input->value().c_str());
+      wattroff(stack[input->window()], COLOR_PAIR(INPUT));
 
-      key = wgetch(stack.back());
+      key = wgetch(stack[input->window()]);
       long unsigned int w = 0;
       if(input->width()-1>=0)
         w = input->width()-1;
@@ -511,10 +523,10 @@ void Views::NCurses::display (Button button) {
     _validated = &button;
 
   if(button.isSelected())
-    wattron(stack.back(), A_REVERSE);
-  mvwprintw(stack.back(), button.y(), button.x()-1, "<%s>", button.label().c_str());
+    wattron(stack[button.window()], A_REVERSE);
+  mvwprintw(stack[button.window()], button.y(), button.x()-1, "<%s>", button.label().c_str());
   if(button.isSelected())
-    wattroff(stack.back(), A_REVERSE);
+    wattroff(stack[button.window()], A_REVERSE);
 }
 
 void Views::NCurses::rect(basic b) {
@@ -570,4 +582,11 @@ void Views::NCurses::onKeyPressed (unsigned char key) {
   View::_second_key = 0x00;
   View::_first_key = key;
   if(key == 27 || key == 53 || key == 54 || key == 49) View::_second_key = InputDevices::NCursesKeyboard::listenChar();
+}
+
+bool Views::NCurses::exists (pair<unsigned int, unsigned int> position) {
+  vector<pair<unsigned int, unsigned int>> keys;
+  for(map<pair<unsigned int, unsigned int>, WINDOW*>::iterator it = windows.begin(); it != windows.end(); it++)
+    keys.push_back(it->first);
+  return std::find(keys.begin(), keys.end(), position) != keys.end();
 }

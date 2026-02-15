@@ -79,7 +79,8 @@ namespace GraphicComponents {
       cursor getCursor ();
       const string getName();
       void setColor (const unsigned short index) {_colorIndex = index;};
-      const unsigned short getColor() {return _colorIndex;};
+      const unsigned short getColor () {return _colorIndex;};
+      pair<unsigned int, unsigned int> position () {return {_window, _id};};
   };
 
   class GraphicLeaf : public GraphicComponent, public virtual Leaf {

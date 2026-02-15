@@ -195,6 +195,7 @@ namespace Views {
 string test = "";
       char second_key = 255;
       vector<WINDOW*> stack; //LIFO
+      map<pair<unsigned int, unsigned int>, WINDOW*> windows;
       InputDevices::NCursesKeyboard * _keyboard;
 
 
@@ -242,6 +243,7 @@ string test = "";
       InputDevices::Keyboard * getKeyboard ();
       void setEvent (unsigned char key, void (*fct)()) {_keyboard->setEvent(key, fct);};
       static void onKeyPressed (unsigned char key);
+      bool exists (pair<unsigned int, unsigned int> position);
   };
 
 };
