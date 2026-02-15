@@ -188,7 +188,7 @@ namespace GraphicComponents {
       unsigned int to();
   };
 
-  class Menu : public virtual GraphicComposite {
+  class Menu : public GraphicComposite {
     private:
       list<Text *> _items;
     public:
