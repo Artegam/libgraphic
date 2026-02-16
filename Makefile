@@ -48,6 +48,10 @@ o/%.o: src/%.cpp
 clean:
 	rm -r o/;find . -name "*~" | xargs rm -f
 
+search-lib:
+	echo "Les informations pour une distribution se trouvent dans /etc/ld.so.conf"
+	cat /etc/ld.so.conf
+
 install:
 	sudo cp $(LIB)$(PROJECT) $(INSTALL_DIR)
 	sudo cp $(INC)*.h $(HEADERS_DIR)
