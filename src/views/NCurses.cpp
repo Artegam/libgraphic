@@ -312,7 +312,8 @@ void Views::NCurses::display (VMenu menu) {
     for(list<string>::iterator it=lst.begin(); it!=lst.end(); it++) {
       if(line == menu.selected())
         wattron(windows[position], A_REVERSE);
-      mvwprintw(windows[position], line, 1, "%s", (*it).c_str());
+      it->resize(15, ' ');
+      mvwprintw(windows[position], line, 0, " %s", (*it).c_str());
       if(line == menu.selected())
         wattroff(windows[position], A_REVERSE);
       line++;
