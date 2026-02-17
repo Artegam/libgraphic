@@ -6,7 +6,10 @@ SRC = src/
 OUT = o/
 BIN = bin/
 LIB = lib/
-INSTALL_DIR = /lib/x86_64-linux-gnu/
+INSTALL_DIR_x86 = /lib/x86_64-linux-gnu/
+INSTALL_DIR_ARCH64 = /lib/aarch64-linux-gnu/
+SYSTEM := $(shell uname -a | grep 'x86')
+INSTALL_DIR := $(if $(SYSTEM), $(INSTALL_DIR_x86), $(INSTALL_DIR_ARCH64))
 HEADERS_DIR = /usr/include/
 TEST_DIR = $(SRC)$(TESTS)
 
@@ -55,7 +58,7 @@ search-lib:
 install:
 	sudo cp $(LIB)$(PROJECT) $(INSTALL_DIR)
 	sudo cp $(INC)*.h $(HEADERS_DIR)
-	echo "$(PROJECT) installed successfully !"
+	echo "$(PROJECT) installed successfully to $(INSTALL_DIR) !"
 
 install-tools:
 	sudo apt-get install g++ vim dia dia2code doxygen
