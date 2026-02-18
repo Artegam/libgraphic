@@ -15,6 +15,8 @@ DialogBox::DialogBox (const int window, const int x, const int y, const unsigned
   }
   //this->select(0);
 
-  if(message.size() > 0)
-    this->add(new Text(window, 4, 3, message, "Message"));
+  if(message.size() > 0) {
+    Text * _t = new Text(window, x+4, y+3, message, "Message");
+    this->add(_t);
+  }
 }
