@@ -142,9 +142,11 @@ void Views::NCurses::display () {
 
   _dialog = NULL;
   for(list<Screen*>::reverse_iterator it=screens.rbegin(); it!=screens.rend(); it++) {
-    list<Component *> m = (*it)->getGraphicComponents();
-    for(list<Component *>::iterator imap = m.begin(); imap!= m.end(); imap++)
-      lst[lst.size()] = *imap;
+    if(*it!=nullptr) {
+      list<Component *> m = (*it)->getGraphicComponents();
+      for(list<Component *>::iterator imap = m.begin(); imap!= m.end(); imap++)
+        lst[lst.size()] = *imap;
+    }
   }
 
   //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug

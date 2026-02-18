@@ -5,3 +5,4 @@ SEGFAULT003;Agenda::Agenda (const int window, const int x, const int y, const st
 SEGFAULT004;void GraphicComponent::select (const int index);When no _components in the list;FIXED
 SEGFAULT005;void Screen::selectNext ();when _components is empty;FIXED
 SEGFAULT006;void Composite::remove (Component* c);Bad usage of list<>.erase;FIXED
+SEGFAULT007;void Views::NCurses::display ();nullptr for screen* (iterator) not protected;FIXED
