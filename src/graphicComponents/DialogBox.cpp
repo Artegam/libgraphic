@@ -8,10 +8,10 @@ DialogBox::DialogBox (const int window, const int x, const int y, const unsigned
 
   // Bi buttons
   if(buttons == OK)
-    this->add(new Button(window, (width/2), (height-2), "OK", "OK"));
+    this->add(new Button(window, x+(width/2), y+(height-2), "OK", "OK"));
   else if(buttons == OK_CANCEL) {
-    this->add(new Button(window, (width/3), (height-2), "OK", "OK"));
-    this->add(new Button(window, 2*(width/3), (height-2), "Cancel", "CANCEL"));
+    this->add(new Button(window, x+(width/3), y+(height-2), "OK", "OK"));
+    this->add(new Button(window, x+2*(width/3), y+(height-2), "Cancel", "CANCEL"));
   }
   //this->select(0);
 
