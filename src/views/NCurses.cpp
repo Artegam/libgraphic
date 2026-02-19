@@ -114,7 +114,7 @@ void Views::NCurses::hello () {
 void Views::NCurses::colorize () {
   wclear(stack[0]);
   start_color();
-  wbkgd(stack[0], COLOR_PAIR(SCREEN));
+  wbkgd(stack[0], COLOR_PAIR(SCREEN_COLOR));
 }
 
 void Views::NCurses::load (Screen screen) {
@@ -126,7 +126,7 @@ void Views::NCurses::load (Screen screen) {
   stack.push_back(sub);
 
   start_color();
-  wbkgd(sub, COLOR_PAIR(SCREEN));
+  wbkgd(sub, COLOR_PAIR(SCREEN_COLOR));
 }
 
 void Views::NCurses::display () {
@@ -178,7 +178,7 @@ void Views::NCurses::display (DialogBox dialog) {
     windows[position] = subwin(stack[dialog.window()], dialog.height(), dialog.width(), dialog.y(), dialog.x());
 
   stack.push_back(windows[position]);
-  wbkgd(windows[position], COLOR_PAIR(HMENU));
+  wbkgd(windows[position], COLOR_PAIR(HMENU_COLOR));
   wclear(windows[position]);
   box(windows[position], ACS_VLINE, ACS_HLINE);
   wrefresh(windows[position]);
@@ -190,6 +190,9 @@ void Views::NCurses::display (DialogBox dialog) {
   advance(idx, dialog.selected());
 
   for(list<Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
+    GraphicComponent * gc = dynamic_cast<GraphicComponent*>(*it);
+    if(gc == nullptr)
+      gc->setColor(DIALOG_COLOR);
     Input * input = dynamic_cast<Input*>(*it);
     if(input == nullptr && (*it) == (*idx))
       wattron(stack.back(), A_REVERSE);
@@ -258,14 +261,14 @@ void Views::NCurses::display (HMenu menu) {
     mvwprintw(stack[0], 4, 3, "isSubmenu: %d", _isSubmenu);
 
     if(_isSubmenu && submenuHCursor == num)
-      wattron(windows[position], COLOR_PAIR(HMENU_SELECTED));
+      wattron(windows[position], COLOR_PAIR(HMENU_SELECTED_COLOR));
     wattron(windows[position], A_BOLD | A_UNDERLINE);
     mvwprintw(windows[position], 0, cursorPosition, "%c", *ptr);
     cursorPosition++;
     wattroff(windows[position], A_BOLD | A_UNDERLINE);
     mvwprintw(windows[position], 0, cursorPosition, "%s", str.substr(1, str.size()-1).c_str());
     if(_isSubmenu && submenuHCursor == num)
-      wattroff(windows[position], COLOR_PAIR(HMENU_SELECTED));
+      wattroff(windows[position], COLOR_PAIR(HMENU_SELECTED_COLOR));
     cursorPosition+=(*it).size()+1;
     num++;
   }
@@ -308,7 +311,7 @@ void Views::NCurses::display (VMenu menu) {
     if(!exists(position))
       windows[position] = subwin(stack[menu.window()], lst.size(), menu.width()+2,  menu.y(), menu.x());
 
-    wbkgd(windows[position], COLOR_PAIR(HMENU));
+    wbkgd(windows[position], COLOR_PAIR(HMENU_COLOR));
 
     int line = 0;
     for(list<string>::iterator it=lst.begin(); it!=lst.end(); it++) {
@@ -349,10 +352,10 @@ void Views::NCurses::display (Input * input) {
   display(*(dynamic_cast<Text*>(input)));
   unsigned int startx = input->x() + input->label().length();
 
-  wattron(stack[input->window()], COLOR_PAIR(INPUT));
+  wattron(stack[input->window()], COLOR_PAIR(INPUT_COLOR));
   mvwprintw(stack[input->window()], input->y(), startx, "%s", string(input->width(), ' ').c_str());
   mvwprintw(stack[input->window()], input->y(), startx, "%s", input->value().c_str());
-  wattroff(stack[input->window()], COLOR_PAIR(INPUT));
+  wattroff(stack[input->window()], COLOR_PAIR(INPUT_COLOR));
   curs_set(1);
   wrefresh(stack[stack.size()-2]);
   wmove(stack[input->window()], input->y(), startx); // repositione le curseur
@@ -361,10 +364,10 @@ void Views::NCurses::display (Input * input) {
     _active = input;
     unsigned char key = 0x00;
     while(input->isSelected() && key != 0x0a && key != 0x09) {
-      wattron(stack[input->window()], COLOR_PAIR(INPUT));
+      wattron(stack[input->window()], COLOR_PAIR(INPUT_COLOR));
       mvwprintw(stack[input->window()], input->y(), startx, "%s", string(input->width(), ' ').c_str());
       mvwprintw(stack[input->window()], input->y(), startx, "%s", input->value().c_str());
-      wattroff(stack[input->window()], COLOR_PAIR(INPUT));
+      wattroff(stack[input->window()], COLOR_PAIR(INPUT_COLOR));
 
       key = wgetch(stack[input->window()]);
       long unsigned int w = 0;
@@ -490,11 +493,11 @@ void Views::NCurses::tablerow (list<Cell*> lst, list<unsigned int> colssizes, un
     Cell c = **it;
 
     if(c.isSelected())
-      wattron(stack.back(), COLOR_PAIR(TABLE));
+      wattron(stack.back(), COLOR_PAIR(TABLE_COLOR));
 
     mvwprintw(win, y+maxrowsize, x+col+1, "%s", c.value().c_str());
     if(c.isSelected())
-      wattroff(stack.back(), COLOR_PAIR(TABLE));
+      wattroff(stack.back(), COLOR_PAIR(TABLE_COLOR));
 
     // length of foot and junction tee
     wmove(win, y+maxrowsize+1, x+col+1);

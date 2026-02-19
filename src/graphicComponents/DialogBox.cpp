@@ -17,6 +17,7 @@ DialogBox::DialogBox (const int window, const int x, const int y, const unsigned
 
   if(message.size() > 0) {
     Text * _t = new Text(window, x+4, y+3, message, "Message");
+    _t->setColor(DIALOG_COLOR);
     this->add(_t);
   }
 }

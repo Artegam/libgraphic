@@ -20,14 +20,6 @@
 
 #define V_QUIT 0x01
 
-//TODO: pourquoi ne pas mettre ceci dans une map ?
-#define SCREEN         1
-#define HMENU          2
-#define HMENU_SELECTED 3
-#define INPUT          4
-#define TABLE          5
-#define DEFAULT        6
-
 using namespace std;
 using namespace GraphicComponents;
 

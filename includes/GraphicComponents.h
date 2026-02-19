@@ -8,6 +8,15 @@
 
 #include "Composite.h"
 
+//TODO: pourquoi ne pas mettre ceci dans une map ?
+#define SCREEN_COLOR         1
+#define HMENU_COLOR          2
+#define HMENU_SELECTED_COLOR 3
+#define INPUT_COLOR          4
+#define TABLE_COLOR          5
+#define DEFAULT_COLOR        6
+#define DIALOG_COLOR         7
+
 using namespace std;
 
 namespace GraphicComponents {
