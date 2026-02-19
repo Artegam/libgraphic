@@ -8,6 +8,7 @@ Button::Button (const int window, const int x, const int y, const string label, 
   _height = 3;
   _width = label.size() + 2;
   _selectable = true;
+  _colorIndex = BUTTON_COLOR;
 }
 
 const string Button::label() {

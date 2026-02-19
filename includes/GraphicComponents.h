@@ -16,6 +16,7 @@
 #define TABLE_COLOR          5
 #define DEFAULT_COLOR        6
 #define DIALOG_COLOR         7
+#define BUTTON_COLOR         8
 
 using namespace std;
 

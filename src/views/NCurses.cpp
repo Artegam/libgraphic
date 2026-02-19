@@ -178,7 +178,7 @@ void Views::NCurses::display (DialogBox dialog) {
     windows[position] = subwin(stack[dialog.window()], dialog.height(), dialog.width(), dialog.y(), dialog.x());
 
   stack.push_back(windows[position]);
-  wbkgd(windows[position], COLOR_PAIR(HMENU_COLOR));
+  wbkgd(windows[position], COLOR_PAIR(DIALOG_COLOR));
   wclear(windows[position]);
   box(windows[position], ACS_VLINE, ACS_HLINE);
   wrefresh(windows[position]);
@@ -190,9 +190,6 @@ void Views::NCurses::display (DialogBox dialog) {
   advance(idx, dialog.selected());
 
   for(list<Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
-    GraphicComponent * gc = dynamic_cast<GraphicComponent*>(*it);
-    if(gc == nullptr)
-      gc->setColor(DIALOG_COLOR);
     Input * input = dynamic_cast<Input*>(*it);
     if(input == nullptr && (*it) == (*idx))
       wattron(stack.back(), A_REVERSE);
@@ -535,7 +532,9 @@ void Views::NCurses::display (Button button) {
 
   if(button.isSelected())
     wattron(stack[button.window()], A_REVERSE);
+  wattron(stack[button.window()], COLOR_PAIR(button.getColor()));
   mvwprintw(stack[button.window()], button.y(), button.x()-1, "<%s>", button.label().c_str());
+  wattroff(stack[button.window()], COLOR_PAIR(button.getColor()));
   if(button.isSelected())
     wattroff(stack[button.window()], A_REVERSE);
 }
