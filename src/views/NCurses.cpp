@@ -37,7 +37,7 @@ void Views::NCurses::init (int height, int width) {
   this->worldWidth = width;
 
   // Creation of the stack
-  stack[0] = subwin(stack.back(), screenSize.height, screenSize.width, Views::View::_cursor_y, Views::View::_cursor_x);
+  stack[0] = stdscr;
 
   if (has_colors() == FALSE) {
     endwin();
@@ -56,10 +56,15 @@ void Views::NCurses::loadPalette () {
   }
 }
 
-void Views::NCurses::createWindow (int screen, int x, int y, int height, int width) {
-  if(stack.size() < (unsigned long)(screen + 1)) 
-    stack.resize(screen+1);
-  stack.push_back(subwin(stack.back(), height, width, y, x));
+void Views::NCurses::createWindow (GraphicComponent * gc) {
+  if(gc->id() == -1) gc->setId(windows.size());
+  pair<unsigned int, unsigned int> position = gc->position();
+  if(!exists(position))
+    windows[position] = newwin(gc->height(), gc->width(), gc->y(), gc->x());
+  box(windows[position], 0, 0);
+  wborder(windows[position], ' ', ' ', ' ',' ',' ',' ',' ',' ');
+  wbkgd(windows[position], COLOR_PAIR(gc->getColor()));
+stack.push_back(windows[position]);
 }
 
 void Views::NCurses::drawChar (WINDOW * win, int x, int y, char c, char color) {
@@ -112,58 +117,55 @@ void Views::NCurses::hello () {
 }
 
 void Views::NCurses::colorize () {
-  wclear(stack[0]);
   start_color();
   wbkgd(stack[0], COLOR_PAIR(SCREEN_COLOR));
 }
 
-void Views::NCurses::load (Screen screen) {
-//[ASC] TODO: il y a un soucis ici... a creuser ou a refaire
-  clear();
+void Views::NCurses::load (Screen * screen) {
   View::load(screen);
+  createWindow(screen);
+}
 
-  WINDOW * sub = subwin(stack.back(), screen.height(), screen.width(), screen.y(), screen.x());
-  stack.push_back(sub);
-
-  start_color();
-  wbkgd(sub, COLOR_PAIR(SCREEN_COLOR));
+void Views::NCurses::load (list<Screen*> lst) {
+  View::load(lst);
+  WINDOW * root = stack[0];
+  stack.clear();
+  stack.push_back(root);
+  windows.clear();
+  for(list<Screen*>::iterator it = lst.begin(); it != lst.end(); it++)
+    createWindow(*it);
 }
 
 void Views::NCurses::display () {
   map<int, Component *> lst;
-  wclear(stack[0]);
+  if(stack[2] != nullptr) {
+    werase(stack[2]);
+  }
 
-  //[ASC] default display
-  if(screens.size() == 0) {
+  if(screens.size() == 0) {//[ASC] default display
     Text * t = new Text(0, 0, screenSize.height/2, "libgraphic v1.0");
     t->align(Text::CENTER);
     display(t);
-  }
+  } else {                 //[ASC] screens management
 
-  _dialog = NULL;
-  for(list<Screen*>::reverse_iterator it=screens.rbegin(); it!=screens.rend(); it++) {
-    if(*it!=nullptr) {
-      list<Component *> m = (*it)->getGraphicComponents();
-      for(list<Component *>::iterator imap = m.begin(); imap!= m.end(); imap++)
-        lst[lst.size()] = *imap;
+    //[ASC]TODO: c'est quelque part par ici que ca foire....
+    // Mauvaise gestion d'affichage des screens et de leurs composants...
+    for(list<Screen*>::iterator it=screens.begin(); it!=screens.end(); it++) {
+      if(*it!=nullptr) {
+        list<Component *> m = (*it)->getGraphicComponents();
+        for(list<Component *>::iterator imap = m.begin(); imap!= m.end(); imap++) 
+            display(*imap);
+      }
     }
+
+    //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug
+    mvwprintw(stack[2], 2, 40, "1st key pressed: %d", View::_first_key);
+    mvwprintw(stack[2], 3, 40, "2nd key pressed: %d", View::_second_key);
   }
 
-  //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug
-  mvwprintw(stack[0], 2, 40, "1st key pressed: %d", View::_first_key);
-  mvwprintw(stack[0], 3, 40, "2nd key pressed: %d", View::_second_key);
-
-  for(map<int, Component *>::iterator it = lst.begin(); it != lst.cend(); it++) {
-    if (DialogBox * box = dynamic_cast<DialogBox*>(it->second); box != nullptr)
-      _dialog = box;
-    else
-      display(it->second);
-  }
-
-  if(_dialog != NULL) { //[ASC] les dialogBox s affichent devant
-    display((*_dialog));
-    _dialog->selectNext();
-    _active = _dialog->selectedComponent();
+  //refresh windows
+  for(map<pair<unsigned int, unsigned int>, WINDOW*>::iterator it = windows.begin(); it!=windows.end(); it++) {
+    wrefresh(it->second);
   }
 
   wmove(stack.back(), Views::View::_cursor_y, Views::View::_cursor_x); // repositione le curseur
@@ -173,15 +175,17 @@ void Views::NCurses::display () {
 
 void Views::NCurses::display (DialogBox dialog) {
   list<Component *> lst;
+/*
   pair<unsigned int, unsigned int> position = dialog.position();
   if(!exists(position))
-    windows[position] = subwin(stack[dialog.window()], dialog.height(), dialog.width(), dialog.y(), dialog.x());
+    windows[position] = newwin(dialog.height(), dialog.width(), dialog.y(), dialog.x());
 
   stack.push_back(windows[position]);
   wbkgd(windows[position], COLOR_PAIR(DIALOG_COLOR));
-  wclear(windows[position]);
+*/
+  createWindow(&dialog);
+  pair<unsigned int, unsigned int> position = dialog.position();
   box(windows[position], ACS_VLINE, ACS_HLINE);
-  wrefresh(windows[position]);
 
   mvwprintw(windows[position], 0, 1, "%s", dialog.label().c_str());
 
@@ -198,7 +202,6 @@ void Views::NCurses::display (DialogBox dialog) {
       wattroff(stack.back(), A_REVERSE);
   }
 
-  wrefresh(stack.back());
   stack.pop_back();
 }
 
@@ -216,9 +219,16 @@ void Views::NCurses::display (Menu menu) {
   mvwprintw(stack[scr.window()], 5, 50, "_maxKeyboardx: %d", _maxKeyboardx);
 
   //TODO: le 10 c'est la largeur, donc le calcul de la plus longue chaine de caracteres
+/*
   pair<unsigned int, unsigned int> position = menu.position();
   if(!exists(position))
-    windows[position] = subwin(stack[menu.window()], items.size() + 2, 10,  y - 1, x - 1);
+    windows[position] = newwin(items.size() + 2, 10,  y - 1, x - 1);
+*/
+
+  menu.resize(items.size() + 2, 10); // le x et y aussi a mettre a jour
+  createWindow(&menu);
+  pair<unsigned int, unsigned int> position = menu.position();
+
   box(windows[position], ACS_VLINE, ACS_HLINE);
 
   for(it = items.begin(); it != items.end(); it++) {
@@ -244,18 +254,17 @@ void Views::NCurses::display (HMenu menu) {
 
   submenuHCursor=submenuHCursor%items.size();
 
+  menu.resize(menu.height(), screenSize.width);
+  createWindow(&menu);
   pair<unsigned int, unsigned int> position = menu.position();
-  if(!exists(position))
-    windows[position] = subwin(stack[menu.window()], 1, screenSize.width, 0, 0);
-  wbkgd(windows[position], COLOR_PAIR(menu.getColor()));
 
   for(it=items.begin(); it != items.end(); it++) {
     string str=(*it);
     string::iterator ptr=str.begin();
 
-    mvwprintw(stack[0], 2, 3, "submenuHCursor: %d", submenuHCursor);
-    mvwprintw(stack[0], 3, 3, "num : %d", num);
-    mvwprintw(stack[0], 4, 3, "isSubmenu: %d", _isSubmenu);
+    mvwprintw(stack[2], 2, 3, "submenuHCursor: %d", submenuHCursor);
+    mvwprintw(stack[2], 3, 3, "num : %d", num);
+    mvwprintw(stack[2], 4, 3, "isSubmenu: %d", _isSubmenu);
 
     if(_isSubmenu && submenuHCursor == num)
       wattron(windows[position], COLOR_PAIR(HMENU_SELECTED_COLOR));
@@ -304,11 +313,17 @@ void Views::NCurses::display (VMenu menu) {
     menu.select(submenuVCursor);
     _validated = menu.validation(submenuVCursor);
 
+/*
     pair<unsigned int, unsigned int> position = menu.position();
     if(!exists(position))
-      windows[position] = subwin(stack[menu.window()], lst.size(), menu.width()+2,  menu.y(), menu.x());
+      windows[position] = newwin(lst.size(), menu.width()+2,  menu.y(), menu.x());
 
     wbkgd(windows[position], COLOR_PAIR(HMENU_COLOR));
+    */
+
+    menu.resize(lst.size(), menu.width()+2);
+    createWindow(&menu);
+    pair<unsigned int, unsigned int> position = menu.position();
 
     int line = 0;
     for(list<string>::iterator it=lst.begin(); it!=lst.end(); it++) {
@@ -343,6 +358,8 @@ void Views::NCurses::display (Text text) {
   wattron(stack[text.window()], COLOR_PAIR(text.getColor()));
   mvwprintw(stack[text.window()], text.y(), x, "%s", text.label().c_str());
   wattroff(stack[text.window()], COLOR_PAIR(text.getColor()));
+
+  mvwprintw(stack[2], 40, 60, "AAAAAAAhhhhh : %d (len:%ld)", text.window(), stack.size());
 }
 
 void Views::NCurses::display (Input * input) {
@@ -354,7 +371,6 @@ void Views::NCurses::display (Input * input) {
   mvwprintw(stack[input->window()], input->y(), startx, "%s", input->value().c_str());
   wattroff(stack[input->window()], COLOR_PAIR(INPUT_COLOR));
   curs_set(1);
-  wrefresh(stack[stack.size()-2]);
   wmove(stack[input->window()], input->y(), startx); // repositione le curseur
 
   if(input->isSelected()) {

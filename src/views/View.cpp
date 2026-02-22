@@ -22,10 +22,10 @@ bool View::shouldClose () {
 void View::close () {
 }
 
-void View::load (Screen screen) {
-  _maxKeyboardx = screen.getSelectSize() - 1;
+void View::load (Screen * screen) {
+  _maxKeyboardx = screen->getSelectSize() - 1;
   screens.clear();
-  screens.push_back(&screen);
+  screens.push_back(screen);
 }
 
 void View::load (list<Screen*> lst) {
@@ -133,7 +133,7 @@ void View::clearScreen () {
 void View::validateOption (int optionNumber) {
 }
 
-void View::createWindow (int position, int x, int y, int height, int width) {
+void View::createWindow (GraphicComponent * gc) {
 }
 
 const unsigned char View::keyboard () {

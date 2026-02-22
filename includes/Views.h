@@ -113,9 +113,9 @@ namespace Views {
       virtual void initScreen();
       virtual void clearScreen ();
       virtual void validateOption (int optionNumber);
-      virtual void createWindow (int position, int x, int y, int height, int width);
+      virtual void createWindow (GraphicComponent * gc);
       //[ASC] Load emember functions
-      virtual void load (Screen screen);
+      virtual void load (Screen * screen);
       virtual void load (list<Screen*> screens);
       //[ASC] Display member functions
       virtual void display ();
@@ -200,7 +200,7 @@ string test = "";
       ~NCurses ();
       void init (int height, int width);
       void loadPalette ();
-      void createWindow (int screen, int x, int y, int height = 2, int width = 10);
+      void createWindow (GraphicComponent * gc);
       void displayCursorPosition (int keybPosition);
       void end ();
       void hello (); // Pour tester l'affichage en cas de soucis
@@ -208,7 +208,8 @@ string test = "";
       void clearScreen();
       void initScreen();
       void colorize ();
-      void load (Screen screen);
+      void load (Screen * screen);
+      void load (list<Screen*> screens);
       void display ();
       void display (Component * c) {View::display(c);};
       void display (GraphicComposite * gc) {View::display(gc);};
