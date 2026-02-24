@@ -54,7 +54,7 @@ void View::display (GraphicComposite * gc) {
   } else if (Menu * menu = dynamic_cast<Menu*>(gc); menu != nullptr) {
     display((*menu));
   } else if (Screen * scr = dynamic_cast<Screen*>(gc); scr != nullptr) {
-    //display((*scr));
+    display(scr);
   }
 
   if(_active == NULL && gc->isSelected())
@@ -87,6 +87,7 @@ void View::display (GraphicLeaf * gl) {
     _active = gl;
 }
 
+void View::display (Screen * scr) {}
 void View::display (DialogBox box) {}
 void View::display (Menu menu) {}
 void View::display (HMenu menu) {

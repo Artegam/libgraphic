@@ -5,6 +5,7 @@ using namespace GraphicComponents;
 DialogBox::DialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label, string message, unsigned int buttons, const string name) : Screen (window, x, y, label, name) {
   _height = height;
   _width = width;
+  setColor(DIALOG_COLOR);
 
   // Bi buttons
   if(buttons == OK)

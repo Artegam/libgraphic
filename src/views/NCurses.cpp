@@ -151,11 +151,8 @@ void Views::NCurses::display () {
     //[ASC]TODO: c'est quelque part par ici que ca foire....
     // Mauvaise gestion d'affichage des screens et de leurs composants...
     for(list<Screen*>::iterator it=screens.begin(); it!=screens.end(); it++) {
-      if(*it!=nullptr) {
-        list<Component *> m = (*it)->getGraphicComponents();
-        for(list<Component *>::iterator imap = m.begin(); imap!= m.end(); imap++) 
-            display(*imap);
-      }
+      if(*it!=nullptr)
+        display(*it);
     }
 
     //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug
@@ -171,6 +168,15 @@ void Views::NCurses::display () {
   wmove(stack.back(), Views::View::_cursor_y, Views::View::_cursor_x); // repositione le curseur
   refresh();
   usleep(100000);
+}
+
+void Views::NCurses::display (Screen * scr) {
+  DialogBox * box = dynamic_cast<DialogBox*>(scr);
+  if(box!=nullptr)
+    display(*box);
+  list<Component *> m = scr->getGraphicComponents();
+  for(list<Component *>::iterator imap = m.begin(); imap!= m.end(); imap++)
+    display(*imap);
 }
 
 void Views::NCurses::display (DialogBox dialog) {
