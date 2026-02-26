@@ -181,14 +181,6 @@ void Views::NCurses::display (Screen * scr) {
 
 void Views::NCurses::display (DialogBox dialog) {
   list<Component *> lst;
-/*
-  pair<unsigned int, unsigned int> position = dialog.position();
-  if(!exists(position))
-    windows[position] = newwin(dialog.height(), dialog.width(), dialog.y(), dialog.x());
-
-  stack.push_back(windows[position]);
-  wbkgd(windows[position], COLOR_PAIR(DIALOG_COLOR));
-*/
   createWindow(&dialog);
   pair<unsigned int, unsigned int> position = dialog.position();
   box(windows[position], ACS_VLINE, ACS_HLINE);
@@ -225,12 +217,6 @@ void Views::NCurses::display (Menu menu) {
   mvwprintw(stack[scr.window()], 5, 50, "_maxKeyboardx: %d", _maxKeyboardx);
 
   //TODO: le 10 c'est la largeur, donc le calcul de la plus longue chaine de caracteres
-/*
-  pair<unsigned int, unsigned int> position = menu.position();
-  if(!exists(position))
-    windows[position] = newwin(items.size() + 2, 10,  y - 1, x - 1);
-*/
-
   menu.resize(items.size() + 2, 10); // le x et y aussi a mettre a jour
   createWindow(&menu);
   pair<unsigned int, unsigned int> position = menu.position();
@@ -318,14 +304,6 @@ void Views::NCurses::display (VMenu menu) {
     submenuVCursor=submenuVCursor%lst.size();
     menu.select(submenuVCursor);
     _validated = menu.validation(submenuVCursor);
-
-/*
-    pair<unsigned int, unsigned int> position = menu.position();
-    if(!exists(position))
-      windows[position] = newwin(lst.size(), menu.width()+2,  menu.y(), menu.x());
-
-    wbkgd(windows[position], COLOR_PAIR(HMENU_COLOR));
-    */
 
     menu.resize(lst.size(), menu.width()+2);
     createWindow(&menu);
