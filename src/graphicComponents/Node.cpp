@@ -52,13 +52,13 @@ const unsigned int Node::getRank (string name) {
 }
 
 // Calcule un offset a partir de la longueur des noms des nodes
-const unsigned int Node::getNameOffset (string name) {
+const unsigned int Node::getNameOffset (string name, const int spacerSize) {
   list<Atom *> lst = getChildren();
   unsigned int len = 0;
   for(list<Atom *>::iterator it = lst.begin(); it != lst.end(); it++) {
     if((*it)->getName() == name)
       return len;
-    len+=(*it)->getName().size()+1;
+    len+=(*it)->getName().size()+spacerSize;
   }
   return len;
 }

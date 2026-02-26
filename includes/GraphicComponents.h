@@ -361,7 +361,7 @@ namespace GraphicComponents {
       Node * getNode(string name);
       Node * getNode(const unsigned int position);
       const unsigned int getRank (string name);
-      const unsigned int getNameOffset (string name);
+      const unsigned int getNameOffset (string name, const int spacerSize = 1);
       virtual bool validate ();
       virtual void clear () {};
       void attach(GraphicComponent * comp);
