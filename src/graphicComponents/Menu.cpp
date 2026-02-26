@@ -14,6 +14,7 @@ Menu::Menu (const int window, const int x, const int y, list<string> items, cons
     pos++;
   }
   _selectSize = _items.size();
+  setColor(HMENU_COLOR);
 }
 
 Menu::Menu (const int window, const int x, const int y, list<Text *> items, const string name) : GraphicComposite(window, x, y, name) {
@@ -27,6 +28,7 @@ Menu::Menu (const int window, const int x, const int y, list<Text *> items, cons
       _selectSize++;
     }
   }
+  setColor(HMENU_COLOR);
 }
 
 list<string> Menu::items() {
