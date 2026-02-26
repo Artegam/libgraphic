@@ -156,8 +156,8 @@ void Views::NCurses::display () {
     }
 
     //mvwprintw(stack[0], 2, 50, "_keyboardx: %d", _keyboardx); //[ASC] Pour le debug
-    mvwprintw(stack[2], 2, 40, "1st key pressed: %d", View::_first_key);
-    mvwprintw(stack[2], 3, 40, "2nd key pressed: %d", View::_second_key);
+    mvwprintw(stack[1], 2, 40, "1st key pressed: %d", View::_first_key);
+    mvwprintw(stack[1], 3, 40, "2nd key pressed: %d", View::_second_key);
   }
 
   //refresh windows
@@ -268,9 +268,9 @@ void Views::NCurses::display (HMenu menu) {
     string str=(*it);
     string::iterator ptr=str.begin();
 
-    mvwprintw(stack[2], 2, 3, "submenuHCursor: %d", submenuHCursor);
-    mvwprintw(stack[2], 3, 3, "num : %d", num);
-    mvwprintw(stack[2], 4, 3, "isSubmenu: %d", _isSubmenu);
+    mvwprintw(stack[1], 2, 3, "submenuHCursor: %d", submenuHCursor);
+    mvwprintw(stack[1], 3, 3, "num : %d", num);
+    mvwprintw(stack[1], 4, 3, "isSubmenu: %d", _isSubmenu);
 
     if(_isSubmenu && submenuHCursor == num)
       wattron(windows[position], COLOR_PAIR(HMENU_SELECTED_COLOR));
