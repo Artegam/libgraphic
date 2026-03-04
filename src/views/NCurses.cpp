@@ -166,6 +166,7 @@ void Views::NCurses::display () {
   }
 
   wmove(stack.back(), Views::View::_cursor_y, Views::View::_cursor_x); // repositione le curseur
+  _keyboard->setActive(screens.front());
   refresh();
   usleep(100000);
 }
@@ -582,7 +583,7 @@ void Views::NCurses::setSubMenu (const bool active) {
 }
 
 void Views::NCurses::setKeyboard (int screen) {
-  _keyboard = new InputDevices::NCursesKeyboard(stack[screen]);
+  _keyboard = new NCursesKeyboard(stack[screen]);
   _keyboard->setOnKeyPressed(Views::NCurses::onKeyPressed);
 }
 
@@ -591,7 +592,7 @@ InputDevices::Keyboard * Views::NCurses::getKeyboard () {return _keyboard;}
 void Views::NCurses::onKeyPressed (unsigned char key) {
   View::_second_key = 0x00;
   View::_first_key = key;
-  if(key == 27 || key == 53 || key == 54 || key == 49) View::_second_key = InputDevices::NCursesKeyboard::listenChar();
+  if(key == 27 || key == 53 || key == 54 || key == 49) View::_second_key = NCursesKeyboard::listenChar();
 }
 
 bool Views::NCurses::exists (pair<unsigned int, unsigned int> position) {

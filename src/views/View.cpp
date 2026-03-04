@@ -263,6 +263,5 @@ void View::onShortcut (const unsigned char shortcut) {
   }
 }
 
-void View::setEvent (unsigned char key, void (*fct)()) {}
 void View::setKeyboard (int screen) {}
 InputDevices::Keyboard * View::getKeyboard () {return nullptr;}

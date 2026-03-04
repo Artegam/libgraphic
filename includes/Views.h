@@ -66,6 +66,26 @@ namespace Views {
       const unsigned long size () {return _colorpalette.size();};
   };
 
+  class NCursesKeyboard : public InputDevices::Keyboard {
+    private:
+      static WINDOW * _window;
+      GraphicComponent * _active = nullptr;
+
+    public:
+      NCursesKeyboard (WINDOW * window);
+      static unsigned char listenChar () {return wgetch(_window);};
+      unsigned char listen (){
+        _key = 0x00;
+        _key = listenChar();
+        if (InputDevices::BaseEvent * be = dynamic_cast<InputDevices::BaseEvent*>(_active); be != nullptr)
+          execute(be);
+        else
+          execute();
+        return _key;
+      };
+      void setActive (GraphicComponent * gc) {_active=gc;};
+  };
+
   // interface
   /// class View - 
   class View {
@@ -167,7 +187,8 @@ namespace Views {
       // [ASC] Events
       void onShortcut (const unsigned char shortcut);
       void setColorPalette (ColorPalette * palette) {_colorPalette=palette;};
-      virtual void setEvent (unsigned char key, void (*fct)());
+      virtual void setEvent (unsigned char key, void (*fct)()) {};
+      virtual void setKey (const unsigned int event, const unsigned char key) {};
       virtual void setKeyboard (int screen);
       virtual InputDevices::Keyboard * getKeyboard ();
   };
@@ -189,7 +210,7 @@ string test = "";
       char second_key = 255;
       vector<WINDOW*> stack; //LIFO
       map<pair<unsigned int, unsigned int>, WINDOW*> windows;
-      InputDevices::NCursesKeyboard * _keyboard;
+      NCursesKeyboard * _keyboard;
 
 
     protected:
@@ -236,6 +257,7 @@ string test = "";
       void setSubMenu (const bool active = true);
       void setKeyboard (int screen);
       InputDevices::Keyboard * getKeyboard ();
+      virtual void setKey (const unsigned int event, const unsigned char key) {_keyboard->setKey(event, key);};
       void setEvent (unsigned char key, void (*fct)()) {_keyboard->setEvent(key, fct);};
       static void onKeyPressed (unsigned char key);
       bool exists (pair<unsigned int, unsigned int> position);

@@ -9,11 +9,13 @@ DialogBox::DialogBox (const int window, const int x, const int y, const unsigned
 
   // Bi buttons
   if(buttons == OK)
-    add(new Button(window, (width/2), (height-2), "OK", "OK"));
+    _ok = new Button(window, (width/2), (height-2), "OK", "OK");
   else if(buttons == OK_CANCEL) {
-    add(new Button(window, (width/3), (height-2), "OK", "OK"));
-    add(new Button(window, 2*(width/3), (height-2), "Cancel", "CANCEL"));
+    _ok = new Button(window, (width/3), (height-2), "OK", "OK");
+    _cancel = new Button(window, 2*(width/3), (height-2), "Cancel", "CANCEL");
+    add(_cancel);
   }
+    add(_ok);
   //this->select(0);
 
   if(message.size() > 0) {

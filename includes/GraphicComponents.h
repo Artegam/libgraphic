@@ -7,6 +7,7 @@
 #include <functional>
 
 #include "Composite.h"
+#include "InputDevices.h"
 
 //TODO: pourquoi ne pas mettre ceci dans une map ?
 #define SCREEN_COLOR         1
@@ -113,7 +114,7 @@ namespace GraphicComponents {
       void add (GraphicLeaf* gl) {gl->setId(_children.size());Composite::add(gl);};
   };
 
-  class Screen : public GraphicComposite {
+  class Screen : public GraphicComposite, public InputDevices::BaseEvent {
     private:
       string _label;
 
@@ -176,28 +177,6 @@ namespace GraphicComponents {
     public:
       Selector (const int window, const int x, const int y, const string label, const string name = "default selector");
   };
-
-  class DialogBox : public Screen {
-    private:
-    public:
-      static const unsigned int OK        = 0;
-      static const unsigned int OK_CANCEL = 1;
-      DialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label, string message = "", unsigned int buttons = OK, const string name = "default dialogbox");
-  };
-
-  class OpenDialogBox : public DialogBox {
-    public:
-      OpenDialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label, const string name = "default opendialogbox");
-  };
-
-  class GotoDialogBox : public DialogBox {
-    private:
-      Input * _in = NULL;
-    public:
-      GotoDialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label);
-      unsigned int to();
-  };
-
   class Menu : public GraphicComposite {
     private:
       list<Text *> _items;
@@ -321,6 +300,29 @@ namespace GraphicComponents {
       Selector getYear ();
       Table getHourly ();
       Text getName ();
+  };
+
+  class DialogBox : public Screen {
+    private:
+      Button * _ok = nullptr;
+      Button * _cancel = nullptr;
+    public:
+      static const unsigned int OK        = 0;
+      static const unsigned int OK_CANCEL = 1;
+      DialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label, string message = "", unsigned int buttons = OK, const string name = "default dialogbox");
+  };
+
+  class OpenDialogBox : public DialogBox {
+    public:
+      OpenDialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label, const string name = "default opendialogbox");
+  };
+
+  class GotoDialogBox : public DialogBox {
+    private:
+      Input * _in = NULL;
+    public:
+      GotoDialogBox (const int window, const int x, const int y, const unsigned int height, const unsigned int width, const string label);
+      unsigned int to();
   };
 
   class Atom {
