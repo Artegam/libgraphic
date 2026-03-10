@@ -110,8 +110,14 @@ namespace GraphicComponents {
       virtual const int selected ();
       const int getComponentsCount();
       void add (Component* c) {Composite::add(c);};
+      void add (list<Component*> lst) {_children.insert(_children.end(), lst.begin(), lst.end());};
       void add (GraphicComposite* gc) {gc->setId(_children.size());Composite::add(gc);};
       void add (GraphicLeaf* gl) {gl->setId(_children.size());Composite::add(gl);};
+      list<Component *> getGraphicComponents () {
+        list<Component *> lst(_children.begin(), _children.end());
+        return lst;
+      };
+
   };
 
   class Screen : public GraphicComposite, public InputDevices::BaseEvent {
@@ -126,12 +132,6 @@ namespace GraphicComponents {
       void remove () {Composite::remove ();};
       void remove (Component* c) {Composite::remove (c);};
       string label ();
-      list<Component *> getGraphicComponents () {
-        list<Component *> lst;
-        for(list<Component*>::iterator it = _children.begin(); it != _children.end(); it++)
-          lst.push_back(*it);
-        return lst;
-      };
   };
 
   class Text : public virtual GraphicLeaf {
