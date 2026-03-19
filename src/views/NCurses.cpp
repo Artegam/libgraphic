@@ -324,6 +324,13 @@ void Views::NCurses::display (VMenu menu) {
   }
 }
 
+void Views::NCurses::display (ComplexHMenu menu) {
+  menu.width(screenSize.width);
+  createWindow(&menu);
+  display((HMenu)menu);
+  display(menu.message());
+}
+
 void Views::NCurses::display (Text text) {
   unsigned int x = 0;
   if(text.align() == Text::LEFT)

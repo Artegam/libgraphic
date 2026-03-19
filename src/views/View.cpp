@@ -47,6 +47,8 @@ void View::display (Component * c) {
 void View::display (GraphicComposite * gc) {
   if (DialogBox * db = dynamic_cast<DialogBox*>(gc); db != nullptr) {
     display(db);
+  } else if (ComplexHMenu * menu = dynamic_cast<ComplexHMenu*>(gc); menu != nullptr) {
+    display((*menu));
   } else if (HMenu * menu = dynamic_cast<HMenu*>(gc); menu != nullptr) {
     display((*menu));
   } else if (VMenu * menu = dynamic_cast<VMenu*>(gc); menu != nullptr) {
@@ -96,6 +98,7 @@ void View::display (HMenu menu) {
   _active = menu.itemSelected();
 }
 void View::display (VMenu menu) {}
+void View::display (ComplexHMenu menu) {}
 void View::display (Text text) {}
 void View::display (Input * input) {}
 void View::display (Selector selector) {}

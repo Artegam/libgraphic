@@ -147,6 +147,7 @@ namespace Views {
       virtual void display (Menu menu);
       virtual void display (HMenu menu);
       virtual void display (VMenu menu);
+      virtual void display (ComplexHMenu menu);
       virtual void display (Text text);
       virtual void display (Input * input);
       virtual void display (Selector selector);
@@ -241,6 +242,7 @@ string test = "";
       void display (Menu menu);
       void display (HMenu menu);
       void display (VMenu menu);
+      void display (ComplexHMenu menu);
       void display (Text text);
       void display (Input * input);
       void display (Selector selector);

@@ -86,6 +86,7 @@ namespace GraphicComponents {
       const int y();
       const unsigned int height ();
       const unsigned int width ();
+      void width (const unsigned int w) {_width=w;};
       const basic getBasic();
       cursor getCursor ();
       const string getName();
@@ -202,6 +203,18 @@ namespace GraphicComponents {
     public:
       VMenu (const int window, const int x, const int y, list<string> items, const string name = "default vmenu");
       VMenu (const int window, const int x, const int y, list<Text *> items, const string name = "default vmenu");
+  };
+
+  class ComplexHMenu : public HMenu {
+    private:
+      Text * _message;
+      unsigned int _maxWidth = 666;
+    public:
+      ComplexHMenu (const int window, const int x, const int y, list<string> items, const string name = "default vmenu");
+      ComplexHMenu (const int window, const int x, const int y, list<Text *> items, const string name = "default vmenu");
+      void message (string str) {_message->setLabel(str);HMenu::width(_width-str.size());};
+      Text* message () {return _message;};
+      void width (const unsigned int max) {HMenu::width(max);message(_message->label());};
   };
 
   class Button : public virtual GraphicLeaf {
