@@ -84,9 +84,10 @@ namespace GraphicComponents {
       const int window();
       const int x();
       const int y();
-      const unsigned int height ();
       const unsigned int width ();
+      const unsigned int height ();
       void width (const unsigned int w) {_width=w;};
+      void height (const unsigned int h) {_height = h;};
       const basic getBasic();
       cursor getCursor ();
       const string getName();
@@ -128,6 +129,7 @@ namespace GraphicComponents {
     public:
       Screen ();
       Screen (const int window, const int x, const int y, const string label, const string name = "default screen");
+      Screen (const int window, const int x, const int y, const int width, const int height, const string label, const string name = "default screen");
       void selectNext ();
       void select (const int index);
       void remove () {Composite::remove ();};
@@ -140,10 +142,6 @@ namespace GraphicComponents {
       string _label;
       int _align = 0x00;
 
-    protected:
-      int _width = -1;
-      int _height = 1;
-
     public:
       static const int LEFT     = 0x00;
       static const int CENTER   = 0x01;
@@ -151,14 +149,10 @@ namespace GraphicComponents {
 
       Text (const int window, const int x, const int y, const string label, const string name = "default text");
       void setLabel (const string label);
-      void width (const int w) {_width = w;};
-      void height (const int h) {_height = h;};
       void align (const int param) {_align = param;};
       const string label ();
-      const int width () {return _width;};
-      const int height () {return _height;};
       const int align () {return _align;};
-      const unsigned int lenght () {return _label.size();};
+      const unsigned int length () {return _label.size();};
   };
 
   class Input : public Text {

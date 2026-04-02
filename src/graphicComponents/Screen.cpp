@@ -10,6 +10,11 @@ Screen::Screen (const int window, const int x, const int y, const string label, 
   _label = label;
 }
 
+Screen::Screen (const int window, const int x, const int y, const int width, const int height, const string label, const string name) : Screen(window, x, y, label, name) {
+  _width = width;
+  _height = height;
+}
+
 void Screen::select(const int index) {
   GraphicComposite::select(index);
 

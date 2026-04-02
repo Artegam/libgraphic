@@ -351,7 +351,7 @@ void Views::NCurses::display (Text text) {
   mvwprintw(stack[text.window()], text.y(), x, "%s", text.label().c_str());
   wattroff(stack[text.window()], COLOR_PAIR(text.getColor()));
 
-  mvwprintw(stack[2], 40, 60, "AAAAAAAhhhhh : %d (len:%ld)", text.window(), stack.size());
+  mvwprintw(stack[1], 40, 60, "AAAAAAAhhhhh : %d (len:%ld)", text.window(), stack.size());
 }
 
 void Views::NCurses::display (Input * input) {
