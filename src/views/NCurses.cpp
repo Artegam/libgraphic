@@ -337,14 +337,14 @@ void Views::NCurses::display (Text text) {
     x = text.x();
   else if(text.align() == Text::CENTER) {
     if(text.width()>0)
-      x = text.x() + (text.width() - text.lenght())/2;
+      x = text.x() + (text.width() - text.length())/2;
     else
-      x = text.x() + (screenSize.width - text.lenght())/2;
+      x = text.x() + (screenSize.width - text.length())/2;
   } else if(text.align() == Text::RIGHT) {
     if(text.width()>0)
-      x = text.x() + (text.width() - text.lenght());
+      x = text.x() + (text.width() - text.length());
     else
-      x = screenSize.width - text.lenght();
+      x = screenSize.width - text.length();
   }
 
   wattron(stack[text.window()], COLOR_PAIR(text.getColor()));
