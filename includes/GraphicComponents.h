@@ -8,6 +8,7 @@
 
 #include "Composite.h"
 #include "InputDevices.h"
+#include "Events.h"
 
 //TODO: pourquoi ne pas mettre ceci dans une map ?
 #define SCREEN_COLOR         1
@@ -122,7 +123,7 @@ namespace GraphicComponents {
 
   };
 
-  class Screen : public GraphicComposite, public InputDevices::BaseEvent {
+  class Screen : public GraphicComposite, public events::BaseEvent {
     private:
       string _label;
 

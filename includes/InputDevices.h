@@ -3,6 +3,8 @@
 
 #include <map>
 
+#include "Events.h"
+
 // Standart Keyboard keys TODO: Put this data in a configuration file
 const int KEYB_ARROW_DOWN  = 2;
 const int KEYB_ARROW_UP    = 3;
@@ -15,18 +17,8 @@ const int KEYB_ESCAPE      = 27;
 const int KEYB_PAGEDOWN    = 82;
 const int KEYB_PAGEUP      = 83;
 
-// Events codes
-const unsigned int VALIDATE = 1;
-const unsigned int PAGEUP   = 2;
-const unsigned int PAGEDOWN = 3;
-
 namespace InputDevices {
   typedef void (*fctptr)();
-
-  class BaseEvent {
-    public:
-      void (*onValidate)();
-  };
 
   class Device {};
   class Keyboard : public Device {
@@ -42,12 +34,12 @@ namespace InputDevices {
       std::map<int, fctptr> _events;
       unsigned char _key;
     public:
-      void execute (BaseEvent * object = nullptr) {
+      void execute (events::BaseEvent * object = nullptr) {
         if(onKeyPressed != nullptr) onKeyPressed(_key);
         if(_events[keymap[_key]] != nullptr) _events[keymap[_key]]();
         if(object != nullptr)
           switch(keymap[_key]) {
-            case VALIDATE:
+            case events::VALIDATE:
               object->onValidate();
               break;
           }

@@ -77,7 +77,7 @@ namespace Views {
       unsigned char listen (){
         _key = 0x00;
         _key = listenChar();
-        if (InputDevices::BaseEvent * be = dynamic_cast<InputDevices::BaseEvent*>(_active); be != nullptr)
+        if (events::BaseEvent * be = dynamic_cast<events::BaseEvent*>(_active); be != nullptr)
           execute(be);
         else
           execute();
