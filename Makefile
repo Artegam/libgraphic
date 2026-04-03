@@ -16,6 +16,7 @@ TEST_DIR = $(SRC)$(TESTS)
 PROJECT_DIRS = $(SRC) $(INC) $(LIB) $(OUT) $(BIN) $(TEST_DIR)
 
 INCLUDES = -I $(INC) # -I $(INC_RENDER) -I $(TESTS)
+INCLUDES_TESTS = -I $(INC)$(TESTS)
 
 LIBS = -lncurses
 OPT = -Wall -O -g -shared -fPIC
@@ -25,8 +26,8 @@ OPT_THREAD = -std=c++0x -pthread
 
 SRC_FILES = $(shell if [ -d src/ ]; then find src/ -type f -name '*.cpp' | grep --invert-match tests/; fi)
 OBJ_FILES = $(patsubst src/%.cpp, o/%.o, $(SRC_FILES))
-TEST_SRC_FILES = $(shell if [ -d src/ ]; then find src/ -type f -name '*.cpp'; fi)
-TEST_OBJ_FILES = $(patsubst src/%.cpp, o/%.o, $(TEST_SRC_FILES))
+TEST_SRC_FILES = $(shell if [ -d src/$(TESTS) ]; then find src/$(TESTS) -type f -name '*.cpp'; fi)
+TEST_OBJ_FILES = $(patsubst src/$(TESTS)%.cpp, o/$(TESTS)%.o, $(TEST_SRC_FILES))
 
 ## Pour declarer des targets qui ne sont pas des fichiers
 .PHONY: project clean install uninstall install-tools uninstall-tools tests
@@ -38,7 +39,7 @@ project:
 	mkdir --parents $(PROJECT_DIRS)
 
 tests: $(TEST_OBJ_FILES)
-	g++ $(TESTS_OPT) $(INCLUDES) $(OPT_THREAD) $^ -o $(BIN)$@ $(LIBS)
+	g++ $(TESTS_OPT) $(INCLUDES_TESTS)  $(OPT_THREAD) $^ -o $(BIN)$@ $(LIBS) $(PWD)/lib/libgraphic.so
 	$(BIN)$@ || (echo " Some tests have failed. Compilation exiting.")
 
 $(PROJECT): $(OBJ_FILES)
