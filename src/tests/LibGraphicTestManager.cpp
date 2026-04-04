@@ -212,7 +212,7 @@ void DialogboxTests::execute () {
   assert(b != nullptr, "(2 boutons) First object is Button component");
   assert(b->id(), 0, "(2 boutons) First object id is 0");
   assert(b->label().c_str(), "OK", "(2 boutons) First object is OK Button");
-  assert(b->x(), 22, "(2 boutons) OK Button X position");
+  assert(b->x(), 44, "(2 boutons) OK Button X position");
   assert(b->y(), 8, "(2 boutons) OK Button Y position");
   it++;
 
@@ -220,7 +220,7 @@ void DialogboxTests::execute () {
   assert(b != nullptr, "(2 boutons) Second object is Button component");
   assert(b->id(), 1, "(2 boutons) Second object id is 1");
   assert(b->label().c_str(), "Cancel", "(2 boutons) Second object is Cancel Button");
-  assert(b->x(), 44, "(2 boutons) Cancel Button X position");
+  assert(b->x(), 22, "(2 boutons) Cancel Button X position");
   assert(b->y(), 8, "(2 boutons) Cancel Button Y position");
   it++;
 
