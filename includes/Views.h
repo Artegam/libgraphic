@@ -143,6 +143,7 @@ namespace Views {
       virtual void display (GraphicComposite * gc);
       virtual void display (GraphicLeaf * gl);
       virtual void display (Screen * scr);
+      virtual void display (Window win);
       virtual void display (DialogBox box);
       virtual void display (Menu menu);
       virtual void display (HMenu menu);
@@ -238,6 +239,7 @@ string test = "";
       void display (GraphicComposite * gc) {View::display(gc);};
       void display (GraphicLeaf * gl) {View::display(gl);};
       void display (Screen * scr);
+      void display (Window win);
       void display (DialogBox box);
       void display (Menu menu);
       void display (HMenu menu);

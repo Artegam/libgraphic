@@ -5,12 +5,21 @@ using namespace std;
 using namespace GraphicComponents;
 
 GraphicComponent::GraphicComponent () {
+  _window = 1;
+}
+
+GraphicComponent::GraphicComponent(const int width, const int height, const int x, const int y) {
+  _window = 1;
+  _width = width;
+  _height = height;
+  _x = x;
+  _y = y;
 }
 
 GraphicComponent::GraphicComponent(const int window, const int x, const int y, const string name) {
-  this->_window = window;
-  this->_x = x;
-  this->_y = y;
+  _window = window;
+  _x = x;
+  _y = y;
   _selectSize = 0;
   _name = name;
 }

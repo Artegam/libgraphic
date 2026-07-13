@@ -7,6 +7,7 @@ using namespace GraphicComponents;
 GraphicComposite::GraphicComposite () {
 }
 
+GraphicComposite::GraphicComposite(const int width, const int height, const int x, const int y) : GraphicComponent(width, height, x, y) {}
 GraphicComposite::GraphicComposite(const int window, const int x, const int y, const string name) {
   this->_window = window;
   this->_x = x;

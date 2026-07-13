@@ -70,6 +70,7 @@ namespace GraphicComponents {
 
     public:
       GraphicComponent();
+      GraphicComponent(const int width, const int height, const int x = 0, const int y = 0);
       GraphicComponent(const int window, const int x, const int y, const string name = "default graphic component");
       virtual void select ();
       virtual void unselect ();
@@ -107,6 +108,7 @@ namespace GraphicComponents {
     private:
     public:
       GraphicComposite();
+      GraphicComposite(const int width, const int height, const int x = 0, const int y = 0);
       GraphicComposite(const int window, const int x, const int y, const string name = "default graphic composite");
       Component * selectedComponent ();
       virtual void select (const int idComponent);
@@ -136,6 +138,13 @@ namespace GraphicComponents {
       void remove () {Composite::remove ();};
       void remove (Component* c) {Composite::remove (c);};
       string label ();
+  };
+
+  //[ASC] un objet Window est un Screen
+  class Window : public GraphicComposite, public events::BaseEvent {
+    private:
+    public:
+      Window (const int width, const int height, const int x = 0, const int y = 0);
   };
 
   class Text : public virtual GraphicLeaf {

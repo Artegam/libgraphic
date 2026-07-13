@@ -180,6 +180,22 @@ void Views::NCurses::display (Screen * scr) {
     display(*imap);
 }
 
+void Views::NCurses::display (Window win) {
+  if(win.id() == -1) win.setId(windows.size());
+  pair<unsigned int, unsigned int> position = win.position();
+  if(!exists(position))
+    windows[position] = newwin(win.height(), win.width(), win.y(), win.x());
+
+  WINDOW * w = subwin(windows[position], win.height(), win.width(), win.y(), win.x());
+  wborder(w, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
+  wbkgd(w, COLOR_PAIR(win.getColor()));
+  if(win.getName().size() > 0) { //[ASC] The name of the window
+    mvwaddch(w, 0, 1, ACS_RTEE);
+    mvwprintw(w, 0, 2, "%s", win.getName().c_str());
+    mvwaddch(w, 0, 2+4+win.getName().size(), ACS_LTEE);
+  }
+}
+
 void Views::NCurses::display (DialogBox dialog) {
   list<Component *> lst;
   createWindow(&dialog);
